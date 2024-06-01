@@ -8,6 +8,7 @@ using SQLitePCL;
 using System.ComponentModel;
 using System.Reflection.Metadata.Ecma335;
 using System.Runtime.InteropServices;
+using System.Text;
 
 namespace Expandit
 {
@@ -62,11 +63,64 @@ namespace Expandit
 
 
 
+			InitializeForegroundWindowChecker();
+
 		}
 		private void MainWindow_Load(object sender, EventArgs e)
 		{
 
 		}
+
+		// *****************************************************************************************************//
+		#region EXPIRIMENTAL - - - CustomForegroundWindowChanged Event
+
+
+		[DllImport("user32.dll")]
+		private static extern int GetWindowText(IntPtr hWnd, StringBuilder text, int count);
+
+		[DllImport("user32.dll")]
+		private static extern int GetWindowTextLength(IntPtr hWnd);
+
+		private System.Windows.Forms.Timer _timer;
+		private IntPtr _lastForegroundWindow = IntPtr.Zero;
+
+		private void InitializeForegroundWindowChecker()
+		{
+			_timer = new System.Windows.Forms.Timer();
+			_timer.Interval = 1000; // Check every second
+			_timer.Tick += Timer_Tick;
+			_timer.Start();
+		}
+
+		private void Timer_Tick(object sender, EventArgs e)
+		{
+			IntPtr currentForegroundWindow = GetForegroundWindow();
+
+			if (currentForegroundWindow != _lastForegroundWindow)
+			{
+				_lastForegroundWindow = currentForegroundWindow;
+
+				int length = GetWindowTextLength(currentForegroundWindow);
+				StringBuilder stringBuilder = new StringBuilder(length + 1);
+				GetWindowText(currentForegroundWindow, stringBuilder, stringBuilder.Capacity);
+
+				string windowTitle = stringBuilder.ToString();
+
+				// Handle the foreground window change
+				OnForegroundWindowChanged(windowTitle);
+			}
+		}
+
+		private void OnForegroundWindowChanged(string windowTitle)
+		{
+			// Handle the foreground window change event
+			currentText = string.Empty;
+			currentTextLabel.Text = string.Empty;
+			//MessageBox.Show($"Foreground window changed to: {windowTitle}", "Foreground Window Changed");
+		}
+		#endregion
+		// *****************************************************************************************************//
+
 
 		#region NotifyIcon
 		private void InitializeNotifyIcon()
@@ -198,6 +252,7 @@ namespace Expandit
 			if (ctrl || alt) return;
 
 			//if (e.KeyCode == Keys.Space || e.KeyCode == Keys.Enter)
+
 			if (IsTriggerKey(e.KeyCode))
 			{
 				var textShortcutModel = GetTextShortcutModel(currentText);
@@ -237,15 +292,16 @@ namespace Expandit
 			return Settings.Default.TriggerKeys.Contains(e.ToString());
 		}
 
-
 		private void ReplaceKeyWithValue(TextShortcutModel shortcutModel)
 		{
 			for (int i = 0; i < shortcutModel.Key.Length; i++)
 			{
-				SendKey(VK_BACKSPACE);
+				SendKeys.Send("{BACKSPACE}");
+				//SendKey(VK_BACKSPACE);
 			}
 			Clipboard.SetText(shortcutModel.Value);
-			ClipboardHelpers.PasteText();
+			SendKeys.Send("^(v)");
+			//ClipboardHelpers.PasteText();
 		}
 		private string AdjustPressedKey(Keys keys)
 		{
@@ -474,6 +530,8 @@ namespace Expandit
 		{
 			List<Keys> specialKeys = new List<Keys>
 			{
+
+			Keys.LWin, Keys.RWin,
 			Keys.LControlKey, Keys.RControlKey,
 			Keys.RMenu,Keys.LMenu,
 			Keys.Tab,
@@ -521,7 +579,10 @@ namespace Expandit
 
 		private TextShortcutModel GetTextShortcutModel(string? key)
 		{
-			return textShortcuts.FirstOrDefault(t => string.Equals(t.Key, key, StringComparison.OrdinalIgnoreCase));
+
+			return Settings.Default.IsMatchingCaseSensitive ?
+				textShortcuts.FirstOrDefault(t => string.Equals(t.Key, key)) :
+				textShortcuts.FirstOrDefault(t => string.Equals(t.Key, key, StringComparison.OrdinalIgnoreCase));
 		}
 		#endregion
 
@@ -536,6 +597,7 @@ namespace Expandit
 			this.Opacity = 1.0;
 			PopulateDataGrid();
 		}
+
 		private void buttonDeleteTextShortcut_Click(TextShortcutModel textShortcutToDelete)
 		{
 			var result = MessageBox.Show($"Are you sure to delete textshortcut : {textShortcutToDelete.Name} ?", "Warning", MessageBoxButtons.YesNo, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2);
@@ -582,12 +644,15 @@ namespace Expandit
 			Func<TextShortcutModel, bool> filterPredicate = t =>
 			{
 				bool result = false;
+
+
 				if (Settings.Default.SearchByName)
 					result = result || t.Name.Contains(searchTerm, StringComparison.OrdinalIgnoreCase);
 				if (Settings.Default.SearchByKey)
 					result = result || t.Key.Contains(searchTerm, StringComparison.OrdinalIgnoreCase);
 				if (Settings.Default.SearchByValue)
 					result = result || t.Value.Contains(searchTerm, StringComparison.OrdinalIgnoreCase);
+
 				return result;
 			};
 
@@ -637,12 +702,9 @@ namespace Expandit
 		#endregion
 
 
-		/// ////////////////////////////////////////////////////////////////////////////////////////////////////////
-		// SETTINGS TAB
-		/// ////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-
+		#region Settins tab
 		//private bool IsSettingsChanged = false;
 
 
@@ -653,6 +715,7 @@ namespace Expandit
 			checkBoxTab.Checked = false;
 
 			checkBoxStartup.Checked = false;
+			checkBoxIsStrictMatching.Checked = false;
 
 			checkBoxSearchByName.Checked = false;
 			checkBoxSearchByKey.Checked = false;
@@ -738,13 +801,15 @@ namespace Expandit
 
 
 
-		private void PopulateStartupCheckBoxes()
+		private void PopulateOtherSettingsCheckBoxes()
 		{
 			checkBoxStartup.Checked = Settings.Default.IsRunOnStartup;
+			checkBoxIsStrictMatching.Checked = Settings.Default.IsMatchingCaseSensitive;
 		}
 
-		private void SaveStartupSettings()
+		private void SaveOtherSettings()
 		{
+			//Startup
 			Settings.Default.IsRunOnStartup = checkBoxStartup.Checked;
 			if (checkBoxStartup.Checked)
 			{
@@ -755,6 +820,11 @@ namespace Expandit
 			{
 				RemoveApplicationFromStartup();
 			}
+
+			// Strict Matching
+
+			Settings.Default.IsMatchingCaseSensitive = checkBoxIsStrictMatching.Checked;
+
 		}
 
 
@@ -777,7 +847,7 @@ namespace Expandit
 			if (tabControl.SelectedIndex == 1)
 			{
 				ClearAllCheckBoxes();
-				PopulateStartupCheckBoxes();
+				PopulateOtherSettingsCheckBoxes();
 				PopulateTriggerKeysCheckBoxes();
 				PopulateSearchByCheckBoxes();
 
@@ -788,7 +858,7 @@ namespace Expandit
 		}
 		private void buttonSaveSettings_Click(object sender, EventArgs e)
 		{
-			SaveStartupSettings();
+			SaveOtherSettings();
 			SaveTriggerKeysSettings();
 			SaveSearchBySettings();
 
@@ -803,6 +873,7 @@ namespace Expandit
 		}
 
 
+		#endregion
 
 	}
 }

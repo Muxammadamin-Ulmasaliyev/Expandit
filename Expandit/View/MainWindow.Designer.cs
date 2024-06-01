@@ -64,6 +64,7 @@ namespace Expandit
 			checkBoxEnter = new CheckBox();
 			checkBoxSpace = new CheckBox();
 			groupBox4 = new GroupBox();
+			checkBoxIsStrictMatching = new CheckBox();
 			checkBoxStartup = new CheckBox();
 			((System.ComponentModel.ISupportInitialize)dataGridView).BeginInit();
 			((System.ComponentModel.ISupportInitialize)textShortcutModelBindingSource).BeginInit();
@@ -251,10 +252,10 @@ namespace Expandit
 			// tabPageSettings
 			// 
 			tabPageSettings.Controls.Add(tableLayoutPanel1);
-			tabPageSettings.Location = new Point(4, 29);
+			tabPageSettings.Location = new Point(4, 40);
 			tabPageSettings.Name = "tabPageSettings";
 			tabPageSettings.Padding = new Padding(3);
-			tabPageSettings.Size = new Size(974, 616);
+			tabPageSettings.Size = new Size(974, 605);
 			tabPageSettings.TabIndex = 1;
 			tabPageSettings.Text = "Settings";
 			tabPageSettings.UseVisualStyleBackColor = true;
@@ -273,7 +274,7 @@ namespace Expandit
 			tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 33F));
 			tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 34F));
 			tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 33F));
-			tableLayoutPanel1.Size = new Size(968, 610);
+			tableLayoutPanel1.Size = new Size(968, 599);
 			tableLayoutPanel1.TabIndex = 0;
 			// 
 			// groupBox2
@@ -282,9 +283,9 @@ namespace Expandit
 			groupBox2.Controls.Add(checkBoxSearchByKey);
 			groupBox2.Controls.Add(checkBoxSearchByName);
 			groupBox2.Dock = DockStyle.Fill;
-			groupBox2.Location = new Point(3, 204);
+			groupBox2.Location = new Point(3, 200);
 			groupBox2.Name = "groupBox2";
-			groupBox2.Size = new Size(962, 201);
+			groupBox2.Size = new Size(962, 197);
 			groupBox2.TabIndex = 1;
 			groupBox2.TabStop = false;
 			groupBox2.Text = "Search Bar ;";
@@ -326,9 +327,9 @@ namespace Expandit
 			// 
 			groupBox3.Controls.Add(buttonSaveSettings);
 			groupBox3.Dock = DockStyle.Fill;
-			groupBox3.Location = new Point(3, 411);
+			groupBox3.Location = new Point(3, 403);
 			groupBox3.Name = "groupBox3";
-			groupBox3.Size = new Size(962, 196);
+			groupBox3.Size = new Size(962, 193);
 			groupBox3.TabIndex = 2;
 			groupBox3.TabStop = false;
 			groupBox3.Text = "Predefined shortcuts";
@@ -356,7 +357,7 @@ namespace Expandit
 			tableLayoutPanel2.Name = "tableLayoutPanel2";
 			tableLayoutPanel2.RowCount = 1;
 			tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
-			tableLayoutPanel2.Size = new Size(962, 195);
+			tableLayoutPanel2.Size = new Size(962, 191);
 			tableLayoutPanel2.TabIndex = 3;
 			// 
 			// groupBox1
@@ -368,7 +369,7 @@ namespace Expandit
 			groupBox1.Dock = DockStyle.Fill;
 			groupBox1.Location = new Point(3, 3);
 			groupBox1.Name = "groupBox1";
-			groupBox1.Size = new Size(475, 189);
+			groupBox1.Size = new Size(475, 185);
 			groupBox1.TabIndex = 1;
 			groupBox1.TabStop = false;
 			groupBox1.Text = "Trigger Key";
@@ -419,14 +420,26 @@ namespace Expandit
 			// 
 			// groupBox4
 			// 
+			groupBox4.Controls.Add(checkBoxIsStrictMatching);
 			groupBox4.Controls.Add(checkBoxStartup);
 			groupBox4.Dock = DockStyle.Fill;
 			groupBox4.Location = new Point(484, 3);
 			groupBox4.Name = "groupBox4";
-			groupBox4.Size = new Size(475, 189);
+			groupBox4.Size = new Size(475, 185);
 			groupBox4.TabIndex = 2;
 			groupBox4.TabStop = false;
-			groupBox4.Text = "Startup settings";
+			groupBox4.Text = "Other settings";
+			// 
+			// checkBoxIsStrictMatching
+			// 
+			checkBoxIsStrictMatching.AutoSize = true;
+			checkBoxIsStrictMatching.Location = new Point(6, 85);
+			checkBoxIsStrictMatching.Name = "checkBoxIsStrictMatching";
+			checkBoxIsStrictMatching.Size = new Size(197, 36);
+			checkBoxIsStrictMatching.TabIndex = 1;
+			checkBoxIsStrictMatching.Text = "Strict Matching";
+			checkBoxIsStrictMatching.UseVisualStyleBackColor = true;
+			checkBoxIsStrictMatching.CheckedChanged += checkBox_CheckedChanged;
 			// 
 			// checkBoxStartup
 			// 
@@ -504,5 +517,6 @@ namespace Expandit
 		private CheckBox checkBoxSearchByValue;
 		private CheckBox checkBoxSearchByKey;
 		private CheckBox checkBoxSearchByName;
+		private CheckBox checkBoxIsStrictMatching;
 	}
 }
