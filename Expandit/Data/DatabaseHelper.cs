@@ -1,5 +1,4 @@
-﻿using System.IO;
-using Microsoft.Data.Sqlite;
+﻿using Microsoft.Data.Sqlite;
 
 namespace Expandit.Data
 {
@@ -13,22 +12,33 @@ namespace Expandit.Data
 			// Check if the database file exists
 			if (!File.Exists(DatabaseFileName))
 			{
+				var connection = new SqliteConnection(ConnectionString);
+				connection.Open();
 				// The file will be created when we open the connection, so no need to create it manually
-				using (var connection = new SqliteConnection(ConnectionString))
+				string createCategoryTableQuery = @"CREATE TABLE IF NOT EXISTS ""Category"" (
+                                                ""Id"" INTEGER NOT NULL UNIQUE,
+                                                ""Name"" TEXT NOT NULL,
+                                                PRIMARY KEY(""Id"" AUTOINCREMENT)
+                                              )";
+				using (var command = new SqliteCommand(createCategoryTableQuery, connection))
 				{
-					connection.Open();
-					string createTableQuery = @"CREATE TABLE ""TextShortcuts"" (
+					command.ExecuteNonQuery();
+				}
+
+				string createTextShortcutsTableQuery = @"CREATE TABLE IF NOT EXISTS ""TextShortcuts"" (
                                                 ""Id"" INTEGER NOT NULL UNIQUE,
                                                 ""Name"" TEXT NOT NULL,
                                                 ""Key"" TEXT NOT NULL UNIQUE,
                                                 ""Value"" TEXT NOT NULL,
-                                                PRIMARY KEY(""Id"" AUTOINCREMENT)
+                                                ""CategoryId"" INTEGER NULL,
+                                                PRIMARY KEY(""Id"" AUTOINCREMENT),
+                                                FOREIGN KEY(""CategoryId"") REFERENCES ""Category""(""Id"")
                                               )";
-					using (var command = new SqliteCommand(createTableQuery, connection))
-					{
-						command.ExecuteNonQuery();
-					}
+				using (var command = new SqliteCommand(createTextShortcutsTableQuery, connection))
+				{
+					command.ExecuteNonQuery();
 				}
+				connection.Close();
 			}
 		}
 	}

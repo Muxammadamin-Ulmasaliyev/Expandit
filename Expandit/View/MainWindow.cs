@@ -9,6 +9,8 @@ using System.ComponentModel;
 using System.Reflection.Metadata.Ecma335;
 using System.Runtime.InteropServices;
 using System.Text;
+using WindowsInput.Native;
+using WindowsInput;
 
 namespace Expandit
 {
@@ -46,6 +48,8 @@ namespace Expandit
 		{
 			InitializeComponent();
 
+			Batteries.Init();
+			DatabaseHelper.InitializeDatabase();
 			kh.KeyDown += Kh_KeyDown;
 			kh.KeyUp += Kh_KeyUp;
 
@@ -55,8 +59,6 @@ namespace Expandit
 			UpdateInMemoryTextShortcuts();
 			PopulateDataGrid();
 
-			Batteries.Init();
-			DatabaseHelper.InitializeDatabase();
 
 			InitializeNotifyIcon();
 			AddApplicationToStartup();
@@ -68,7 +70,8 @@ namespace Expandit
 		}
 		private void MainWindow_Load(object sender, EventArgs e)
 		{
-
+			Batteries.Init();
+			DatabaseHelper.InitializeDatabase();
 		}
 
 		// *****************************************************************************************************//
@@ -294,14 +297,24 @@ namespace Expandit
 
 		private void ReplaceKeyWithValue(TextShortcutModel shortcutModel)
 		{
+			var sim = new InputSimulator();
+
 			for (int i = 0; i < shortcutModel.Key.Length; i++)
 			{
-				SendKeys.Send("{BACKSPACE}");
-				//SendKey(VK_BACKSPACE);
+				//SendKey(VK_BACKSPACE);          // not works apps which has spell checkers , fast
+				//SendKeys.Send("{BACKSPACE}");				// works everywhere, slow
+				sim.Keyboard.KeyPress(VirtualKeyCode.BACK);   // not works vs code & notepad , fast
+
 			}
+
+
 			Clipboard.SetText(shortcutModel.Value);
-			SendKeys.Send("^(v)");
+
 			//ClipboardHelpers.PasteText();
+			SendKeys.Send("^(v)");
+			//sim.Keyboard.ModifiedKeyStroke(VirtualKeyCode.CONTROL, VirtualKeyCode.VK_V);
+
+
 		}
 		private string AdjustPressedKey(Keys keys)
 		{

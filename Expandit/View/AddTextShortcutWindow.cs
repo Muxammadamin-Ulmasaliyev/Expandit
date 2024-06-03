@@ -1,4 +1,5 @@
-﻿using Expandit.Models;
+﻿using Expandit.Data;
+using Expandit.Models;
 using Expandit.Services;
 
 namespace Expandit.View
@@ -6,11 +7,23 @@ namespace Expandit.View
 	public partial class AddTextShortcutWindow : Form
 	{
 		private TextShortcutsService _textshortcutsService;
+		private CategoryService _categoriesService;
 		public AddTextShortcutWindow()
 		{
 			_textshortcutsService = new TextShortcutsService();
+			_categoriesService = new CategoryService();
 			InitializeComponent();
+
+			PopulateCategoriesComboBox();
 			CheckButtonState();
+		}
+
+		private void PopulateCategoriesComboBox()
+		{
+			var categories = _categoriesService.GetAll();
+			comboBoxCategories.DataSource = categories;
+			comboBoxCategories.DisplayMember = "Name"; // Property name to display
+			comboBoxCategories.ValueMember = "Id"; // Property name for value
 		}
 
 		private void CheckButtonState()
@@ -90,6 +103,79 @@ namespace Expandit.View
 			textBoxKey.Text = string.Empty;
 			textBoxName.Text = string.Empty;
 			textBoxValue.Text = string.Empty;
+		}
+
+		private void buttonCreateCategory_Click(object sender, EventArgs e)
+		{
+			labelCategory.Visible = false;
+			comboBoxCategories.Visible = false;
+			buttonCreateCategory.Visible = false;
+
+			buttonCancelNewCategory.Visible = true;
+			textBoxNewCategory.Visible = true;
+			buttonSaveCategory.Visible = true;
+
+		}
+
+		private void buttonSaveCategory_Click(object sender, EventArgs e)
+		{
+			if (_categoriesService.IsNameExists(textBoxNewCategory.Text))
+			{
+				MessageBox.Show("Category name should be unique!", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button1);
+				return;
+			}
+
+			_categoriesService.Add(new CategoryModel() { Name = textBoxNewCategory.Text });
+			MessageBox.Show("Category added successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1);
+
+			PopulateCategoriesComboBox();
+
+
+			textBoxNewCategory.Text = string.Empty;
+
+
+			labelCategory.Visible = true;
+			comboBoxCategories.Visible = true;
+			buttonCreateCategory.Visible = true;
+
+
+			buttonCancelNewCategory.Visible = false;
+			textBoxNewCategory.Visible = false;
+			buttonSaveCategory.Visible = false;
+		}
+
+		private bool IsCategoryNameValid()
+		{
+			if (string.IsNullOrWhiteSpace(textBoxNewCategory.Text) || textBoxNewCategory.Text == string.Empty)
+			{
+				return false;
+			}
+
+			return true;
+		}
+
+		private void textBoxNewCategory_TextChanged(object sender, EventArgs e)
+		{
+			buttonSaveCategory.Enabled = IsCategoryNameValid();
+		}
+
+		private void buttonCancelNewCategory_Click(object sender, EventArgs e)
+		{
+			textBoxNewCategory.Text = string.Empty;
+
+			labelCategory.Visible = true;
+			comboBoxCategories.Visible = true;
+			buttonCreateCategory.Visible = true;
+
+
+			buttonCancelNewCategory.Visible = false;
+			textBoxNewCategory.Visible = false;
+			buttonSaveCategory.Visible = false;
+		}
+
+		private void buttonCancel_Click(object sender, EventArgs e)
+		{
+			this.Close();
 		}
 	}
 }
