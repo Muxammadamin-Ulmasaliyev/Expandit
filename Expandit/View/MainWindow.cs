@@ -6,7 +6,6 @@ using Expandit.Services;
 using Expandit.View;
 using SQLitePCL;
 using System.ComponentModel;
-using System.Reflection.Metadata.Ecma335;
 using System.Runtime.InteropServices;
 using System.Text;
 using WindowsInput.Native;
@@ -38,6 +37,7 @@ namespace Expandit
 
 		private List<TextShortcutModel> textShortcuts;
 		private TextShortcutsService _textShortcutService;
+		private CategoryService _categoriesService;
 
 
 		private NotifyIcon notifyIcon;
@@ -53,12 +53,13 @@ namespace Expandit
 			kh.KeyDown += Kh_KeyDown;
 			kh.KeyUp += Kh_KeyUp;
 
+			_categoriesService = new CategoryService();
 
 			_textShortcutService = new TextShortcutsService();
 
 			UpdateInMemoryTextShortcuts();
 			PopulateDataGrid();
-
+			PopulateCategoriesComboBox();
 
 			InitializeNotifyIcon();
 			AddApplicationToStartup();
@@ -155,12 +156,12 @@ namespace Expandit
 
 		private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
 		{
-			/*if (e.CloseReason == CloseReason.UserClosing)
+			if (e.CloseReason == CloseReason.UserClosing)
 			{
 				e.Cancel = true;
 				this.Hide();
 				notifyIcon.Visible = true;
-			}*/
+			}
 		}
 
 		private void ShowMainWindow()
@@ -183,7 +184,7 @@ namespace Expandit
 		{
 
 			// Handle for Edit button
-			if (e.RowIndex >= 0 && e.ColumnIndex == dataGridView.Columns["EditButtonInCell"].Index)
+			if (e.RowIndex >= 0 && e.ColumnIndex == dataGridView.Columns["buttonEditInCell"].Index)
 			{
 				if (dataGridView.SelectedRows.Count > 0)
 				{
@@ -201,7 +202,7 @@ namespace Expandit
 			}
 
 			// Handle for Delete button
-			if (e.RowIndex >= 0 && e.ColumnIndex == dataGridView.Columns["DeleteButtonInCell"].Index)
+			if (e.RowIndex >= 0 && e.ColumnIndex == dataGridView.Columns["buttonDeleteInCell"].Index)
 			{
 				if (dataGridView.SelectedRows.Count > 0)
 				{
@@ -585,8 +586,46 @@ namespace Expandit
 		private void PopulateDataGrid()
 		{
 			UpdateInMemoryTextShortcuts();
+
 			dataGridView.DataSource = new BindingList<TextShortcutModel>(textShortcuts);
 
+			MakeDataGridWrappable();
+
+		}
+		private void PopulateCategoriesComboBox()
+		{
+			var categories = _categoriesService.GetAll();
+
+			// Create a new list to hold the combined items
+			var combinedCategories = new List<CategoryModel>();
+
+			// Add the "All Categories" item at the beginning
+			combinedCategories.Add(new CategoryModel { Id = -1, Name = "All Categories" });
+
+			// Add the rest of the categories
+			combinedCategories.AddRange(categories);
+
+			// Bind the combined list to the ComboBox
+			comboBoxCategories.DataSource = combinedCategories;
+			comboBoxCategories.DisplayMember = "Name"; // Property name to display
+			comboBoxCategories.ValueMember = "Id"; // Property name for value
+
+
+		}
+		private void MakeDataGridWrappable()
+		{
+			/*foreach (DataGridViewColumn column in dataGridView.Columns)
+			{
+				column.DefaultCellStyle.WrapMode = DataGridViewTriState.True;
+			}
+*/
+			// Adjust the row heights to fit the wrapped content
+			dataGridView.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
+
+			// Optionally: Set other DataGridView properties
+			dataGridView.AllowUserToAddRows = false;
+			dataGridView.AllowUserToDeleteRows = false;
+			dataGridView.ReadOnly = true;
 		}
 
 
@@ -621,7 +660,7 @@ namespace Expandit
 				PopulateDataGrid();
 				if (isSearching())
 				{
-					FilterDataGrid(searchBox.Text);
+					FilterDataGrid(searchBox.Text, comboBoxCategories.SelectedItem as CategoryModel);
 				}
 
 			}
@@ -646,25 +685,43 @@ namespace Expandit
 			return searchBox.Text.Length > 0;
 		}
 
+		private void comboBoxCategories_SelectedIndexChanged(object sender, EventArgs e)
+		{
+			FilterDataGrid(searchBox.Text, comboBoxCategories.SelectedItem as CategoryModel);
+		}
 		private void searchBox_TextChanged(object sender, EventArgs e)
 		{
-			FilterDataGrid(searchBox.Text);
+			FilterDataGrid(searchBox.Text, comboBoxCategories.SelectedItem as CategoryModel);
 		}
-		private void FilterDataGrid(string searchTerm)
+		private void FilterDataGrid(string searchTerm, CategoryModel selectedCategory)
 		{
 			searchTerm = searchTerm.Trim();
 
 			Func<TextShortcutModel, bool> filterPredicate = t =>
 			{
 				bool result = false;
-
-
 				if (Settings.Default.SearchByName)
 					result = result || t.Name.Contains(searchTerm, StringComparison.OrdinalIgnoreCase);
 				if (Settings.Default.SearchByKey)
 					result = result || t.Key.Contains(searchTerm, StringComparison.OrdinalIgnoreCase);
 				if (Settings.Default.SearchByValue)
 					result = result || t.Value.Contains(searchTerm, StringComparison.OrdinalIgnoreCase);
+
+				//Apply ComboBox selection
+
+				if (selectedCategory.Id == -1)
+				{
+
+				}
+				else
+				{
+					// Filter by selected category
+					if (t.CategoryId == selectedCategory.Id)
+						result = result && true;
+					else
+						result = false;
+				}
+
 
 				return result;
 			};
@@ -887,6 +944,7 @@ namespace Expandit
 
 
 		#endregion
+
 
 	}
 }

@@ -18,12 +18,20 @@ namespace Expandit.Services
 			using (var connection = new SqliteConnection(connStr))
 			{
 				connection.Open();
-				string insertQuery = "INSERT INTO TextShortcuts (Name, Key, Value) VALUES (@Name ,@Key, @Value)";
+				string insertQuery = "INSERT INTO TextShortcuts (Name, Key, Value, CategoryId) VALUES (@Name ,@Key, @Value,@CategoryId)";
 				using (var command = new SqliteCommand(insertQuery, connection))
 				{
 					command.Parameters.AddWithValue("@Name", textShortcutModel.Name);
 					command.Parameters.AddWithValue("@Key", textShortcutModel.Key);
 					command.Parameters.AddWithValue("@Value", textShortcutModel.Value);
+					if (textShortcutModel.CategoryId.HasValue)
+					{
+						command.Parameters.AddWithValue("@CategoryId", textShortcutModel.CategoryId.Value);
+					}
+					else
+					{
+						command.Parameters.AddWithValue("@CategoryId", DBNull.Value);
+					}
 					command.ExecuteNonQuery();
 				}
 			}
@@ -80,17 +88,23 @@ namespace Expandit.Services
 			using (var connection = new SqliteConnection(connStr))
 			{
 				connection.Open();
-				string updateQuery = "UPDATE TextShortcuts SET Name = @Name, Key = @Key, Value = @Value WHERE Id = @Id";
+				string updateQuery = "UPDATE TextShortcuts SET Name = @Name, Key = @Key, Value = @Value, CategoryId = @CategoryId WHERE Id = @Id";
 				using (var command = new SqliteCommand(updateQuery, connection))
 				{
 					command.Parameters.AddWithValue("@Id", modelToUpdate.Id);
 					command.Parameters.AddWithValue("@Name", modelToUpdate.Name);
 					command.Parameters.AddWithValue("@Key", modelToUpdate.Key);
 					command.Parameters.AddWithValue("@Value", modelToUpdate.Value);
+					command.Parameters.AddWithValue("@CategoryId", modelToUpdate.CategoryId);
 					command.ExecuteNonQuery();
 				}
 			}
 		}
+
+
+
+
+
 		public TextShortcutModel Get(int id)
 		{
 
@@ -128,7 +142,11 @@ namespace Expandit.Services
 			using (var connection = new SqliteConnection(connStr))
 			{
 				connection.Open();
-				string selectQuery = "SELECT Id, Name, Key, Value FROM TextShortcuts";
+				string selectQuery = @"
+            SELECT ts.Id, ts.Name, ts.Key, ts.Value, ts.CategoryId, c.Name AS CategoryName
+            FROM TextShortcuts ts
+            LEFT JOIN Category c ON ts.CategoryId = c.Id";  // Using LEFT JOIN to include shortcuts without a category
+
 				using (var command = new SqliteCommand(selectQuery, connection))
 				{
 					using (var reader = command.ExecuteReader())
@@ -140,7 +158,9 @@ namespace Expandit.Services
 								Id = reader.GetInt32(0),
 								Name = reader.GetString(1),
 								Key = reader.GetString(2),
-								Value = reader.GetString(3)
+								Value = reader.GetString(3),
+								CategoryId = reader.IsDBNull(4) ? (int?)null : reader.GetInt32(4),  // Handling null CategoryId
+								CategoryName = reader.IsDBNull(5) ? null : reader.GetString(5)  // Handling null CategoryName
 							};
 							shortcutModels.Add(model);
 						}

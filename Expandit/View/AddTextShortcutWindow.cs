@@ -21,9 +21,20 @@ namespace Expandit.View
 		private void PopulateCategoriesComboBox()
 		{
 			var categories = _categoriesService.GetAll();
-			comboBoxCategories.DataSource = categories;
+
+			// Create a new list to hold the combined items
+			var combinedCategories = new List<CategoryModel>();
+
+			// Add the "All Categories" item at the beginning
+			combinedCategories.Add(new CategoryModel { Id = -1, Name = "Uncategorized" });
+
+			// Add the rest of the categories
+			combinedCategories.AddRange(categories);
+
+			// Bind the combined list to the ComboBox
+			comboBoxCategories.DataSource = combinedCategories;
 			comboBoxCategories.DisplayMember = "Name"; // Property name to display
-			comboBoxCategories.ValueMember = "Id"; // Property name for value
+			comboBoxCategories.ValueMember = "Id"; // Property name for valueperty name for value
 		}
 
 		private void CheckButtonState()
@@ -50,7 +61,13 @@ namespace Expandit.View
 				return;
 			}
 
-			var textShortcut = new TextShortcutModel() { Key = textBoxKey.Text, Name = textBoxName.Text, Value = textBoxValue.Text };
+			var textShortcut = new TextShortcutModel()
+			{
+				Key = textBoxKey.Text,
+				Name = textBoxName.Text,
+				Value = textBoxValue.Text,
+				CategoryId = (comboBoxCategories.SelectedItem as CategoryModel).Id == -1 ? null : (comboBoxCategories.SelectedItem as CategoryModel).Id
+			};
 			_textshortcutsService.Add(textShortcut);
 			MessageBox.Show("Shortcut added successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1);
 			ClearAllTextBoxes();
@@ -103,6 +120,8 @@ namespace Expandit.View
 			textBoxKey.Text = string.Empty;
 			textBoxName.Text = string.Empty;
 			textBoxValue.Text = string.Empty;
+
+			comboBoxCategories.SelectedIndex = 0;
 		}
 
 		private void buttonCreateCategory_Click(object sender, EventArgs e)

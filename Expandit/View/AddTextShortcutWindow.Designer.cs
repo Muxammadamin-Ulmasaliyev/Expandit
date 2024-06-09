@@ -128,7 +128,7 @@
 			// labelCategory
 			// 
 			labelCategory.AutoSize = true;
-			labelCategory.Location = new Point(486, 123);
+			labelCategory.Location = new Point(475, 123);
 			labelCategory.Name = "labelCategory";
 			labelCategory.Size = new Size(110, 32);
 			labelCategory.TabIndex = 9;
@@ -138,9 +138,9 @@
 			// 
 			comboBoxCategories.DropDownStyle = ComboBoxStyle.DropDownList;
 			comboBoxCategories.FormattingEnabled = true;
-			comboBoxCategories.Location = new Point(602, 119);
+			comboBoxCategories.Location = new Point(582, 120);
 			comboBoxCategories.Name = "comboBoxCategories";
-			comboBoxCategories.Size = new Size(151, 39);
+			comboBoxCategories.Size = new Size(186, 39);
 			comboBoxCategories.TabIndex = 10;
 			// 
 			// categoryModelBindingSource
@@ -208,10 +208,8 @@
 			AutoScaleDimensions = new SizeF(13F, 31F);
 			AutoScaleMode = AutoScaleMode.Font;
 			ClientSize = new Size(918, 497);
-			Controls.Add(buttonCancel);
-			Controls.Add(buttonCreateCategory);
-			Controls.Add(comboBoxCategories);
 			Controls.Add(labelCategory);
+			Controls.Add(buttonCancel);
 			Controls.Add(label4);
 			Controls.Add(label3);
 			Controls.Add(label2);
@@ -220,9 +218,11 @@
 			Controls.Add(buttonAdd);
 			Controls.Add(textBoxKey);
 			Controls.Add(textBoxName);
+			Controls.Add(buttonCreateCategory);
 			Controls.Add(buttonCancelNewCategory);
-			Controls.Add(buttonSaveCategory);
+			Controls.Add(comboBoxCategories);
 			Controls.Add(textBoxNewCategory);
+			Controls.Add(buttonSaveCategory);
 			Font = new Font("Segoe UI", 14F);
 			FormBorderStyle = FormBorderStyle.Fixed3D;
 			Icon = (Icon)resources.GetObject("$this.Icon");
