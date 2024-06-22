@@ -743,7 +743,7 @@ namespace Expandit
 				RegistryKey registryKey = Registry.CurrentUser.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Run", true);
 
 				// Add the application to the startup list
-				registryKey.SetValue("QuickType", Application.ExecutablePath);
+				registryKey.SetValue("Expandit", Application.ExecutablePath);
 			}
 			catch (Exception ex)
 			{
@@ -759,9 +759,9 @@ namespace Expandit
 				RegistryKey registryKey = Registry.CurrentUser.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Run", true);
 
 				// Remove the application from the startup list
-				if (registryKey.GetValue("QuickType") != null)
+				if (registryKey.GetValue("Expandit") != null)
 				{
-					registryKey.DeleteValue("QuickType", false);
+					registryKey.DeleteValue("Expandit", false);
 				}
 			}
 			catch (Exception ex)

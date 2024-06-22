@@ -11,7 +11,7 @@ namespace Expandit.Services
 
 		}
 
-		private readonly string connStr = "Data Source=TextShortcuts.db;";
+		private readonly string connStr = "Data Source=Database.sqlite;";
 
 		public void Add(TextShortcutModel textShortcutModel)
 		{

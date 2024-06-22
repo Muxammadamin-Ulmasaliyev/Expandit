@@ -1,6 +1,6 @@
 ﻿using Expandit.Models;
 using Microsoft.Data.Sqlite;
-
+ 
 namespace Expandit.Services
 {
 	public class CategoryService
@@ -10,7 +10,7 @@ namespace Expandit.Services
 
 		}
 
-		private readonly string connStr = "Data Source=TextShortcuts.db;";
+		private readonly string connStr = "Data Source=Database.sqlite;";
 
 		public void Add(CategoryModel categoryModel)
 		{

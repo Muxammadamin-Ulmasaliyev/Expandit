@@ -4,8 +4,8 @@ namespace Expandit.Data
 {
 	public class DatabaseHelper
 	{
-		private const string DatabaseFileName = "TextShortcuts.db";
-		private const string ConnectionString = "Data Source=TextShortcuts.db";
+		private const string DatabaseFileName = "Database.sqlite";
+		private const string ConnectionString = "Data Source=Database.sqlite;";
 
 		public static void InitializeDatabase()
 		{
