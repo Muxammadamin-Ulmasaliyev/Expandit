@@ -1,9 +1,6 @@
-<<<<<<< HEAD
 using SQLitePCL;
 using System.Diagnostics.Metrics;
 using System.Threading;
-=======
->>>>>>> cd28171602855217b51fa7555c05c2674e89de02
 
 namespace Expandit
 {
@@ -19,7 +16,6 @@ namespace Expandit
 			// see https://aka.ms/applicationconfiguration.
 
 
-<<<<<<< HEAD
 			const string appName = "Expandit"; 
 			bool createdNew;
 
@@ -32,8 +28,6 @@ namespace Expandit
 				return;
 			}
 
-=======
->>>>>>> cd28171602855217b51fa7555c05c2674e89de02
 			Application.EnableVisualStyles();
 			Application.SetCompatibleTextRenderingDefault(false);
 
@@ -46,11 +40,7 @@ namespace Expandit
 			ApplicationConfiguration.Initialize();
 			Application.Run(new MainWindow());
 
-<<<<<<< HEAD
 			mutex.ReleaseMutex();
-=======
-
->>>>>>> cd28171602855217b51fa7555c05c2674e89de02
 
 		}
 
