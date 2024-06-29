@@ -6,16 +6,11 @@ namespace Expandit.Services
 {
 	public class TextShortcutsService
 	{
-<<<<<<< HEAD
 		private readonly string filePath;
-=======
-		private readonly string filePath = "TextShortcuts.json";
->>>>>>> cd28171602855217b51fa7555c05c2674e89de02
 		private List<TextShortcutModel> shortcuts;
 
 		public TextShortcutsService()
 		{
-<<<<<<< HEAD
 			string documentsPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
 			string appFolderPath = Path.Combine(documentsPath, "Expandit");
 			if (!Directory.Exists(appFolderPath))
@@ -25,17 +20,10 @@ namespace Expandit.Services
 
 			filePath = Path.Combine(appFolderPath, "TextShortcuts.json");
 
-=======
->>>>>>> cd28171602855217b51fa7555c05c2674e89de02
 			if (!File.Exists(filePath))
 			{
 				File.WriteAllText(filePath, "[]");
 			}
-<<<<<<< HEAD
-
-
-=======
->>>>>>> cd28171602855217b51fa7555c05c2674e89de02
 			LoadAll();
 		}
 
@@ -93,11 +81,8 @@ namespace Expandit.Services
 		{
 			var json = File.ReadAllText(filePath);
 			shortcuts = JsonConvert.DeserializeObject<List<TextShortcutModel>>(json);
-<<<<<<< HEAD
 			return new List<TextShortcutModel>(shortcuts);
-=======
 			return new (shortcuts);
->>>>>>> cd28171602855217b51fa7555c05c2674e89de02
 		}
 	}
 }
