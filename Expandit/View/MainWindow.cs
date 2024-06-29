@@ -3,7 +3,6 @@ using Microsoft.Win32;
 using Expandit.Models;
 using Expandit.Services;
 using Expandit.View;
-using SQLitePCL;
 using System.ComponentModel;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -56,7 +55,7 @@ namespace Expandit
 			PopulateDataGrid();
 
 			InitializeNotifyIcon();
-		   // AddApplicationToStartup();
+		    AddApplicationToStartup();
 
 
 

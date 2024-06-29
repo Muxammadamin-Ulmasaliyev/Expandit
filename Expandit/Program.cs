@@ -1,4 +1,3 @@
-using SQLitePCL;
 
 namespace Expandit
 {
@@ -14,7 +13,6 @@ namespace Expandit
 			// see https://aka.ms/applicationconfiguration.
 
 
-			Batteries.Init(); // Initialize the SQLite provider
 			Application.EnableVisualStyles();
 			Application.SetCompatibleTextRenderingDefault(false);
 

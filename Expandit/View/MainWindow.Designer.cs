@@ -37,7 +37,6 @@ namespace Expandit
 			buttonAdd = new Button();
 			searchBox = new TextBox();
 			textShortcutModelBindingSource = new BindingSource(components);
-			sqliteCommand1 = new Microsoft.Data.Sqlite.SqliteCommand();
 			tabControl = new TabControl();
 			tabPageMain = new TabPage();
 			currentTextLabel = new Label();
@@ -129,13 +128,6 @@ namespace Expandit
 			// textShortcutModelBindingSource
 			// 
 			textShortcutModelBindingSource.DataSource = typeof(Models.TextShortcutModel);
-			// 
-			// sqliteCommand1
-			// 
-			sqliteCommand1.CommandTimeout = 30;
-			sqliteCommand1.Connection = null;
-			sqliteCommand1.Transaction = null;
-			sqliteCommand1.UpdatedRowSource = System.Data.UpdateRowSource.None;
 			// 
 			// tabControl
 			// 
@@ -462,7 +454,6 @@ namespace Expandit
 		private Button buttonAdd;
 		private TextBox searchBox;
 		private BindingSource textShortcutModelBindingSource;
-		private Microsoft.Data.Sqlite.SqliteCommand sqliteCommand1;
 		private TabControl tabControl;
 		private TabPage tabPageMain;
 		private TabPage tabPagePreferences;
