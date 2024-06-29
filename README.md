@@ -16,7 +16,6 @@ Follow these instructions to get a copy of Expandit up and running on your local
 ### Prerequisites
 
 - [.NET 8 SDK](https://dotnet.microsoft.com/download/dotnet/8.0)
-- [SQLite](https://www.sqlite.org/download.html)
 
 ### Installation
 
