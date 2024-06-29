@@ -1,4 +1,6 @@
 using SQLitePCL;
+using System.Diagnostics.Metrics;
+using System.Threading;
 
 namespace Expandit
 {
@@ -13,7 +15,19 @@ namespace Expandit
 			// To customize application configuration such as set high DPI settings or default font,
 			// see https://aka.ms/applicationconfiguration.
 
-			Batteries.Init(); // Initialize the SQLite provider
+
+			const string appName = "Expandit"; 
+			bool createdNew;
+
+			var mutex = new Mutex(true, appName, out createdNew);
+
+			if (!createdNew)
+			{
+				// Another instance is already running
+				MessageBox.Show("Another instance of the application is already running.");
+				return;
+			}
+
 			Application.EnableVisualStyles();
 			Application.SetCompatibleTextRenderingDefault(false);
 
@@ -26,8 +40,7 @@ namespace Expandit
 			ApplicationConfiguration.Initialize();
 			Application.Run(new MainWindow());
 
-
-			
+			mutex.ReleaseMutex();
 
 		}
 

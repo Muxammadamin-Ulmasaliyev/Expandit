@@ -33,14 +33,6 @@ namespace Expandit
 			components = new System.ComponentModel.Container();
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainWindow));
 			dataGridView = new DataGridView();
-			idDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
-			nameDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
-			keyDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
-			valueDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
-			categoryIdDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
-			CategoryName = new DataGridViewTextBoxColumn();
-			buttonEditInCell = new DataGridViewButtonColumn();
-			buttonDeleteInCell = new DataGridViewButtonColumn();
 			textShortcutModelBindingSource1 = new BindingSource(components);
 			buttonAdd = new Button();
 			searchBox = new TextBox();
@@ -48,7 +40,6 @@ namespace Expandit
 			sqliteCommand1 = new Microsoft.Data.Sqlite.SqliteCommand();
 			tabControl = new TabControl();
 			tabPageMain = new TabPage();
-			comboBoxCategories = new ComboBox();
 			currentTextLabel = new Label();
 			tabPagePreferences = new TabPage();
 			tableLayoutPanel1 = new TableLayoutPanel();
@@ -66,6 +57,12 @@ namespace Expandit
 			groupBox4 = new GroupBox();
 			checkBoxIsStrictMatching = new CheckBox();
 			checkBoxStartup = new CheckBox();
+			idDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
+			nameDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
+			keyDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
+			valueDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
+			buttonEditInCell = new DataGridViewButtonColumn();
+			buttonDeleteInCell = new DataGridViewButtonColumn();
 			((System.ComponentModel.ISupportInitialize)dataGridView).BeginInit();
 			((System.ComponentModel.ISupportInitialize)textShortcutModelBindingSource1).BeginInit();
 			((System.ComponentModel.ISupportInitialize)textShortcutModelBindingSource).BeginInit();
@@ -89,7 +86,7 @@ namespace Expandit
 			dataGridView.BackgroundColor = SystemColors.Control;
 			dataGridView.BorderStyle = BorderStyle.None;
 			dataGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-			dataGridView.Columns.AddRange(new DataGridViewColumn[] { idDataGridViewTextBoxColumn, nameDataGridViewTextBoxColumn, keyDataGridViewTextBoxColumn, valueDataGridViewTextBoxColumn, categoryIdDataGridViewTextBoxColumn, CategoryName, buttonEditInCell, buttonDeleteInCell });
+			dataGridView.Columns.AddRange(new DataGridViewColumn[] { idDataGridViewTextBoxColumn, nameDataGridViewTextBoxColumn, keyDataGridViewTextBoxColumn, valueDataGridViewTextBoxColumn, buttonEditInCell, buttonDeleteInCell });
 			dataGridView.DataSource = textShortcutModelBindingSource1;
 			dataGridView.Location = new Point(8, 119);
 			dataGridView.MultiSelect = false;
@@ -100,84 +97,6 @@ namespace Expandit
 			dataGridView.Size = new Size(952, 478);
 			dataGridView.TabIndex = 4;
 			dataGridView.CellContentClick += dataGridView_CellContentClick;
-			// 
-			// idDataGridViewTextBoxColumn
-			// 
-			idDataGridViewTextBoxColumn.DataPropertyName = "Id";
-			idDataGridViewTextBoxColumn.HeaderText = "Id";
-			idDataGridViewTextBoxColumn.MinimumWidth = 6;
-			idDataGridViewTextBoxColumn.Name = "idDataGridViewTextBoxColumn";
-			idDataGridViewTextBoxColumn.ReadOnly = true;
-			idDataGridViewTextBoxColumn.Visible = false;
-			idDataGridViewTextBoxColumn.Width = 125;
-			// 
-			// nameDataGridViewTextBoxColumn
-			// 
-			nameDataGridViewTextBoxColumn.DataPropertyName = "Name";
-			nameDataGridViewTextBoxColumn.HeaderText = "Name";
-			nameDataGridViewTextBoxColumn.MinimumWidth = 140;
-			nameDataGridViewTextBoxColumn.Name = "nameDataGridViewTextBoxColumn";
-			nameDataGridViewTextBoxColumn.ReadOnly = true;
-			nameDataGridViewTextBoxColumn.Width = 140;
-			// 
-			// keyDataGridViewTextBoxColumn
-			// 
-			keyDataGridViewTextBoxColumn.DataPropertyName = "Key";
-			keyDataGridViewTextBoxColumn.HeaderText = "Key";
-			keyDataGridViewTextBoxColumn.MinimumWidth = 125;
-			keyDataGridViewTextBoxColumn.Name = "keyDataGridViewTextBoxColumn";
-			keyDataGridViewTextBoxColumn.ReadOnly = true;
-			keyDataGridViewTextBoxColumn.Width = 125;
-			// 
-			// valueDataGridViewTextBoxColumn
-			// 
-			valueDataGridViewTextBoxColumn.DataPropertyName = "Value";
-			valueDataGridViewTextBoxColumn.HeaderText = "Value";
-			valueDataGridViewTextBoxColumn.MinimumWidth = 255;
-			valueDataGridViewTextBoxColumn.Name = "valueDataGridViewTextBoxColumn";
-			valueDataGridViewTextBoxColumn.ReadOnly = true;
-			valueDataGridViewTextBoxColumn.Width = 255;
-			// 
-			// categoryIdDataGridViewTextBoxColumn
-			// 
-			categoryIdDataGridViewTextBoxColumn.DataPropertyName = "CategoryId";
-			categoryIdDataGridViewTextBoxColumn.HeaderText = "CategoryId";
-			categoryIdDataGridViewTextBoxColumn.MinimumWidth = 6;
-			categoryIdDataGridViewTextBoxColumn.Name = "categoryIdDataGridViewTextBoxColumn";
-			categoryIdDataGridViewTextBoxColumn.ReadOnly = true;
-			categoryIdDataGridViewTextBoxColumn.Visible = false;
-			categoryIdDataGridViewTextBoxColumn.Width = 125;
-			// 
-			// CategoryName
-			// 
-			CategoryName.DataPropertyName = "CategoryName";
-			CategoryName.HeaderText = "Category";
-			CategoryName.MinimumWidth = 6;
-			CategoryName.Name = "CategoryName";
-			CategoryName.ReadOnly = true;
-			CategoryName.Width = 125;
-			// 
-			// buttonEditInCell
-			// 
-			buttonEditInCell.HeaderText = "";
-			buttonEditInCell.MinimumWidth = 6;
-			buttonEditInCell.Name = "buttonEditInCell";
-			buttonEditInCell.ReadOnly = true;
-			buttonEditInCell.Resizable = DataGridViewTriState.True;
-			buttonEditInCell.SortMode = DataGridViewColumnSortMode.Automatic;
-			buttonEditInCell.Text = "Edit";
-			buttonEditInCell.UseColumnTextForButtonValue = true;
-			buttonEditInCell.Width = 125;
-			// 
-			// buttonDeleteInCell
-			// 
-			buttonDeleteInCell.HeaderText = "";
-			buttonDeleteInCell.MinimumWidth = 6;
-			buttonDeleteInCell.Name = "buttonDeleteInCell";
-			buttonDeleteInCell.ReadOnly = true;
-			buttonDeleteInCell.Text = "Delete";
-			buttonDeleteInCell.UseColumnTextForButtonValue = true;
-			buttonDeleteInCell.Width = 125;
 			// 
 			// textShortcutModelBindingSource1
 			// 
@@ -233,7 +152,6 @@ namespace Expandit
 			// 
 			// tabPageMain
 			// 
-			tabPageMain.Controls.Add(comboBoxCategories);
 			tabPageMain.Controls.Add(dataGridView);
 			tabPageMain.Controls.Add(currentTextLabel);
 			tabPageMain.Controls.Add(buttonAdd);
@@ -246,16 +164,6 @@ namespace Expandit
 			tabPageMain.Text = "Main";
 			tabPageMain.UseVisualStyleBackColor = true;
 			// 
-			// comboBoxCategories
-			// 
-			comboBoxCategories.DropDownStyle = ComboBoxStyle.DropDownList;
-			comboBoxCategories.FormattingEnabled = true;
-			comboBoxCategories.Location = new Point(424, 34);
-			comboBoxCategories.Name = "comboBoxCategories";
-			comboBoxCategories.Size = new Size(192, 39);
-			comboBoxCategories.TabIndex = 5;
-			comboBoxCategories.SelectedIndexChanged += comboBoxCategories_SelectedIndexChanged;
-			// 
 			// currentTextLabel
 			// 
 			currentTextLabel.AutoSize = true;
@@ -267,10 +175,10 @@ namespace Expandit
 			// tabPagePreferences
 			// 
 			tabPagePreferences.Controls.Add(tableLayoutPanel1);
-			tabPagePreferences.Location = new Point(4, 40);
+			tabPagePreferences.Location = new Point(4, 29);
 			tabPagePreferences.Name = "tabPagePreferences";
 			tabPagePreferences.Padding = new Padding(3);
-			tabPagePreferences.Size = new Size(974, 605);
+			tabPagePreferences.Size = new Size(974, 616);
 			tabPagePreferences.TabIndex = 1;
 			tabPagePreferences.Text = "Preferences";
 			tabPagePreferences.UseVisualStyleBackColor = true;
@@ -289,7 +197,7 @@ namespace Expandit
 			tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 33F));
 			tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 34F));
 			tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 33F));
-			tableLayoutPanel1.Size = new Size(968, 599);
+			tableLayoutPanel1.Size = new Size(968, 610);
 			tableLayoutPanel1.TabIndex = 0;
 			// 
 			// groupBox2
@@ -298,9 +206,9 @@ namespace Expandit
 			groupBox2.Controls.Add(checkBoxSearchByKey);
 			groupBox2.Controls.Add(checkBoxSearchByName);
 			groupBox2.Dock = DockStyle.Fill;
-			groupBox2.Location = new Point(3, 200);
+			groupBox2.Location = new Point(3, 204);
 			groupBox2.Name = "groupBox2";
-			groupBox2.Size = new Size(962, 197);
+			groupBox2.Size = new Size(962, 201);
 			groupBox2.TabIndex = 1;
 			groupBox2.TabStop = false;
 			groupBox2.Text = "Search Bar ;";
@@ -342,9 +250,9 @@ namespace Expandit
 			// 
 			groupBox3.Controls.Add(buttonSaveSettings);
 			groupBox3.Dock = DockStyle.Fill;
-			groupBox3.Location = new Point(3, 403);
+			groupBox3.Location = new Point(3, 411);
 			groupBox3.Name = "groupBox3";
-			groupBox3.Size = new Size(962, 193);
+			groupBox3.Size = new Size(962, 196);
 			groupBox3.TabIndex = 2;
 			groupBox3.TabStop = false;
 			groupBox3.Text = "Predefined shortcuts";
@@ -372,7 +280,7 @@ namespace Expandit
 			tableLayoutPanel2.Name = "tableLayoutPanel2";
 			tableLayoutPanel2.RowCount = 1;
 			tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
-			tableLayoutPanel2.Size = new Size(962, 191);
+			tableLayoutPanel2.Size = new Size(962, 195);
 			tableLayoutPanel2.TabIndex = 3;
 			// 
 			// groupBox1
@@ -383,7 +291,7 @@ namespace Expandit
 			groupBox1.Dock = DockStyle.Fill;
 			groupBox1.Location = new Point(3, 3);
 			groupBox1.Name = "groupBox1";
-			groupBox1.Size = new Size(475, 185);
+			groupBox1.Size = new Size(475, 189);
 			groupBox1.TabIndex = 1;
 			groupBox1.TabStop = false;
 			groupBox1.Text = "Trigger Key";
@@ -428,7 +336,7 @@ namespace Expandit
 			groupBox4.Dock = DockStyle.Fill;
 			groupBox4.Location = new Point(484, 3);
 			groupBox4.Name = "groupBox4";
-			groupBox4.Size = new Size(475, 185);
+			groupBox4.Size = new Size(475, 189);
 			groupBox4.TabIndex = 2;
 			groupBox4.TabStop = false;
 			groupBox4.Text = "Other settings";
@@ -454,6 +362,65 @@ namespace Expandit
 			checkBoxStartup.Text = "Run on startup";
 			checkBoxStartup.UseVisualStyleBackColor = true;
 			checkBoxStartup.CheckedChanged += checkBox_CheckedChanged;
+			// 
+			// idDataGridViewTextBoxColumn
+			// 
+			idDataGridViewTextBoxColumn.DataPropertyName = "Id";
+			idDataGridViewTextBoxColumn.HeaderText = "Id";
+			idDataGridViewTextBoxColumn.MinimumWidth = 6;
+			idDataGridViewTextBoxColumn.Name = "idDataGridViewTextBoxColumn";
+			idDataGridViewTextBoxColumn.ReadOnly = true;
+			idDataGridViewTextBoxColumn.Visible = false;
+			idDataGridViewTextBoxColumn.Width = 125;
+			// 
+			// nameDataGridViewTextBoxColumn
+			// 
+			nameDataGridViewTextBoxColumn.DataPropertyName = "Name";
+			nameDataGridViewTextBoxColumn.HeaderText = "Name";
+			nameDataGridViewTextBoxColumn.MinimumWidth = 140;
+			nameDataGridViewTextBoxColumn.Name = "nameDataGridViewTextBoxColumn";
+			nameDataGridViewTextBoxColumn.ReadOnly = true;
+			nameDataGridViewTextBoxColumn.Width = 140;
+			// 
+			// keyDataGridViewTextBoxColumn
+			// 
+			keyDataGridViewTextBoxColumn.DataPropertyName = "Key";
+			keyDataGridViewTextBoxColumn.HeaderText = "Key";
+			keyDataGridViewTextBoxColumn.MinimumWidth = 140;
+			keyDataGridViewTextBoxColumn.Name = "keyDataGridViewTextBoxColumn";
+			keyDataGridViewTextBoxColumn.ReadOnly = true;
+			keyDataGridViewTextBoxColumn.Width = 140;
+			// 
+			// valueDataGridViewTextBoxColumn
+			// 
+			valueDataGridViewTextBoxColumn.DataPropertyName = "Value";
+			valueDataGridViewTextBoxColumn.HeaderText = "Value";
+			valueDataGridViewTextBoxColumn.MinimumWidth = 350;
+			valueDataGridViewTextBoxColumn.Name = "valueDataGridViewTextBoxColumn";
+			valueDataGridViewTextBoxColumn.ReadOnly = true;
+			valueDataGridViewTextBoxColumn.Width = 350;
+			// 
+			// buttonEditInCell
+			// 
+			buttonEditInCell.HeaderText = "";
+			buttonEditInCell.MinimumWidth = 6;
+			buttonEditInCell.Name = "buttonEditInCell";
+			buttonEditInCell.ReadOnly = true;
+			buttonEditInCell.Resizable = DataGridViewTriState.True;
+			buttonEditInCell.SortMode = DataGridViewColumnSortMode.Automatic;
+			buttonEditInCell.Text = "Edit";
+			buttonEditInCell.UseColumnTextForButtonValue = true;
+			buttonEditInCell.Width = 125;
+			// 
+			// buttonDeleteInCell
+			// 
+			buttonDeleteInCell.HeaderText = "";
+			buttonDeleteInCell.MinimumWidth = 6;
+			buttonDeleteInCell.Name = "buttonDeleteInCell";
+			buttonDeleteInCell.ReadOnly = true;
+			buttonDeleteInCell.Text = "Delete";
+			buttonDeleteInCell.UseColumnTextForButtonValue = true;
+			buttonDeleteInCell.Width = 125;
 			// 
 			// MainWindow
 			// 
@@ -517,13 +484,10 @@ namespace Expandit
 		private CheckBox checkBoxIsStrictMatching;
 		private DataGridView dataGridView;
 		private BindingSource textShortcutModelBindingSource1;
-		private ComboBox comboBoxCategories;
 		private DataGridViewTextBoxColumn idDataGridViewTextBoxColumn;
 		private DataGridViewTextBoxColumn nameDataGridViewTextBoxColumn;
 		private DataGridViewTextBoxColumn keyDataGridViewTextBoxColumn;
 		private DataGridViewTextBoxColumn valueDataGridViewTextBoxColumn;
-		private DataGridViewTextBoxColumn categoryIdDataGridViewTextBoxColumn;
-		private DataGridViewTextBoxColumn CategoryName;
 		private DataGridViewButtonColumn buttonEditInCell;
 		private DataGridViewButtonColumn buttonDeleteInCell;
 	}
