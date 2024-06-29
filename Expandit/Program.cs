@@ -13,6 +13,7 @@ namespace Expandit
 			// To customize application configuration such as set high DPI settings or default font,
 			// see https://aka.ms/applicationconfiguration.
 
+
 			Batteries.Init(); // Initialize the SQLite provider
 			Application.EnableVisualStyles();
 			Application.SetCompatibleTextRenderingDefault(false);
@@ -27,7 +28,6 @@ namespace Expandit
 			Application.Run(new MainWindow());
 
 
-			
 
 		}
 

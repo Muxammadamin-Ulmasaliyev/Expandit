@@ -1,5 +1,4 @@
-﻿using Expandit.Data;
-using Expandit.Models;
+﻿using Expandit.Models;
 using Expandit.Services;
 
 namespace Expandit.View
@@ -7,35 +6,15 @@ namespace Expandit.View
 	public partial class AddTextShortcutWindow : Form
 	{
 		private TextShortcutsService _textshortcutsService;
-		private CategoryService _categoriesService;
 		public AddTextShortcutWindow()
 		{
 			_textshortcutsService = new TextShortcutsService();
-			_categoriesService = new CategoryService();
 			InitializeComponent();
 
-			PopulateCategoriesComboBox();
 			CheckButtonState();
 		}
 
-		private void PopulateCategoriesComboBox()
-		{
-			var categories = _categoriesService.GetAll();
-
-			// Create a new list to hold the combined items
-			var combinedCategories = new List<CategoryModel>();
-
-			// Add the "All Categories" item at the beginning
-			combinedCategories.Add(new CategoryModel { Id = -1, Name = "Uncategorized" });
-
-			// Add the rest of the categories
-			combinedCategories.AddRange(categories);
-
-			// Bind the combined list to the ComboBox
-			comboBoxCategories.DataSource = combinedCategories;
-			comboBoxCategories.DisplayMember = "Name"; // Property name to display
-			comboBoxCategories.ValueMember = "Id"; // Property name for valueperty name for value
-		}
+		
 
 		private void CheckButtonState()
 		{
@@ -66,7 +45,6 @@ namespace Expandit.View
 				Key = textBoxKey.Text,
 				Name = textBoxName.Text,
 				Value = textBoxValue.Text,
-				CategoryId = (comboBoxCategories.SelectedItem as CategoryModel).Id == -1 ? null : (comboBoxCategories.SelectedItem as CategoryModel).Id
 			};
 			_textshortcutsService.Add(textShortcut);
 			MessageBox.Show("Shortcut added successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1);
@@ -121,76 +99,11 @@ namespace Expandit.View
 			textBoxName.Text = string.Empty;
 			textBoxValue.Text = string.Empty;
 
-			comboBoxCategories.SelectedIndex = 0;
 		}
 
-		private void buttonCreateCategory_Click(object sender, EventArgs e)
-		{
-			labelCategory.Visible = false;
-			comboBoxCategories.Visible = false;
-			buttonCreateCategory.Visible = false;
+		
 
-			buttonCancelNewCategory.Visible = true;
-			textBoxNewCategory.Visible = true;
-			buttonSaveCategory.Visible = true;
-
-		}
-
-		private void buttonSaveCategory_Click(object sender, EventArgs e)
-		{
-			if (_categoriesService.IsNameExists(textBoxNewCategory.Text))
-			{
-				MessageBox.Show("Category name should be unique!", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button1);
-				return;
-			}
-
-			_categoriesService.Add(new CategoryModel() { Name = textBoxNewCategory.Text });
-			MessageBox.Show("Category added successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1);
-
-			PopulateCategoriesComboBox();
-
-
-			textBoxNewCategory.Text = string.Empty;
-
-
-			labelCategory.Visible = true;
-			comboBoxCategories.Visible = true;
-			buttonCreateCategory.Visible = true;
-
-
-			buttonCancelNewCategory.Visible = false;
-			textBoxNewCategory.Visible = false;
-			buttonSaveCategory.Visible = false;
-		}
-
-		private bool IsCategoryNameValid()
-		{
-			if (string.IsNullOrWhiteSpace(textBoxNewCategory.Text) || textBoxNewCategory.Text == string.Empty)
-			{
-				return false;
-			}
-
-			return true;
-		}
-
-		private void textBoxNewCategory_TextChanged(object sender, EventArgs e)
-		{
-			buttonSaveCategory.Enabled = IsCategoryNameValid();
-		}
-
-		private void buttonCancelNewCategory_Click(object sender, EventArgs e)
-		{
-			textBoxNewCategory.Text = string.Empty;
-
-			labelCategory.Visible = true;
-			comboBoxCategories.Visible = true;
-			buttonCreateCategory.Visible = true;
-
-
-			buttonCancelNewCategory.Visible = false;
-			textBoxNewCategory.Visible = false;
-			buttonSaveCategory.Visible = false;
-		}
+		
 
 		private void buttonCancel_Click(object sender, EventArgs e)
 		{

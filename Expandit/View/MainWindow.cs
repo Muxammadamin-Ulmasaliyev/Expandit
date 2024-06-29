@@ -1,6 +1,5 @@
 using Helper;
 using Microsoft.Win32;
-using Expandit.Data;
 using Expandit.Models;
 using Expandit.Services;
 using Expandit.View;
@@ -37,7 +36,6 @@ namespace Expandit
 
 		private List<TextShortcutModel> textShortcuts;
 		private TextShortcutsService _textShortcutService;
-		private CategoryService _categoriesService;
 
 
 		private NotifyIcon notifyIcon;
@@ -48,21 +46,17 @@ namespace Expandit
 		{
 			InitializeComponent();
 
-			Batteries.Init();
-			DatabaseHelper.InitializeDatabase();
 			kh.KeyDown += Kh_KeyDown;
 			kh.KeyUp += Kh_KeyUp;
 
-			_categoriesService = new CategoryService();
 
 			_textShortcutService = new TextShortcutsService();
 
 			UpdateInMemoryTextShortcuts();
 			PopulateDataGrid();
-			PopulateCategoriesComboBox();
 
 			InitializeNotifyIcon();
-			AddApplicationToStartup();
+		   // AddApplicationToStartup();
 
 
 
@@ -71,8 +65,7 @@ namespace Expandit
 		}
 		private void MainWindow_Load(object sender, EventArgs e)
 		{
-			Batteries.Init();
-			DatabaseHelper.InitializeDatabase();
+
 		}
 
 		// *****************************************************************************************************//
@@ -572,6 +565,7 @@ namespace Expandit
 
 
 		#region DB & Memory operations
+
 		private List<TextShortcutModel> GetAllTextShortcutsFromDb()
 		{
 			return _textShortcutService.GetAll();
@@ -592,37 +586,12 @@ namespace Expandit
 			MakeDataGridWrappable();
 
 		}
-		private void PopulateCategoriesComboBox()
-		{
-			var categories = _categoriesService.GetAll();
-
-			// Create a new list to hold the combined items
-			var combinedCategories = new List<CategoryModel>();
-
-			// Add the "All Categories" item at the beginning
-			combinedCategories.Add(new CategoryModel { Id = -1, Name = "All Categories" });
-
-			// Add the rest of the categories
-			combinedCategories.AddRange(categories);
-
-			// Bind the combined list to the ComboBox
-			comboBoxCategories.DataSource = combinedCategories;
-			comboBoxCategories.DisplayMember = "Name"; // Property name to display
-			comboBoxCategories.ValueMember = "Id"; // Property name for value
-
-
-		}
+		
 		private void MakeDataGridWrappable()
 		{
-			/*foreach (DataGridViewColumn column in dataGridView.Columns)
-			{
-				column.DefaultCellStyle.WrapMode = DataGridViewTriState.True;
-			}
-*/
-			// Adjust the row heights to fit the wrapped content
+			
 			dataGridView.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
 
-			// Optionally: Set other DataGridView properties
 			dataGridView.AllowUserToAddRows = false;
 			dataGridView.AllowUserToDeleteRows = false;
 			dataGridView.ReadOnly = true;
@@ -649,7 +618,7 @@ namespace Expandit
 			this.Opacity = 1.0;
 			PopulateDataGrid();
 		}
-
+		
 		private void buttonDeleteTextShortcut_Click(TextShortcutModel textShortcutToDelete)
 		{
 			var result = MessageBox.Show($"Are you sure to delete textshortcut : {textShortcutToDelete.Name} ?", "Warning", MessageBoxButtons.YesNo, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2);
@@ -658,9 +627,10 @@ namespace Expandit
 				_textShortcutService.Remove(textShortcutToDelete.Id);
 
 				PopulateDataGrid();
+
 				if (isSearching())
 				{
-					FilterDataGrid(searchBox.Text, comboBoxCategories.SelectedItem as CategoryModel);
+					FilterDataGrid(searchBox.Text);
 				}
 
 			}
@@ -687,13 +657,13 @@ namespace Expandit
 
 		private void comboBoxCategories_SelectedIndexChanged(object sender, EventArgs e)
 		{
-			FilterDataGrid(searchBox.Text, comboBoxCategories.SelectedItem as CategoryModel);
+			FilterDataGrid(searchBox.Text);
 		}
 		private void searchBox_TextChanged(object sender, EventArgs e)
 		{
-			FilterDataGrid(searchBox.Text, comboBoxCategories.SelectedItem as CategoryModel);
+			FilterDataGrid(searchBox.Text);
 		}
-		private void FilterDataGrid(string searchTerm, CategoryModel selectedCategory)
+		private void FilterDataGrid(string searchTerm)
 		{
 			searchTerm = searchTerm.Trim();
 
@@ -709,18 +679,6 @@ namespace Expandit
 
 				//Apply ComboBox selection
 
-				if (selectedCategory.Id == -1)
-				{
-
-				}
-				else
-				{
-					// Filter by selected category
-					if (t.CategoryId == selectedCategory.Id)
-						result = result && true;
-					else
-						result = false;
-				}
 
 
 				return result;
@@ -737,17 +695,19 @@ namespace Expandit
 		#region Adding & Removing to Startup Apps List
 		public void AddApplicationToStartup()
 		{
+			
+
 			try
 			{
-				// Registry key where the application should be added
-				RegistryKey registryKey = Registry.CurrentUser.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Run", true);
+				RegistryKey registryKey = Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
+				registryKey.SetValue("Expandit", Application.ExecutablePath.ToString());
 
-				// Add the application to the startup list
-				registryKey.SetValue("Expandit", Application.ExecutablePath);
 			}
 			catch (Exception ex)
 			{
+
 				MessageBox.Show("An error occurred while adding the application to startup: " + ex.Message);
+
 			}
 		}
 
