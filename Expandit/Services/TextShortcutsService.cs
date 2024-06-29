@@ -41,10 +41,15 @@ namespace Expandit.Services
 
 		public void Add(TextShortcutModel textShortcutModel)
 		{
+			textShortcutModel.Id = GenerateUniqueID();
 			shortcuts.Add(textShortcutModel);
 			SaveAll();
 		}
-
+		private int GenerateUniqueID()
+		{
+			int newId = shortcuts.Count > 0 ? shortcuts.Max(s => s.Id) + 1 : 1;
+			return newId;
+		}
 		public bool IsKeyExists(string key)
 		{
 			return shortcuts.Exists(x => x.Key == key);
@@ -57,7 +62,7 @@ namespace Expandit.Services
 
 		public void Remove(int id)
 		{
-			var shortcut = shortcuts.Find(x => x.Id == id);
+			var shortcut = shortcuts.Find(sh => sh.Id == id);
 			shortcuts.Remove(shortcut);
 			SaveAll();
 		}

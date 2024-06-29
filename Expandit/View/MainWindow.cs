@@ -8,6 +8,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using WindowsInput.Native;
 using WindowsInput;
+using System.Windows.Forms;
 
 namespace Expandit
 {
@@ -30,7 +31,7 @@ namespace Expandit
 		#endregion
 
 		private bool ctrl, shift, alt;
-
+		private bool isApplicationDisabled = false;
 		private string currentText = string.Empty;
 
 		private List<TextShortcutModel> textShortcuts;
@@ -55,7 +56,7 @@ namespace Expandit
 			PopulateDataGrid();
 
 			InitializeNotifyIcon();
-		    AddApplicationToStartup();
+			AddApplicationToStartup();
 
 
 			InitializeForegroundWindowChecker();
@@ -137,21 +138,35 @@ namespace Expandit
 			notifyIcon.Visible = true;
 			notifyIcon.Text = "Expandit";
 
-			var  btnOpenImagePath = Path.Combine(path, "btnOpen.png");
-			var  btnExitImagePath = Path.Combine(path, "btnExit.png");
+			var btnOpenImagePath = Path.Combine(path, "btnOpen.png");
+			var btnExitImagePath = Path.Combine(path, "btnExit.png");
 			Image openImage = Image.FromFile(btnOpenImagePath);
 			Image exitImage = Image.FromFile(btnExitImagePath);
 
 
 			ToolStripMenuItem menuItemOpen = new ToolStripMenuItem("Open", openImage, onClick: (s, e) => ShowMainWindow());
 			ToolStripMenuItem menuItemExit = new ToolStripMenuItem("Exit", exitImage, onClick: (s, e) => ExitApplication());
+			ToolStripSeparator toolStripSeparator = new ToolStripSeparator();
+			ToolStripMenuItem menuItemEnable = new ToolStripMenuItem("Enable", null, onClick: (s, e) => EnableApplication());
+			ToolStripMenuItem menuItemDisable = new ToolStripMenuItem("Disable", null, onClick: (s, e) => DisableApplication());
+			
 			// Initialize ContextMenu
-
 			contextMenuStrip = new ContextMenuStrip();
+
+			contextMenuStrip.Items.Add(menuItemEnable);
+			contextMenuStrip.Items.Add(menuItemDisable);
+			contextMenuStrip.Items.Add(toolStripSeparator);
 			contextMenuStrip.Items.Add(menuItemOpen);
 			contextMenuStrip.Items.Add(menuItemExit);
-			notifyIcon.ContextMenuStrip = contextMenuStrip;
 
+			CheckStateOfContextMenuStripButtons();
+
+
+			contextMenuStrip.Font = new Font("Segoe", 10, FontStyle.Regular);
+
+
+
+			notifyIcon.ContextMenuStrip = contextMenuStrip;
 			// Handle events
 			this.FormClosing += MainForm_FormClosing;
 			notifyIcon.DoubleClick += (s, e) => ShowMainWindow();
@@ -159,7 +174,34 @@ namespace Expandit
 
 
 		}
+		private void CheckStateOfContextMenuStripButtons()
+		{
+			if (isApplicationDisabled)
+			{
+				// menuItemEnable
+				contextMenuStrip.Items[0].Visible = true;
+				// menuItemDisable
+				contextMenuStrip.Items[1].Visible = false;
+			}
+			else
+			{
+				// menuItemEnable
+				contextMenuStrip.Items[0].Visible = false;
+				// menuItemDisable
+				contextMenuStrip.Items[1].Visible = true;
+			}
+		}
+		private void EnableApplication()
+		{
+			isApplicationDisabled = false;
+			CheckStateOfContextMenuStripButtons();
+		}
+		private void DisableApplication()
+		{
+			isApplicationDisabled = true;
+			CheckStateOfContextMenuStripButtons();
 
+		}
 
 		private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
 		{
@@ -245,8 +287,17 @@ namespace Expandit
 			if (e.KeyCode == Keys.LShiftKey || e.KeyCode == Keys.RShiftKey) shift = false;
 			if (e.KeyCode == Keys.Alt) alt = false;
 		}
+
 		private void Kh_KeyDown(object sender, System.Windows.Forms.KeyEventArgs e)
 		{
+			if (isApplicationDisabled)
+			{
+				return;
+
+			}
+
+
+
 			if (e.KeyCode == Keys.LControlKey || e.KeyCode == Keys.RControlKey) ctrl = true;
 			if (e.KeyCode == Keys.LShiftKey || e.KeyCode == Keys.RShiftKey) shift = true;
 			if (e.KeyCode == Keys.Alt) alt = true;
@@ -309,8 +360,6 @@ namespace Expandit
 
 			for (int i = 0; i < shortcutModel.Key.Length; i++)
 			{
-				//SendKey(VK_BACKSPACE);          // not works apps which has spell checkers , fast
-				//SendKeys.Send("{BACKSPACE}");				// works everywhere, slow
 				sim.Keyboard.KeyPress(VirtualKeyCode.BACK);   // not works vs code & notepad , fast
 
 			}
@@ -318,9 +367,7 @@ namespace Expandit
 
 			Clipboard.SetText(shortcutModel.Value);
 
-			//ClipboardHelpers.PasteText();
 			SendKeys.Send("^(v)");
-			//sim.Keyboard.ModifiedKeyStroke(VirtualKeyCode.CONTROL, VirtualKeyCode.VK_V);
 
 
 		}
@@ -600,10 +647,10 @@ namespace Expandit
 			MakeDataGridWrappable();
 
 		}
-		
+
 		private void MakeDataGridWrappable()
 		{
-			
+
 			dataGridView.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
 
 			dataGridView.AllowUserToAddRows = false;
@@ -632,7 +679,7 @@ namespace Expandit
 			this.Opacity = 1.0;
 			PopulateDataGrid();
 		}
-		
+
 		private void buttonDeleteTextShortcut_Click(TextShortcutModel textShortcutToDelete)
 		{
 			var result = MessageBox.Show($"Are you sure to delete textshortcut : {textShortcutToDelete.Name} ?", "Warning", MessageBoxButtons.YesNo, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2);
@@ -707,7 +754,7 @@ namespace Expandit
 		#region Adding & Removing to Startup Apps List
 		public void AddApplicationToStartup()
 		{
-			
+
 
 			try
 			{

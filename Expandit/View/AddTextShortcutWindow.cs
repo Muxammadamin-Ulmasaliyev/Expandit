@@ -42,9 +42,9 @@ namespace Expandit.View
 
 			var textShortcut = new TextShortcutModel()
 			{
-				Key = textBoxKey.Text,
-				Name = textBoxName.Text,
-				Value = textBoxValue.Text,
+				Key = textBoxKey.Text.Trim(),
+				Name = textBoxName.Text.Trim(),
+				Value = textBoxValue.Text.Trim(),
 			};
 			_textshortcutsService.Add(textShortcut);
 			MessageBox.Show("Shortcut added successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1);

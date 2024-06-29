@@ -1,4 +1,3 @@
-using SQLitePCL;
 using System.Diagnostics.Metrics;
 using System.Threading;
 

@@ -61,9 +61,9 @@ namespace Expandit.View
 			_textshortcutsService.Update(new TextShortcutModel()
 			{
 				Id = _textShortcutModel.Id,
-				Name = textBoxName.Text,
-				Key = textBoxKey.Text,
-				Value = textBoxValue.Text,
+				Name = textBoxName.Text.Trim(),
+				Key = textBoxKey.Text.Trim(),
+				Value = textBoxValue.Text.Trim(),
 			});
 			MessageBox.Show("Shortcut updated successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1);
 			this.Close();
