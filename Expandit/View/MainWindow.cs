@@ -3,7 +3,6 @@ using Microsoft.Win32;
 using Expandit.Models;
 using Expandit.Services;
 using Expandit.View;
-using SQLitePCL;
 using System.ComponentModel;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -57,6 +56,10 @@ namespace Expandit
 
 			InitializeNotifyIcon();
 		    AddApplicationToStartup();
+<<<<<<< HEAD
+=======
+
+>>>>>>> cd28171602855217b51fa7555c05c2674e89de02
 
 
 			InitializeForegroundWindowChecker();
@@ -66,10 +69,14 @@ namespace Expandit
 		}
 		private void MainWindow_Load(object sender, EventArgs e)
 		{
+<<<<<<< HEAD
 			// NOT SHOWS THE WINDOW IN STARTUP
 
 			this.Hide();
 			this.ShowInTaskbar = false;
+=======
+
+>>>>>>> cd28171602855217b51fa7555c05c2674e89de02
 		}
 
 		// *****************************************************************************************************//
@@ -642,6 +649,7 @@ namespace Expandit
 				_textShortcutService.Remove(textShortcutToDelete.Id);
 
 				PopulateDataGrid();
+
 				if (isSearching())
 				{
 					FilterDataGrid(searchBox.Text);
@@ -691,6 +699,11 @@ namespace Expandit
 				if (Settings.Default.SearchByValue)
 					result = result || t.Value.Contains(searchTerm, StringComparison.OrdinalIgnoreCase);
 
+<<<<<<< HEAD
+=======
+				//Apply ComboBox selection
+
+>>>>>>> cd28171602855217b51fa7555c05c2674e89de02
 
 
 				return result;

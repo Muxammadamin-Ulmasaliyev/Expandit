@@ -14,7 +14,11 @@ namespace Expandit.View
 			CheckButtonState();
 		}
 
+<<<<<<< HEAD
 	
+=======
+		
+>>>>>>> cd28171602855217b51fa7555c05c2674e89de02
 
 		private void CheckButtonState()
 		{

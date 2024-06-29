@@ -29,7 +29,10 @@
 		private void InitializeComponent()
 		{
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(EditTextShortcutWindow));
+<<<<<<< HEAD
 			buttonCancel = new Button();
+=======
+>>>>>>> cd28171602855217b51fa7555c05c2674e89de02
 			label4 = new Label();
 			label3 = new Label();
 			label2 = new Label();
@@ -38,6 +41,7 @@
 			buttonSave = new Button();
 			textBoxKey = new TextBox();
 			textBoxName = new TextBox();
+<<<<<<< HEAD
 			SuspendLayout();
 			// 
 			// buttonCancel
@@ -50,6 +54,11 @@
 			buttonCancel.UseVisualStyleBackColor = true;
 			buttonCancel.Click += buttonCancel_Click;
 			// 
+=======
+			buttonCancel = new Button();
+			SuspendLayout();
+			// 
+>>>>>>> cd28171602855217b51fa7555c05c2674e89de02
 			// label4
 			// 
 			label4.AutoSize = true;
@@ -123,6 +132,19 @@
 			textBoxName.Size = new Size(759, 39);
 			textBoxName.TabIndex = 16;
 			// 
+<<<<<<< HEAD
+=======
+			// buttonCancel
+			// 
+			buttonCancel.Location = new Point(756, 428);
+			buttonCancel.Name = "buttonCancel";
+			buttonCancel.Size = new Size(141, 52);
+			buttonCancel.TabIndex = 30;
+			buttonCancel.Text = "Cancel";
+			buttonCancel.UseVisualStyleBackColor = true;
+			buttonCancel.Click += buttonCancel_Click;
+			// 
+>>>>>>> cd28171602855217b51fa7555c05c2674e89de02
 			// EditTextShortcutWindow
 			// 
 			AutoScaleDimensions = new SizeF(13F, 31F);
@@ -151,7 +173,10 @@
 
 		#endregion
 		private Button buttonSave;
+<<<<<<< HEAD
 		private Button buttonCancel;
+=======
+>>>>>>> cd28171602855217b51fa7555c05c2674e89de02
 		private Label label4;
 		private Label label3;
 		private Label label2;
@@ -159,5 +184,9 @@
 		private RichTextBox textBoxValue;
 		private TextBox textBoxKey;
 		private TextBox textBoxName;
+<<<<<<< HEAD
+=======
+		private Button buttonCancel;
+>>>>>>> cd28171602855217b51fa7555c05c2674e89de02
 	}
 }
