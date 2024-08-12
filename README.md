@@ -65,8 +65,3 @@ Muxammadamin Ulmasaliyev - ulmasaliyev2005@gmail.com
 
 Project Link: [https://github.com/Muxammadamin-Ulmasaliyev/Expandit](https://github.com/Muxammadamin-Ulmasaliyev/Expandit)
 
-## Acknowledgments
-
-- Hat tip to anyone whose code was used
-- Inspiration
-- Etc.
