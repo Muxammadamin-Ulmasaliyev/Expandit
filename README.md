@@ -7,15 +7,10 @@ Expandit is a powerful and efficient text expansion application designed to enha
 - Text Expansion: Create shortcuts for frequently used text snippets.
 - Customizable: Tailor the application to your needs with customizable settings.
 - Background Operation: Runs silently in the background, ready to assist whenever needed.
-- Hotkey Support: Use hotkeys to quickly insert your text snippets.
 
 ## Getting Started
 
 Follow these instructions to get a copy of Expandit up and running on your local machine.
-
-### Prerequisites
-
-- [.NET 8 SDK](https://dotnet.microsoft.com/download/dotnet/8.0)
 
 ### Installation
 
