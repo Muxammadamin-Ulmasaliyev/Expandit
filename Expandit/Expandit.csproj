@@ -27,13 +27,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Reference Include="Helper">
-      <HintPath>..\..\..\..\Visual Studio\QuickType\QuickType\bin\Debug\Helper.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-  </ItemGroup>
-
-  <ItemGroup>
     <Compile Update="Settings.Designer.cs">
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <AutoGen>True</AutoGen>
@@ -54,6 +47,13 @@
 
   <ItemGroup>
     <Folder Include="Data\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Helper">
+      <HintPath>..\..\..\Helper\Helper\bin\Debug\Helper.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
   </ItemGroup>
 
 </Project>
