@@ -163,6 +163,7 @@ namespace Expandit
 			currentTextLabel.Name = "currentTextLabel";
 			currentTextLabel.Size = new Size(0, 32);
 			currentTextLabel.TabIndex = 3;
+			currentTextLabel.Visible = false;
 			// 
 			// tabPagePreferences
 			// 

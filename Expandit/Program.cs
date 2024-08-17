@@ -1,3 +1,4 @@
+using Expandit.Data;
 using System.Diagnostics.Metrics;
 using System.Threading;
 
@@ -15,10 +16,9 @@ namespace Expandit
 			// see https://aka.ms/applicationconfiguration.
 
 
-			const string appName = "Expandit"; 
 			bool createdNew;
 
-			var mutex = new Mutex(true, appName, out createdNew);
+			var mutex = new Mutex(true, GlobalVariables.APP_NAME, out createdNew);
 
 			if (!createdNew)
 			{

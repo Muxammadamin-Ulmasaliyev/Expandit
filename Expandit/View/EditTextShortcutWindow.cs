@@ -19,7 +19,7 @@ namespace Expandit.View
 			PopulateTextBoxes(textShortcutModel);
 			CheckButtonState();
 		}
-		
+
 
 		private void PopulateTextBoxes(TextShortcutModel textShortcutModel)
 		{
@@ -118,11 +118,16 @@ namespace Expandit.View
 			CheckButtonState();
 		}
 
-		
+
 
 		private void buttonCancel_Click(object sender, EventArgs e)
 		{
 			this.Close();
+		}
+
+		private void textBoxName_TextChanged(object sender, EventArgs e)
+		{
+
 		}
 	}
 }

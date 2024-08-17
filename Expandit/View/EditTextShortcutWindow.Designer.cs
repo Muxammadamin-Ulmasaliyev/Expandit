@@ -122,6 +122,7 @@
 			textBoxName.Name = "textBoxName";
 			textBoxName.Size = new Size(759, 39);
 			textBoxName.TabIndex = 16;
+			textBoxName.TextChanged += textBoxName_TextChanged;
 			// 
 			// EditTextShortcutWindow
 			// 
