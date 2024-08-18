@@ -10,6 +10,10 @@ using WindowsInput.Native;
 using WindowsInput;
 using Expandit.Data;
 using Expandit.Helpers;
+using System.Reflection;
+using System.Resources;
+using System.Windows.Forms;
+using System.Drawing;
 
 namespace Expandit;
 
@@ -122,24 +126,36 @@ public partial class MainWindow : Form
 
 
 	#region NotifyIcon
+
+
 	private void InitializeNotifyIcon()
 	{
 		notifyIcon = new NotifyIcon();
 
-		notifyIcon.Icon = new Icon(GlobalVariables.ICON_PATH);
+		// Use the image directly from the resource file
+
+		//ResourceManager rm = Resources.ResourceManager;
+		string iconPath = System.IO.Path.Combine(Application.StartupPath, "icon.ico");
+
+		// Assign the transparent icon to the NotifyIcon
+		notifyIcon.Icon = new Icon(iconPath);
+
 
 		notifyIcon.Visible = true;
+
 		notifyIcon.Text = GlobalVariables.APP_NAME;
 
-		Image openImage = Image.FromFile(GlobalVariables.OPEN_BUTTON_IMAGE_PATH);
-		Image exitImage = Image.FromFile(GlobalVariables.EXIT_BUTTON_IMAGE_PATH);
+		//Image openImage = ByteArrayToImage(Properties.Resources.btnOpen);
+		//Image openImage = Properties.Resources.btnOpen;
+		//Image exitImage = ByteArrayToImage(Properties.Resources.btnExit);
+		//Image exitImage = Properties.Resources.btnExit;
 
-		ToolStripMenuItem menuItemOpen = new ToolStripMenuItem("Open", openImage, onClick: (s, e) => ShowMainWindow());
-		ToolStripMenuItem menuItemExit = new ToolStripMenuItem("Exit", exitImage, onClick: (s, e) => ExitApplication());
+		ToolStripMenuItem menuItemOpen = new ToolStripMenuItem("Open", null, onClick: (s, e) => ShowMainWindow());
+		ToolStripMenuItem menuItemExit = new ToolStripMenuItem("Exit", null, onClick: (s, e) => ExitApplication());
 		ToolStripSeparator toolStripSeparator = new ToolStripSeparator();
 		ToolStripMenuItem menuItemEnable = new ToolStripMenuItem("Enable", null, onClick: (s, e) => EnableApplication());
 		ToolStripMenuItem menuItemDisable = new ToolStripMenuItem("Disable", null, onClick: (s, e) => DisableApplication());
-		
+
 		// Initialize ContextMenu
 		contextMenuStrip = new ContextMenuStrip();
 		contextMenuStrip.Items.Add(menuItemEnable);
@@ -313,7 +329,7 @@ public partial class MainWindow : Form
 			return;
 		}
 
-		var adjustedKey = KeyAdjuster.AdjustPressedKey(e.KeyCode,shift);
+		var adjustedKey = KeyAdjuster.AdjustPressedKey(e.KeyCode, shift);
 		if (adjustedKey == string.Empty)
 		{
 			currentText += e.KeyCode.ToString();
@@ -327,7 +343,7 @@ public partial class MainWindow : Form
 		}
 
 	}
-	
+
 
 	private void ReplaceKeyWithValue(TextShortcutModel shortcutModel)
 	{
@@ -660,7 +676,6 @@ public partial class MainWindow : Form
 			PopulateOtherSettingsCheckBoxes();
 			PopulateTriggerKeysCheckBoxes();
 			PopulateSearchByCheckBoxes();
-
 			buttonSaveSettings.Enabled = false;
 
 		}

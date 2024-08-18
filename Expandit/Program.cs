@@ -45,10 +45,11 @@ namespace Expandit
 
 		static void Application_ThreadException(object sender, ThreadExceptionEventArgs e)
 		{
-			// Handle the exception
+			// Handle the thread exception
 			MessageBox.Show($"An unexpected error occurred: {e.Exception.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
 			// Optionally, log the exception
+			LogException(e.Exception);
 		}
 
 		static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
@@ -56,10 +57,27 @@ namespace Expandit
 			Exception ex = e.ExceptionObject as Exception;
 			if (ex != null)
 			{
-				// Handle the exception
+				// Handle the unhandled exception
 				MessageBox.Show($"An unexpected error occurred: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
 				// Optionally, log the exception
+				LogException(ex);
+			}
+		}
+
+		static void LogException(Exception ex)
+		{
+			string logFilePath = "error_log.txt"; // Specify the log file path
+			using (StreamWriter writer = new StreamWriter(logFilePath, true))
+			{
+				writer.WriteLine($"[{DateTime.Now}] Exception: {ex.Message}");
+				writer.WriteLine(ex.StackTrace);
+				if (ex.InnerException != null)
+				{
+					writer.WriteLine($"Inner Exception: {ex.InnerException.Message}");
+					writer.WriteLine(ex.InnerException.StackTrace);
+				}
+				writer.WriteLine();
 			}
 		}
 	}
