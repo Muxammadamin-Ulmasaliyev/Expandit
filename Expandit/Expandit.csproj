@@ -27,6 +27,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Reference Include="Helper">
+      <HintPath>Helper.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
     <Compile Update="Settings.Designer.cs">
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <AutoGen>True</AutoGen>
@@ -43,13 +49,6 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Reference Include="Helper">
-      <HintPath>..\..\..\Helper\Helper\bin\Debug\Helper.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
   </ItemGroup>
 
 </Project>
