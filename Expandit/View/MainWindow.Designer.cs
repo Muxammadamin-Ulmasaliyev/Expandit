@@ -52,15 +52,14 @@ namespace Expandit
             checkBoxIsStrictMatching = new CheckBox();
             checkBoxStartup = new CheckBox();
             groupBox3 = new GroupBox();
-            tableLayoutPanel2 = new TableLayoutPanel();
-            groupBox1 = new GroupBox();
-            checkBoxTab = new CheckBox();
-            checkBoxEnter = new CheckBox();
-            checkBoxSpace = new CheckBox();
             groupBox4 = new GroupBox();
             groupBox5 = new GroupBox();
             groupBox6 = new GroupBox();
             buttonSaveSettings = new Button();
+            groupBox1 = new GroupBox();
+            checkBoxTab = new CheckBox();
+            checkBoxEnter = new CheckBox();
+            checkBoxSpace = new CheckBox();
             menuStrip1 = new MenuStrip();
             fileToolStripMenuItem = new ToolStripMenuItem();
             importShortcutsToolStripMenuItem = new ToolStripMenuItem();
@@ -74,9 +73,8 @@ namespace Expandit
             tabPagePreferences.SuspendLayout();
             tableLayoutPanel1.SuspendLayout();
             groupBox2.SuspendLayout();
-            tableLayoutPanel2.SuspendLayout();
-            groupBox1.SuspendLayout();
             groupBox6.SuspendLayout();
+            groupBox1.SuspendLayout();
             menuStrip1.SuspendLayout();
             SuspendLayout();
             // 
@@ -231,10 +229,10 @@ namespace Expandit
             // tabPagePreferences
             // 
             tabPagePreferences.Controls.Add(tableLayoutPanel1);
-            tabPagePreferences.Location = new Point(4, 29);
+            tabPagePreferences.Location = new Point(4, 40);
             tabPagePreferences.Name = "tabPagePreferences";
             tabPagePreferences.Padding = new Padding(3);
-            tabPagePreferences.Size = new Size(974, 583);
+            tabPagePreferences.Size = new Size(974, 574);
             tabPagePreferences.TabIndex = 1;
             tabPagePreferences.Text = "Preferences";
             tabPagePreferences.UseVisualStyleBackColor = true;
@@ -246,10 +244,10 @@ namespace Expandit
             tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
             tableLayoutPanel1.Controls.Add(groupBox2, 0, 1);
             tableLayoutPanel1.Controls.Add(groupBox3, 0, 2);
-            tableLayoutPanel1.Controls.Add(tableLayoutPanel2, 0, 0);
             tableLayoutPanel1.Controls.Add(groupBox4, 1, 0);
             tableLayoutPanel1.Controls.Add(groupBox5, 1, 1);
             tableLayoutPanel1.Controls.Add(groupBox6, 1, 2);
+            tableLayoutPanel1.Controls.Add(groupBox1, 0, 0);
             tableLayoutPanel1.Dock = DockStyle.Fill;
             tableLayoutPanel1.Location = new Point(3, 3);
             tableLayoutPanel1.Name = "tableLayoutPanel1";
@@ -257,7 +255,8 @@ namespace Expandit
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 33F));
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 34F));
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 33F));
-            tableLayoutPanel1.Size = new Size(968, 577);
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
+            tableLayoutPanel1.Size = new Size(968, 568);
             tableLayoutPanel1.TabIndex = 0;
             // 
             // groupBox2
@@ -265,9 +264,9 @@ namespace Expandit
             groupBox2.Controls.Add(checkBoxIsStrictMatching);
             groupBox2.Controls.Add(checkBoxStartup);
             groupBox2.Dock = DockStyle.Fill;
-            groupBox2.Location = new Point(3, 193);
+            groupBox2.Location = new Point(3, 190);
             groupBox2.Name = "groupBox2";
-            groupBox2.Size = new Size(478, 190);
+            groupBox2.Size = new Size(478, 187);
             groupBox2.TabIndex = 1;
             groupBox2.TabStop = false;
             // 
@@ -296,25 +295,51 @@ namespace Expandit
             // groupBox3
             // 
             groupBox3.Dock = DockStyle.Fill;
-            groupBox3.Location = new Point(3, 389);
+            groupBox3.Location = new Point(3, 383);
             groupBox3.Name = "groupBox3";
-            groupBox3.Size = new Size(478, 185);
+            groupBox3.Size = new Size(478, 182);
             groupBox3.TabIndex = 2;
             groupBox3.TabStop = false;
             groupBox3.Text = "Predefined shortcuts";
             // 
-            // tableLayoutPanel2
+            // groupBox4
             // 
-            tableLayoutPanel2.ColumnCount = 1;
-            tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
-            tableLayoutPanel2.Controls.Add(groupBox1, 0, 0);
-            tableLayoutPanel2.Dock = DockStyle.Fill;
-            tableLayoutPanel2.Location = new Point(3, 3);
-            tableLayoutPanel2.Name = "tableLayoutPanel2";
-            tableLayoutPanel2.RowCount = 1;
-            tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
-            tableLayoutPanel2.Size = new Size(478, 184);
-            tableLayoutPanel2.TabIndex = 3;
+            groupBox4.Dock = DockStyle.Fill;
+            groupBox4.Location = new Point(487, 3);
+            groupBox4.Name = "groupBox4";
+            groupBox4.Size = new Size(478, 181);
+            groupBox4.TabIndex = 4;
+            groupBox4.TabStop = false;
+            // 
+            // groupBox5
+            // 
+            groupBox5.Dock = DockStyle.Fill;
+            groupBox5.Location = new Point(487, 190);
+            groupBox5.Name = "groupBox5";
+            groupBox5.Size = new Size(478, 187);
+            groupBox5.TabIndex = 5;
+            groupBox5.TabStop = false;
+            // 
+            // groupBox6
+            // 
+            groupBox6.Controls.Add(buttonSaveSettings);
+            groupBox6.Dock = DockStyle.Fill;
+            groupBox6.Location = new Point(487, 383);
+            groupBox6.Name = "groupBox6";
+            groupBox6.Size = new Size(478, 182);
+            groupBox6.TabIndex = 6;
+            groupBox6.TabStop = false;
+            // 
+            // buttonSaveSettings
+            // 
+            buttonSaveSettings.Enabled = false;
+            buttonSaveSettings.Location = new Point(334, 129);
+            buttonSaveSettings.Name = "buttonSaveSettings";
+            buttonSaveSettings.Size = new Size(138, 48);
+            buttonSaveSettings.TabIndex = 0;
+            buttonSaveSettings.Text = "Save";
+            buttonSaveSettings.UseVisualStyleBackColor = true;
+            buttonSaveSettings.Click += buttonSaveSettings_Click;
             // 
             // groupBox1
             // 
@@ -324,7 +349,7 @@ namespace Expandit
             groupBox1.Dock = DockStyle.Fill;
             groupBox1.Location = new Point(3, 3);
             groupBox1.Name = "groupBox1";
-            groupBox1.Size = new Size(472, 178);
+            groupBox1.Size = new Size(478, 181);
             groupBox1.TabIndex = 1;
             groupBox1.TabStop = false;
             groupBox1.Text = "Trigger Key";
@@ -362,45 +387,6 @@ namespace Expandit
             checkBoxSpace.UseVisualStyleBackColor = true;
             checkBoxSpace.CheckedChanged += checkBox_CheckedChanged;
             // 
-            // groupBox4
-            // 
-            groupBox4.Dock = DockStyle.Fill;
-            groupBox4.Location = new Point(487, 3);
-            groupBox4.Name = "groupBox4";
-            groupBox4.Size = new Size(478, 184);
-            groupBox4.TabIndex = 4;
-            groupBox4.TabStop = false;
-            // 
-            // groupBox5
-            // 
-            groupBox5.Dock = DockStyle.Fill;
-            groupBox5.Location = new Point(487, 193);
-            groupBox5.Name = "groupBox5";
-            groupBox5.Size = new Size(478, 190);
-            groupBox5.TabIndex = 5;
-            groupBox5.TabStop = false;
-            // 
-            // groupBox6
-            // 
-            groupBox6.Controls.Add(buttonSaveSettings);
-            groupBox6.Dock = DockStyle.Fill;
-            groupBox6.Location = new Point(487, 389);
-            groupBox6.Name = "groupBox6";
-            groupBox6.Size = new Size(478, 185);
-            groupBox6.TabIndex = 6;
-            groupBox6.TabStop = false;
-            // 
-            // buttonSaveSettings
-            // 
-            buttonSaveSettings.Enabled = false;
-            buttonSaveSettings.Location = new Point(334, 129);
-            buttonSaveSettings.Name = "buttonSaveSettings";
-            buttonSaveSettings.Size = new Size(138, 48);
-            buttonSaveSettings.TabIndex = 0;
-            buttonSaveSettings.Text = "Save";
-            buttonSaveSettings.UseVisualStyleBackColor = true;
-            buttonSaveSettings.Click += buttonSaveSettings_Click;
-            // 
             // menuStrip1
             // 
             menuStrip1.ImageScalingSize = new Size(20, 20);
@@ -423,7 +409,7 @@ namespace Expandit
             // 
             importShortcutsToolStripMenuItem.Font = new Font("Segoe UI", 10F);
             importShortcutsToolStripMenuItem.Name = "importShortcutsToolStripMenuItem";
-            importShortcutsToolStripMenuItem.Size = new Size(224, 28);
+            importShortcutsToolStripMenuItem.Size = new Size(221, 28);
             importShortcutsToolStripMenuItem.Text = "Import shortcuts";
             importShortcutsToolStripMenuItem.Click += importShortcutsToolStripMenuItem_Click;
             // 
@@ -431,7 +417,7 @@ namespace Expandit
             // 
             exportShortcutsToolStripMenuItem.Font = new Font("Segoe UI", 10F);
             exportShortcutsToolStripMenuItem.Name = "exportShortcutsToolStripMenuItem";
-            exportShortcutsToolStripMenuItem.Size = new Size(224, 28);
+            exportShortcutsToolStripMenuItem.Size = new Size(221, 28);
             exportShortcutsToolStripMenuItem.Text = "Export shortcuts";
             exportShortcutsToolStripMenuItem.Click += exportShortcutsToolStripMenuItem_Click;
             // 
@@ -471,10 +457,9 @@ namespace Expandit
             tableLayoutPanel1.ResumeLayout(false);
             groupBox2.ResumeLayout(false);
             groupBox2.PerformLayout();
-            tableLayoutPanel2.ResumeLayout(false);
+            groupBox6.ResumeLayout(false);
             groupBox1.ResumeLayout(false);
             groupBox1.PerformLayout();
-            groupBox6.ResumeLayout(false);
             menuStrip1.ResumeLayout(false);
             menuStrip1.PerformLayout();
             ResumeLayout(false);
@@ -507,15 +492,14 @@ namespace Expandit
         private GroupBox groupBox4;
         private GroupBox groupBox5;
         private GroupBox groupBox6;
-        private TableLayoutPanel tableLayoutPanel2;
-        private GroupBox groupBox1;
-        private CheckBox checkBoxTab;
-        private CheckBox checkBoxEnter;
-        private CheckBox checkBoxSpace;
         private MenuStrip menuStrip1;
         private ToolStripMenuItem fileToolStripMenuItem;
         private ToolStripMenuItem importShortcutsToolStripMenuItem;
         private ToolStripMenuItem exportShortcutsToolStripMenuItem;
         private ToolStripMenuItem aboutToolStripMenuItem;
+        private GroupBox groupBox1;
+        private CheckBox checkBoxTab;
+        private CheckBox checkBoxEnter;
+        private CheckBox checkBoxSpace;
     }
 }
