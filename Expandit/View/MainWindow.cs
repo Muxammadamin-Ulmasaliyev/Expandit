@@ -36,9 +36,11 @@ public partial class MainWindow : Form
     private bool isApplicationDisabled = false;
     private string currentText = string.Empty;
 
-    private List<TextShortcutModel> textShortcuts;
+    private List<TextShortcut> textShortcuts;
     private TextShortcutsService _textShortcutService;
 
+    private List<DynamicPlaceholder> placeholders;
+    private DynamicPlaceholderService _placeholderService;
 
     private NotifyIcon notifyIcon;
     private ContextMenuStrip contextMenuStrip;
@@ -51,9 +53,12 @@ public partial class MainWindow : Form
         kh.KeyDown += Kh_KeyDown;
         kh.KeyUp += Kh_KeyUp;
 
-        _textShortcutService = new TextShortcutsService();
+        _textShortcutService = new();
+        _placeholderService = new();
 
         UpdateInMemoryTextShortcuts();
+        UpdateInMemoryPlaceholders();
+
         PopulateDataGrid();
 
         InitializeNotifyIcon();
@@ -235,7 +240,7 @@ public partial class MainWindow : Form
         {
             if (dataGridView.SelectedRows.Count > 0)
             {
-                var selectedShortcut = dataGridView.SelectedRows[0].DataBoundItem as TextShortcutModel;
+                var selectedShortcut = dataGridView.SelectedRows[0].DataBoundItem as TextShortcut;
 
                 if (selectedShortcut != null)
                 {
@@ -253,7 +258,7 @@ public partial class MainWindow : Form
         {
             if (dataGridView.SelectedRows.Count > 0)
             {
-                var selectedShortcut = dataGridView.SelectedRows[0].DataBoundItem as TextShortcutModel;
+                var selectedShortcut = dataGridView.SelectedRows[0].DataBoundItem as TextShortcut;
 
                 if (selectedShortcut != null)
                 {
@@ -311,11 +316,24 @@ public partial class MainWindow : Form
         if (KeyAdjuster.IsTriggerKey(e.KeyCode))
         {
             var textShortcutModel = GetTextShortcutModel(currentText);
-
             if (textShortcutModel != null)
             {
                 ReplaceKeyWithValue(textShortcutModel);
             }
+            else
+            {
+                var dynamicPlaceholderModel = GetPlaceholderModel(currentText);
+                if (dynamicPlaceholderModel != null)
+                {
+                    ReplaceKeyWithValue(dynamicPlaceholderModel);
+
+                }
+            }
+
+
+
+
+
             currentText = string.Empty;
             currentTextLabel.Text = string.Empty;
             return;
@@ -342,7 +360,7 @@ public partial class MainWindow : Form
     }
 
 
-    private void ReplaceKeyWithValue(TextShortcutModel shortcutModel)
+    private void ReplaceKeyWithValue(TextShortcut shortcutModel)
     {
         var sim = new InputSimulator();
         for (int i = 0; i < shortcutModel.Key.Length; i++)
@@ -355,27 +373,48 @@ public partial class MainWindow : Form
         SendKeys.Send("^(v)");
     }
 
+    private void ReplaceKeyWithValue(DynamicPlaceholder placeholder)
+    {
+        var sim = new InputSimulator();
+        for (int i = 0; i < placeholder.Key.Length; i++)
+        {
+            sim.Keyboard.KeyPress(VirtualKeyCode.BACK);   // not works vs code & notepad , fast
+
+        }
+        var textToPaste = _placeholderService.GetValueAccordingToCommand(placeholder);
+        Clipboard.SetText(textToPaste);
+
+        SendKeys.Send("^(v)");
+    }
     #endregion
 
 
     #region DB & Memory operations
 
-    private List<TextShortcutModel> GetAllTextShortcutsFromDb()
+    private List<TextShortcut> GetAllTextShortcutsFromDb()
     {
         return _textShortcutService.GetAll();
 
     }
+    private List<DynamicPlaceholder> GetAllPlaceholdersFromDb()
+    {
+        return _placeholderService.GetAll();
 
+    }
     private void UpdateInMemoryTextShortcuts()
     {
         textShortcuts = GetAllTextShortcutsFromDb();
+    }
+    private void UpdateInMemoryPlaceholders()
+    {
+        placeholders = GetAllPlaceholdersFromDb();
     }
 
     private void PopulateDataGrid()
     {
         UpdateInMemoryTextShortcuts();
 
-        dataGridView.DataSource = new BindingList<TextShortcutModel>(textShortcuts);
+        dataGridView.DataSource = new BindingList<TextShortcut>(textShortcuts);
 
         MakeDataGridWrappable();
 
@@ -392,12 +431,19 @@ public partial class MainWindow : Form
     }
 
 
-    private TextShortcutModel GetTextShortcutModel(string? key)
+    private TextShortcut GetTextShortcutModel(string? key)
     {
 
         return Settings.Default.IsMatchingCaseSensitive ?
             textShortcuts.FirstOrDefault(t => string.Equals(t.Key, key)) :
             textShortcuts.FirstOrDefault(t => string.Equals(t.Key, key, StringComparison.OrdinalIgnoreCase));
+    }
+    private DynamicPlaceholder GetPlaceholderModel(string? key)
+    {
+
+        return Settings.Default.IsMatchingCaseSensitive ?
+            placeholders.FirstOrDefault(t => string.Equals(t.Key, key)) :
+            placeholders.FirstOrDefault(t => string.Equals(t.Key, key, StringComparison.OrdinalIgnoreCase));
     }
     #endregion
 
@@ -405,7 +451,7 @@ public partial class MainWindow : Form
 
 
 
-    private void buttonDeleteTextShortcut_Click(TextShortcutModel textShortcutToDelete)
+    private void buttonDeleteTextShortcut_Click(TextShortcut textShortcutToDelete)
     {
         var result = MessageBox.Show($"Are you sure to delete textshortcut : {textShortcutToDelete.Name} ?", "Warning", MessageBoxButtons.YesNo, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2);
         if (result == DialogResult.Yes)
@@ -431,7 +477,7 @@ public partial class MainWindow : Form
         this.Opacity = 1.0;
         PopulateDataGrid();
     }
-    private void buttonEditTextShortcut_Click(TextShortcutModel textShortcutToEdit)
+    private void buttonEditTextShortcut_Click(TextShortcut textShortcutToEdit)
     {
         var window = new EditTextShortcutWindow(textShortcutToEdit);
         window.Owner = this;
@@ -461,7 +507,7 @@ public partial class MainWindow : Form
     {
         searchTerm = searchTerm.Trim();
 
-        Func<TextShortcutModel, bool> filterPredicate = t =>
+        Func<TextShortcut, bool> filterPredicate = t =>
         {
             bool result = false;
             result = result || t.Name.Contains(searchTerm, StringComparison.OrdinalIgnoreCase);
@@ -473,7 +519,7 @@ public partial class MainWindow : Form
 
         var filteredShortcuts = textShortcuts.Where(filterPredicate).ToList();
 
-        dataGridView.DataSource = new BindingList<TextShortcutModel>(filteredShortcuts);
+        dataGridView.DataSource = new BindingList<TextShortcut>(filteredShortcuts);
     }
 
     #endregion

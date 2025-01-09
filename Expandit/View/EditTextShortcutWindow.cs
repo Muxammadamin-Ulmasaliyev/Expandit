@@ -7,10 +7,10 @@ namespace Expandit.View
     {
         private TextShortcutsService _textshortcutsService;
 
-        private TextShortcutModel _textShortcutModel;
+        private TextShortcut _textShortcutModel;
 
 
-        public EditTextShortcutWindow(TextShortcutModel textShortcutModel)
+        public EditTextShortcutWindow(TextShortcut textShortcutModel)
         {
             _textshortcutsService = new TextShortcutsService();
 
@@ -21,7 +21,7 @@ namespace Expandit.View
         }
 
 
-        private void PopulateTextBoxes(TextShortcutModel textShortcutModel)
+        private void PopulateTextBoxes(TextShortcut textShortcutModel)
         {
             _textShortcutModel = textShortcutModel;
             textBoxName.Text = textShortcutModel.Name;
@@ -58,7 +58,7 @@ namespace Expandit.View
                 }
             }
 
-            _textshortcutsService.Update(new TextShortcutModel()
+            _textshortcutsService.Update(new TextShortcut()
             {
                 Id = _textShortcutModel.Id,
                 Name = textBoxName.Text.Trim(),

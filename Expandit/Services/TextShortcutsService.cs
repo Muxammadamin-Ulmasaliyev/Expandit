@@ -1,24 +1,22 @@
 ﻿using Newtonsoft.Json;
 using Expandit.Models;
 using Formatting = Newtonsoft.Json.Formatting;
-
+using static Expandit.Data.GlobalVariables;
 namespace Expandit.Services;
 
 public class TextShortcutsService
 {
     private readonly string filePath;
-    private List<TextShortcutModel> shortcuts;
+    private List<TextShortcut> shortcuts;
 
     public TextShortcutsService()
     {
-        string documentsPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-        string appFolderPath = Path.Combine(documentsPath, "Expandit");
-        if (!Directory.Exists(appFolderPath))
+        if (!Directory.Exists(APP_FOLDER_PATH))
         {
-            Directory.CreateDirectory(appFolderPath);
+            Directory.CreateDirectory(APP_FOLDER_PATH);
         }
 
-        filePath = Path.Combine(appFolderPath, "TextShortcuts.json");
+        filePath = Path.Combine(APP_FOLDER_PATH, SHORTCUTS_FILENAME);
 
         if (!File.Exists(filePath))
         {
@@ -30,7 +28,7 @@ public class TextShortcutsService
     private void LoadAll()
     {
         var json = File.ReadAllText(filePath);
-        shortcuts = JsonConvert.DeserializeObject<List<TextShortcutModel>>(json);
+        shortcuts = JsonConvert.DeserializeObject<List<TextShortcut>>(json);
     }
 
     private void SaveAll()
@@ -39,7 +37,7 @@ public class TextShortcutsService
         File.WriteAllText(filePath, json);
     }
 
-    public void Add(TextShortcutModel textShortcutModel)
+    public void Add(TextShortcut textShortcutModel)
     {
         textShortcutModel.Id = GenerateUniqueID();
         shortcuts.Add(textShortcutModel);
@@ -67,7 +65,7 @@ public class TextShortcutsService
         SaveAll();
     }
 
-    public void Update(TextShortcutModel modelToUpdate)
+    public void Update(TextShortcut modelToUpdate)
     {
         var index = shortcuts.FindIndex(x => x.Id == modelToUpdate.Id);
         if (index != -1)
@@ -77,16 +75,16 @@ public class TextShortcutsService
         }
     }
 
-    public TextShortcutModel Get(int id)
+    public TextShortcut Get(int id)
     {
         return shortcuts.Find(x => x.Id == id);
     }
 
-    public List<TextShortcutModel> GetAll()
+    public List<TextShortcut> GetAll()
     {
         var json = File.ReadAllText(filePath);
-        shortcuts = JsonConvert.DeserializeObject<List<TextShortcutModel>>(json);
-        return new List<TextShortcutModel>(shortcuts);
+        shortcuts = JsonConvert.DeserializeObject<List<TextShortcut>>(json);
+        return new List<TextShortcut>(shortcuts);
     }
 
     // Export shortcuts to a specified file
@@ -103,7 +101,7 @@ public class TextShortcutsService
         if (File.Exists(filePathToImport))
         {
             var json = File.ReadAllText(filePathToImport);
-            var importedShortcuts = JsonConvert.DeserializeObject<List<TextShortcutModel>>(json);
+            var importedShortcuts = JsonConvert.DeserializeObject<List<TextShortcut>>(json);
             foreach (var importedShortcut in importedShortcuts)
             {
                 // Check if a shortcut with the same key exists

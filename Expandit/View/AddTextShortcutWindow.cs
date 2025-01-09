@@ -40,7 +40,7 @@ public partial class AddTextShortcutWindow : Form
 			return;
 		}
 
-		var textShortcut = new TextShortcutModel()
+		var textShortcut = new TextShortcut()
 		{
 			Key = textBoxKey.Text.Trim(),
 			Name = textBoxName.Text.Trim(),

@@ -1,6 +1,6 @@
 ﻿namespace Expandit.Models;
 
-public class TextShortcutModel
+public class TextShortcut
 {
 
     public int Id { get; set; }

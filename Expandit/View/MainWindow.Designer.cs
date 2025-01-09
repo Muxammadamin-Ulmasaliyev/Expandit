@@ -160,7 +160,7 @@ namespace Expandit
             // 
             // textShortcutModelBindingSource1
             // 
-            textShortcutModelBindingSource1.DataSource = typeof(Models.TextShortcutModel);
+            textShortcutModelBindingSource1.DataSource = typeof(Models.TextShortcut);
             // 
             // buttonAdd
             // 
@@ -188,7 +188,7 @@ namespace Expandit
             // 
             // textShortcutModelBindingSource
             // 
-            textShortcutModelBindingSource.DataSource = typeof(Models.TextShortcutModel);
+            textShortcutModelBindingSource.DataSource = typeof(Models.TextShortcut);
             // 
             // tabControl
             // 
@@ -229,10 +229,10 @@ namespace Expandit
             // tabPagePreferences
             // 
             tabPagePreferences.Controls.Add(tableLayoutPanel1);
-            tabPagePreferences.Location = new Point(4, 40);
+            tabPagePreferences.Location = new Point(4, 29);
             tabPagePreferences.Name = "tabPagePreferences";
             tabPagePreferences.Padding = new Padding(3);
-            tabPagePreferences.Size = new Size(974, 574);
+            tabPagePreferences.Size = new Size(974, 585);
             tabPagePreferences.TabIndex = 1;
             tabPagePreferences.Text = "Preferences";
             tabPagePreferences.UseVisualStyleBackColor = true;
@@ -256,7 +256,7 @@ namespace Expandit
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 34F));
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 33F));
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
-            tableLayoutPanel1.Size = new Size(968, 568);
+            tableLayoutPanel1.Size = new Size(968, 579);
             tableLayoutPanel1.TabIndex = 0;
             // 
             // groupBox2
@@ -264,9 +264,9 @@ namespace Expandit
             groupBox2.Controls.Add(checkBoxIsStrictMatching);
             groupBox2.Controls.Add(checkBoxStartup);
             groupBox2.Dock = DockStyle.Fill;
-            groupBox2.Location = new Point(3, 190);
+            groupBox2.Location = new Point(3, 194);
             groupBox2.Name = "groupBox2";
-            groupBox2.Size = new Size(478, 187);
+            groupBox2.Size = new Size(478, 190);
             groupBox2.TabIndex = 1;
             groupBox2.TabStop = false;
             // 
@@ -295,9 +295,9 @@ namespace Expandit
             // groupBox3
             // 
             groupBox3.Dock = DockStyle.Fill;
-            groupBox3.Location = new Point(3, 383);
+            groupBox3.Location = new Point(3, 390);
             groupBox3.Name = "groupBox3";
-            groupBox3.Size = new Size(478, 182);
+            groupBox3.Size = new Size(478, 186);
             groupBox3.TabIndex = 2;
             groupBox3.TabStop = false;
             groupBox3.Text = "Predefined shortcuts";
@@ -307,16 +307,16 @@ namespace Expandit
             groupBox4.Dock = DockStyle.Fill;
             groupBox4.Location = new Point(487, 3);
             groupBox4.Name = "groupBox4";
-            groupBox4.Size = new Size(478, 181);
+            groupBox4.Size = new Size(478, 185);
             groupBox4.TabIndex = 4;
             groupBox4.TabStop = false;
             // 
             // groupBox5
             // 
             groupBox5.Dock = DockStyle.Fill;
-            groupBox5.Location = new Point(487, 190);
+            groupBox5.Location = new Point(487, 194);
             groupBox5.Name = "groupBox5";
-            groupBox5.Size = new Size(478, 187);
+            groupBox5.Size = new Size(478, 190);
             groupBox5.TabIndex = 5;
             groupBox5.TabStop = false;
             // 
@@ -324,9 +324,9 @@ namespace Expandit
             // 
             groupBox6.Controls.Add(buttonSaveSettings);
             groupBox6.Dock = DockStyle.Fill;
-            groupBox6.Location = new Point(487, 383);
+            groupBox6.Location = new Point(487, 390);
             groupBox6.Name = "groupBox6";
-            groupBox6.Size = new Size(478, 182);
+            groupBox6.Size = new Size(478, 186);
             groupBox6.TabIndex = 6;
             groupBox6.TabStop = false;
             // 
@@ -349,7 +349,7 @@ namespace Expandit
             groupBox1.Dock = DockStyle.Fill;
             groupBox1.Location = new Point(3, 3);
             groupBox1.Name = "groupBox1";
-            groupBox1.Size = new Size(478, 181);
+            groupBox1.Size = new Size(478, 185);
             groupBox1.TabIndex = 1;
             groupBox1.TabStop = false;
             groupBox1.Text = "Trigger Key";
