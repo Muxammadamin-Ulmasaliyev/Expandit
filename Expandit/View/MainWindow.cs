@@ -1,3 +1,5 @@
+//#define DYNAMIC_PLACEHOLDERS
+
 using Helper;
 using Microsoft.Win32;
 using Expandit.Models;
@@ -10,7 +12,6 @@ using WindowsInput.Native;
 using WindowsInput;
 using Expandit.Data;
 using Expandit.Helpers;
-using System.Windows.Forms;
 
 namespace Expandit;
 
@@ -39,8 +40,12 @@ public partial class MainWindow : Form
     private List<TextShortcut> textShortcuts;
     private TextShortcutsService _textShortcutService;
 
+#if DYNAMIC_PLACEHOLDERS
     private List<DynamicPlaceholder> placeholders;
     private DynamicPlaceholderService _placeholderService;
+#else
+#endif
+
 
     private NotifyIcon notifyIcon;
     private ContextMenuStrip contextMenuStrip;
@@ -53,11 +58,16 @@ public partial class MainWindow : Form
         kh.KeyDown += Kh_KeyDown;
         kh.KeyUp += Kh_KeyUp;
 
-        _textShortcutService = new();
+#if DYNAMIC_PLACEHOLDERS
         _placeholderService = new();
-
-        UpdateInMemoryTextShortcuts();
         UpdateInMemoryPlaceholders();
+#else
+#endif
+
+
+        _textShortcutService = new();
+        UpdateInMemoryTextShortcuts();
+
 
         PopulateDataGrid();
 
@@ -70,7 +80,6 @@ public partial class MainWindow : Form
     private void MainWindow_Load(object sender, EventArgs e)
     {
         // NOT SHOWS THE WINDOW IN STARTUP
-
         this.Hide();
         this.ShowInTaskbar = false;
     }
@@ -133,12 +142,8 @@ public partial class MainWindow : Form
     {
         notifyIcon = new NotifyIcon();
 
-        // Use the image directly from the resource file
-
-        //ResourceManager rm = Resources.ResourceManager;
         string iconPath = System.IO.Path.Combine(Application.StartupPath, "icon.ico");
 
-        // Assign the transparent icon to the NotifyIcon
         notifyIcon.Icon = new Icon(iconPath);
 
 
@@ -302,8 +307,6 @@ public partial class MainWindow : Form
         if (e.KeyCode == Keys.LShiftKey || e.KeyCode == Keys.RShiftKey) shift = true;
         if (e.KeyCode == Keys.Alt) alt = true;
 
-
-
         if (e.KeyCode == Keys.Back && currentText.Length > 0)
         {
             currentText = currentText.Substring(0, currentText.Length - 1);
@@ -320,20 +323,17 @@ public partial class MainWindow : Form
             {
                 ReplaceKeyWithValue(textShortcutModel);
             }
+#if DYNAMIC_PLACEHOLDERS
             else
             {
                 var dynamicPlaceholderModel = GetPlaceholderModel(currentText);
                 if (dynamicPlaceholderModel != null)
                 {
                     ReplaceKeyWithValue(dynamicPlaceholderModel);
-
                 }
             }
-
-
-
-
-
+#else
+#endif
             currentText = string.Empty;
             currentTextLabel.Text = string.Empty;
             return;
@@ -373,19 +373,28 @@ public partial class MainWindow : Form
         SendKeys.Send("^(v)");
     }
 
+#if DYNAMIC_PLACEHOLDERS
+
+
     private void ReplaceKeyWithValue(DynamicPlaceholder placeholder)
     {
+        var userInput = currentText;
         var sim = new InputSimulator();
-        for (int i = 0; i < placeholder.Key.Length; i++)
+        for (int i = 0; i < userInput.Length; i++)
         {
             sim.Keyboard.KeyPress(VirtualKeyCode.BACK);   // not works vs code & notepad , fast
-
         }
-        var textToPaste = _placeholderService.GetValueAccordingToCommand(placeholder);
-        Clipboard.SetText(textToPaste);
 
+        var textToPaste = _placeholderService.GetValueAccordingToCommand(placeholder, userInput);
+        if (string.IsNullOrEmpty(textToPaste))
+        {
+            return;
+        }
+        Clipboard.SetText(textToPaste);
         SendKeys.Send("^(v)");
     }
+#else
+#endif
     #endregion
 
 
@@ -396,20 +405,23 @@ public partial class MainWindow : Form
         return _textShortcutService.GetAll();
 
     }
+#if DYNAMIC_PLACEHOLDERS
     private List<DynamicPlaceholder> GetAllPlaceholdersFromDb()
     {
         return _placeholderService.GetAll();
-
     }
-    private void UpdateInMemoryTextShortcuts()
-    {
-        textShortcuts = GetAllTextShortcutsFromDb();
-    }
-    private void UpdateInMemoryPlaceholders()
+     private void UpdateInMemoryPlaceholders()
     {
         placeholders = GetAllPlaceholdersFromDb();
     }
 
+#else
+#endif
+    private void UpdateInMemoryTextShortcuts()
+    {
+        textShortcuts = GetAllTextShortcutsFromDb();
+    }
+   
     private void PopulateDataGrid()
     {
         UpdateInMemoryTextShortcuts();
@@ -438,19 +450,28 @@ public partial class MainWindow : Form
             textShortcuts.FirstOrDefault(t => string.Equals(t.Key, key)) :
             textShortcuts.FirstOrDefault(t => string.Equals(t.Key, key, StringComparison.OrdinalIgnoreCase));
     }
+
+#if DYNAMIC_PLACEHOLDERS
     private DynamicPlaceholder GetPlaceholderModel(string? key)
     {
+        if (key.Contains('?'))
+        {
+
+            return Settings.Default.IsMatchingCaseSensitive ?
+                placeholders.FirstOrDefault(t => string.Equals(t.Key, key.Split('?')[0])) :
+                placeholders.FirstOrDefault(t => string.Equals(t.Key, key.Split('?')[0], StringComparison.OrdinalIgnoreCase));
+        }
 
         return Settings.Default.IsMatchingCaseSensitive ?
             placeholders.FirstOrDefault(t => string.Equals(t.Key, key)) :
             placeholders.FirstOrDefault(t => string.Equals(t.Key, key, StringComparison.OrdinalIgnoreCase));
     }
+
+#else
+#endif
     #endregion
 
     #region Handle Button Clicks
-
-
-
     private void buttonDeleteTextShortcut_Click(TextShortcut textShortcutToDelete)
     {
         var result = MessageBox.Show($"Are you sure to delete textshortcut : {textShortcutToDelete.Name} ?", "Warning", MessageBoxButtons.YesNo, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2);
@@ -467,7 +488,6 @@ public partial class MainWindow : Form
 
         }
     }
-
     private void buttonAdd_Click(object sender, EventArgs e)
     {
         var window = new AddTextShortcutWindow();
@@ -577,11 +597,8 @@ public partial class MainWindow : Form
         checkBoxEnter.Checked = false;
         checkBoxSpace.Checked = false;
         checkBoxTab.Checked = false;
-
         checkBoxStartup.Checked = false;
         checkBoxIsStrictMatching.Checked = false;
-
-
     }
     private void PopulateTriggerKeysCheckBoxes()
     {

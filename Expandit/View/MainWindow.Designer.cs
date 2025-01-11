@@ -44,7 +44,7 @@ namespace Expandit
             searchBox = new TextBox();
             textShortcutModelBindingSource = new BindingSource(components);
             tabControl = new TabControl();
-            tabPageMain = new TabPage();
+            tabPageShortcuts = new TabPage();
             currentTextLabel = new Label();
             tabPagePreferences = new TabPage();
             tableLayoutPanel1 = new TableLayoutPanel();
@@ -64,12 +64,12 @@ namespace Expandit
             fileToolStripMenuItem = new ToolStripMenuItem();
             importShortcutsToolStripMenuItem = new ToolStripMenuItem();
             exportShortcutsToolStripMenuItem = new ToolStripMenuItem();
-            aboutToolStripMenuItem = new ToolStripMenuItem();
+            tabPageAbout = new TabPage();
             ((System.ComponentModel.ISupportInitialize)dataGridView).BeginInit();
             ((System.ComponentModel.ISupportInitialize)textShortcutModelBindingSource1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)textShortcutModelBindingSource).BeginInit();
             tabControl.SuspendLayout();
-            tabPageMain.SuspendLayout();
+            tabPageShortcuts.SuspendLayout();
             tabPagePreferences.SuspendLayout();
             tableLayoutPanel1.SuspendLayout();
             groupBox2.SuspendLayout();
@@ -192,8 +192,9 @@ namespace Expandit
             // 
             // tabControl
             // 
-            tabControl.Controls.Add(tabPageMain);
+            tabControl.Controls.Add(tabPageShortcuts);
             tabControl.Controls.Add(tabPagePreferences);
+            tabControl.Controls.Add(tabPageAbout);
             tabControl.Dock = DockStyle.Fill;
             tabControl.Location = new Point(0, 31);
             tabControl.Margin = new Padding(5);
@@ -203,19 +204,19 @@ namespace Expandit
             tabControl.TabIndex = 3;
             tabControl.SelectedIndexChanged += tabControl_SelectedIndexChanged;
             // 
-            // tabPageMain
+            // tabPageShortcuts
             // 
-            tabPageMain.Controls.Add(dataGridView);
-            tabPageMain.Controls.Add(currentTextLabel);
-            tabPageMain.Controls.Add(buttonAdd);
-            tabPageMain.Controls.Add(searchBox);
-            tabPageMain.Location = new Point(4, 40);
-            tabPageMain.Name = "tabPageMain";
-            tabPageMain.Padding = new Padding(3);
-            tabPageMain.Size = new Size(974, 574);
-            tabPageMain.TabIndex = 0;
-            tabPageMain.Text = "Main";
-            tabPageMain.UseVisualStyleBackColor = true;
+            tabPageShortcuts.Controls.Add(dataGridView);
+            tabPageShortcuts.Controls.Add(currentTextLabel);
+            tabPageShortcuts.Controls.Add(buttonAdd);
+            tabPageShortcuts.Controls.Add(searchBox);
+            tabPageShortcuts.Location = new Point(4, 40);
+            tabPageShortcuts.Name = "tabPageShortcuts";
+            tabPageShortcuts.Padding = new Padding(3);
+            tabPageShortcuts.Size = new Size(974, 574);
+            tabPageShortcuts.TabIndex = 0;
+            tabPageShortcuts.Text = "Shortcuts";
+            tabPageShortcuts.UseVisualStyleBackColor = true;
             // 
             // currentTextLabel
             // 
@@ -229,10 +230,10 @@ namespace Expandit
             // tabPagePreferences
             // 
             tabPagePreferences.Controls.Add(tableLayoutPanel1);
-            tabPagePreferences.Location = new Point(4, 29);
+            tabPagePreferences.Location = new Point(4, 40);
             tabPagePreferences.Name = "tabPagePreferences";
             tabPagePreferences.Padding = new Padding(3);
-            tabPagePreferences.Size = new Size(974, 585);
+            tabPagePreferences.Size = new Size(974, 574);
             tabPagePreferences.TabIndex = 1;
             tabPagePreferences.Text = "Preferences";
             tabPagePreferences.UseVisualStyleBackColor = true;
@@ -256,7 +257,7 @@ namespace Expandit
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 34F));
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 33F));
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
-            tableLayoutPanel1.Size = new Size(968, 579);
+            tableLayoutPanel1.Size = new Size(968, 568);
             tableLayoutPanel1.TabIndex = 0;
             // 
             // groupBox2
@@ -264,9 +265,9 @@ namespace Expandit
             groupBox2.Controls.Add(checkBoxIsStrictMatching);
             groupBox2.Controls.Add(checkBoxStartup);
             groupBox2.Dock = DockStyle.Fill;
-            groupBox2.Location = new Point(3, 194);
+            groupBox2.Location = new Point(3, 190);
             groupBox2.Name = "groupBox2";
-            groupBox2.Size = new Size(478, 190);
+            groupBox2.Size = new Size(478, 187);
             groupBox2.TabIndex = 1;
             groupBox2.TabStop = false;
             // 
@@ -295,9 +296,9 @@ namespace Expandit
             // groupBox3
             // 
             groupBox3.Dock = DockStyle.Fill;
-            groupBox3.Location = new Point(3, 390);
+            groupBox3.Location = new Point(3, 383);
             groupBox3.Name = "groupBox3";
-            groupBox3.Size = new Size(478, 186);
+            groupBox3.Size = new Size(478, 182);
             groupBox3.TabIndex = 2;
             groupBox3.TabStop = false;
             groupBox3.Text = "Predefined shortcuts";
@@ -307,16 +308,16 @@ namespace Expandit
             groupBox4.Dock = DockStyle.Fill;
             groupBox4.Location = new Point(487, 3);
             groupBox4.Name = "groupBox4";
-            groupBox4.Size = new Size(478, 185);
+            groupBox4.Size = new Size(478, 181);
             groupBox4.TabIndex = 4;
             groupBox4.TabStop = false;
             // 
             // groupBox5
             // 
             groupBox5.Dock = DockStyle.Fill;
-            groupBox5.Location = new Point(487, 194);
+            groupBox5.Location = new Point(487, 190);
             groupBox5.Name = "groupBox5";
-            groupBox5.Size = new Size(478, 190);
+            groupBox5.Size = new Size(478, 187);
             groupBox5.TabIndex = 5;
             groupBox5.TabStop = false;
             // 
@@ -324,9 +325,9 @@ namespace Expandit
             // 
             groupBox6.Controls.Add(buttonSaveSettings);
             groupBox6.Dock = DockStyle.Fill;
-            groupBox6.Location = new Point(487, 390);
+            groupBox6.Location = new Point(487, 383);
             groupBox6.Name = "groupBox6";
-            groupBox6.Size = new Size(478, 186);
+            groupBox6.Size = new Size(478, 182);
             groupBox6.TabIndex = 6;
             groupBox6.TabStop = false;
             // 
@@ -349,7 +350,7 @@ namespace Expandit
             groupBox1.Dock = DockStyle.Fill;
             groupBox1.Location = new Point(3, 3);
             groupBox1.Name = "groupBox1";
-            groupBox1.Size = new Size(478, 185);
+            groupBox1.Size = new Size(478, 181);
             groupBox1.TabIndex = 1;
             groupBox1.TabStop = false;
             groupBox1.Text = "Trigger Key";
@@ -390,7 +391,7 @@ namespace Expandit
             // menuStrip1
             // 
             menuStrip1.ImageScalingSize = new Size(20, 20);
-            menuStrip1.Items.AddRange(new ToolStripItem[] { fileToolStripMenuItem, aboutToolStripMenuItem });
+            menuStrip1.Items.AddRange(new ToolStripItem[] { fileToolStripMenuItem });
             menuStrip1.Location = new Point(0, 0);
             menuStrip1.Name = "menuStrip1";
             menuStrip1.Size = new Size(982, 31);
@@ -409,7 +410,7 @@ namespace Expandit
             // 
             importShortcutsToolStripMenuItem.Font = new Font("Segoe UI", 10F);
             importShortcutsToolStripMenuItem.Name = "importShortcutsToolStripMenuItem";
-            importShortcutsToolStripMenuItem.Size = new Size(221, 28);
+            importShortcutsToolStripMenuItem.Size = new Size(224, 28);
             importShortcutsToolStripMenuItem.Text = "Import shortcuts";
             importShortcutsToolStripMenuItem.Click += importShortcutsToolStripMenuItem_Click;
             // 
@@ -417,16 +418,18 @@ namespace Expandit
             // 
             exportShortcutsToolStripMenuItem.Font = new Font("Segoe UI", 10F);
             exportShortcutsToolStripMenuItem.Name = "exportShortcutsToolStripMenuItem";
-            exportShortcutsToolStripMenuItem.Size = new Size(221, 28);
+            exportShortcutsToolStripMenuItem.Size = new Size(224, 28);
             exportShortcutsToolStripMenuItem.Text = "Export shortcuts";
             exportShortcutsToolStripMenuItem.Click += exportShortcutsToolStripMenuItem_Click;
             // 
-            // aboutToolStripMenuItem
+            // tabPageAbout
             // 
-            aboutToolStripMenuItem.Font = new Font("Segoe UI", 10F);
-            aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            aboutToolStripMenuItem.Size = new Size(71, 27);
-            aboutToolStripMenuItem.Text = "About";
+            tabPageAbout.Location = new Point(4, 40);
+            tabPageAbout.Name = "tabPageAbout";
+            tabPageAbout.Size = new Size(974, 574);
+            tabPageAbout.TabIndex = 2;
+            tabPageAbout.Text = "About";
+            tabPageAbout.UseVisualStyleBackColor = true;
             // 
             // MainWindow
             // 
@@ -451,8 +454,8 @@ namespace Expandit
             ((System.ComponentModel.ISupportInitialize)textShortcutModelBindingSource1).EndInit();
             ((System.ComponentModel.ISupportInitialize)textShortcutModelBindingSource).EndInit();
             tabControl.ResumeLayout(false);
-            tabPageMain.ResumeLayout(false);
-            tabPageMain.PerformLayout();
+            tabPageShortcuts.ResumeLayout(false);
+            tabPageShortcuts.PerformLayout();
             tabPagePreferences.ResumeLayout(false);
             tableLayoutPanel1.ResumeLayout(false);
             groupBox2.ResumeLayout(false);
@@ -472,7 +475,7 @@ namespace Expandit
 		private TextBox searchBox;
 		private BindingSource textShortcutModelBindingSource;
 		private TabControl tabControl;
-		private TabPage tabPageMain;
+		private TabPage tabPageShortcuts;
 		private TabPage tabPagePreferences;
 		private Label currentTextLabel;
 		private DataGridView dataGridView;
@@ -496,10 +499,10 @@ namespace Expandit
         private ToolStripMenuItem fileToolStripMenuItem;
         private ToolStripMenuItem importShortcutsToolStripMenuItem;
         private ToolStripMenuItem exportShortcutsToolStripMenuItem;
-        private ToolStripMenuItem aboutToolStripMenuItem;
         private GroupBox groupBox1;
         private CheckBox checkBoxTab;
         private CheckBox checkBoxEnter;
         private CheckBox checkBoxSpace;
+        private TabPage tabPageAbout;
     }
 }

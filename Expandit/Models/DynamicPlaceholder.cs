@@ -17,15 +17,9 @@ public enum DynamicPlaceholderEnum
     Username = 20,
     MachineName = 21,
     OSVersion = 22,
-    IPAddress = 23,
-    PublicIP = 24,
-    MACAddress = 25,
-
-
     ClipboardTop = 30,
 
     Calculate = 40,
-    Random = 41,
     GUID = 42,
 
 }
