@@ -60,11 +60,11 @@ namespace Expandit
             checkBoxTab = new CheckBox();
             checkBoxEnter = new CheckBox();
             checkBoxSpace = new CheckBox();
+            tabPageAbout = new TabPage();
             menuStrip1 = new MenuStrip();
             fileToolStripMenuItem = new ToolStripMenuItem();
             importShortcutsToolStripMenuItem = new ToolStripMenuItem();
             exportShortcutsToolStripMenuItem = new ToolStripMenuItem();
-            tabPageAbout = new TabPage();
             ((System.ComponentModel.ISupportInitialize)dataGridView).BeginInit();
             ((System.ComponentModel.ISupportInitialize)textShortcutModelBindingSource1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)textShortcutModelBindingSource).BeginInit();
@@ -388,6 +388,15 @@ namespace Expandit
             checkBoxSpace.UseVisualStyleBackColor = true;
             checkBoxSpace.CheckedChanged += checkBox_CheckedChanged;
             // 
+            // tabPageAbout
+            // 
+            tabPageAbout.Location = new Point(4, 40);
+            tabPageAbout.Name = "tabPageAbout";
+            tabPageAbout.Size = new Size(974, 574);
+            tabPageAbout.TabIndex = 2;
+            tabPageAbout.Text = "About";
+            tabPageAbout.UseVisualStyleBackColor = true;
+            // 
             // menuStrip1
             // 
             menuStrip1.ImageScalingSize = new Size(20, 20);
@@ -410,7 +419,7 @@ namespace Expandit
             // 
             importShortcutsToolStripMenuItem.Font = new Font("Segoe UI", 10F);
             importShortcutsToolStripMenuItem.Name = "importShortcutsToolStripMenuItem";
-            importShortcutsToolStripMenuItem.Size = new Size(224, 28);
+            importShortcutsToolStripMenuItem.Size = new Size(221, 28);
             importShortcutsToolStripMenuItem.Text = "Import shortcuts";
             importShortcutsToolStripMenuItem.Click += importShortcutsToolStripMenuItem_Click;
             // 
@@ -418,18 +427,9 @@ namespace Expandit
             // 
             exportShortcutsToolStripMenuItem.Font = new Font("Segoe UI", 10F);
             exportShortcutsToolStripMenuItem.Name = "exportShortcutsToolStripMenuItem";
-            exportShortcutsToolStripMenuItem.Size = new Size(224, 28);
+            exportShortcutsToolStripMenuItem.Size = new Size(221, 28);
             exportShortcutsToolStripMenuItem.Text = "Export shortcuts";
             exportShortcutsToolStripMenuItem.Click += exportShortcutsToolStripMenuItem_Click;
-            // 
-            // tabPageAbout
-            // 
-            tabPageAbout.Location = new Point(4, 40);
-            tabPageAbout.Name = "tabPageAbout";
-            tabPageAbout.Size = new Size(974, 574);
-            tabPageAbout.TabIndex = 2;
-            tabPageAbout.Text = "About";
-            tabPageAbout.UseVisualStyleBackColor = true;
             // 
             // MainWindow
             // 
