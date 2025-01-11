@@ -61,6 +61,23 @@ namespace Expandit
             checkBoxEnter = new CheckBox();
             checkBoxSpace = new CheckBox();
             tabPageAbout = new TabPage();
+            tableLayoutPanel2 = new TableLayoutPanel();
+            groupBoxAboutApplication = new GroupBox();
+            label8 = new Label();
+            label7 = new Label();
+            label6 = new Label();
+            linkLabelSourceCode = new LinkLabel();
+            label3 = new Label();
+            label2 = new Label();
+            label1 = new Label();
+            groupBoxAboutDeveloper = new GroupBox();
+            linkLabelEmail = new LinkLabel();
+            label9 = new Label();
+            linkLabelLeetCode = new LinkLabel();
+            linkLabelGithub = new LinkLabel();
+            linkLabelLinkedIn = new LinkLabel();
+            label5 = new Label();
+            label4 = new Label();
             menuStrip1 = new MenuStrip();
             fileToolStripMenuItem = new ToolStripMenuItem();
             importShortcutsToolStripMenuItem = new ToolStripMenuItem();
@@ -75,6 +92,10 @@ namespace Expandit
             groupBox2.SuspendLayout();
             groupBox6.SuspendLayout();
             groupBox1.SuspendLayout();
+            tabPageAbout.SuspendLayout();
+            tableLayoutPanel2.SuspendLayout();
+            groupBoxAboutApplication.SuspendLayout();
+            groupBoxAboutDeveloper.SuspendLayout();
             menuStrip1.SuspendLayout();
             SuspendLayout();
             // 
@@ -230,10 +251,10 @@ namespace Expandit
             // tabPagePreferences
             // 
             tabPagePreferences.Controls.Add(tableLayoutPanel1);
-            tabPagePreferences.Location = new Point(4, 40);
+            tabPagePreferences.Location = new Point(4, 29);
             tabPagePreferences.Name = "tabPagePreferences";
             tabPagePreferences.Padding = new Padding(3);
-            tabPagePreferences.Size = new Size(974, 574);
+            tabPagePreferences.Size = new Size(974, 585);
             tabPagePreferences.TabIndex = 1;
             tabPagePreferences.Text = "Preferences";
             tabPagePreferences.UseVisualStyleBackColor = true;
@@ -257,7 +278,7 @@ namespace Expandit
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 34F));
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 33F));
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
-            tableLayoutPanel1.Size = new Size(968, 568);
+            tableLayoutPanel1.Size = new Size(968, 579);
             tableLayoutPanel1.TabIndex = 0;
             // 
             // groupBox2
@@ -265,9 +286,9 @@ namespace Expandit
             groupBox2.Controls.Add(checkBoxIsStrictMatching);
             groupBox2.Controls.Add(checkBoxStartup);
             groupBox2.Dock = DockStyle.Fill;
-            groupBox2.Location = new Point(3, 190);
+            groupBox2.Location = new Point(3, 194);
             groupBox2.Name = "groupBox2";
-            groupBox2.Size = new Size(478, 187);
+            groupBox2.Size = new Size(478, 190);
             groupBox2.TabIndex = 1;
             groupBox2.TabStop = false;
             // 
@@ -296,9 +317,9 @@ namespace Expandit
             // groupBox3
             // 
             groupBox3.Dock = DockStyle.Fill;
-            groupBox3.Location = new Point(3, 383);
+            groupBox3.Location = new Point(3, 390);
             groupBox3.Name = "groupBox3";
-            groupBox3.Size = new Size(478, 182);
+            groupBox3.Size = new Size(478, 186);
             groupBox3.TabIndex = 2;
             groupBox3.TabStop = false;
             groupBox3.Text = "Predefined shortcuts";
@@ -308,16 +329,16 @@ namespace Expandit
             groupBox4.Dock = DockStyle.Fill;
             groupBox4.Location = new Point(487, 3);
             groupBox4.Name = "groupBox4";
-            groupBox4.Size = new Size(478, 181);
+            groupBox4.Size = new Size(478, 185);
             groupBox4.TabIndex = 4;
             groupBox4.TabStop = false;
             // 
             // groupBox5
             // 
             groupBox5.Dock = DockStyle.Fill;
-            groupBox5.Location = new Point(487, 190);
+            groupBox5.Location = new Point(487, 194);
             groupBox5.Name = "groupBox5";
-            groupBox5.Size = new Size(478, 187);
+            groupBox5.Size = new Size(478, 190);
             groupBox5.TabIndex = 5;
             groupBox5.TabStop = false;
             // 
@@ -325,9 +346,9 @@ namespace Expandit
             // 
             groupBox6.Controls.Add(buttonSaveSettings);
             groupBox6.Dock = DockStyle.Fill;
-            groupBox6.Location = new Point(487, 383);
+            groupBox6.Location = new Point(487, 390);
             groupBox6.Name = "groupBox6";
-            groupBox6.Size = new Size(478, 182);
+            groupBox6.Size = new Size(478, 186);
             groupBox6.TabIndex = 6;
             groupBox6.TabStop = false;
             // 
@@ -350,7 +371,7 @@ namespace Expandit
             groupBox1.Dock = DockStyle.Fill;
             groupBox1.Location = new Point(3, 3);
             groupBox1.Name = "groupBox1";
-            groupBox1.Size = new Size(478, 181);
+            groupBox1.Size = new Size(478, 185);
             groupBox1.TabIndex = 1;
             groupBox1.TabStop = false;
             groupBox1.Text = "Trigger Key";
@@ -390,12 +411,207 @@ namespace Expandit
             // 
             // tabPageAbout
             // 
+            tabPageAbout.Controls.Add(tableLayoutPanel2);
             tabPageAbout.Location = new Point(4, 40);
             tabPageAbout.Name = "tabPageAbout";
             tabPageAbout.Size = new Size(974, 574);
             tabPageAbout.TabIndex = 2;
             tabPageAbout.Text = "About";
             tabPageAbout.UseVisualStyleBackColor = true;
+            // 
+            // tableLayoutPanel2
+            // 
+            tableLayoutPanel2.ColumnCount = 2;
+            tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
+            tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
+            tableLayoutPanel2.Controls.Add(groupBoxAboutApplication, 0, 0);
+            tableLayoutPanel2.Controls.Add(groupBoxAboutDeveloper, 1, 0);
+            tableLayoutPanel2.Dock = DockStyle.Fill;
+            tableLayoutPanel2.Location = new Point(0, 0);
+            tableLayoutPanel2.Name = "tableLayoutPanel2";
+            tableLayoutPanel2.RowCount = 1;
+            tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
+            tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
+            tableLayoutPanel2.Size = new Size(974, 574);
+            tableLayoutPanel2.TabIndex = 0;
+            // 
+            // groupBoxAboutApplication
+            // 
+            groupBoxAboutApplication.Controls.Add(label8);
+            groupBoxAboutApplication.Controls.Add(label7);
+            groupBoxAboutApplication.Controls.Add(label6);
+            groupBoxAboutApplication.Controls.Add(linkLabelSourceCode);
+            groupBoxAboutApplication.Controls.Add(label3);
+            groupBoxAboutApplication.Controls.Add(label2);
+            groupBoxAboutApplication.Controls.Add(label1);
+            groupBoxAboutApplication.Dock = DockStyle.Fill;
+            groupBoxAboutApplication.Location = new Point(3, 3);
+            groupBoxAboutApplication.Name = "groupBoxAboutApplication";
+            groupBoxAboutApplication.Size = new Size(481, 568);
+            groupBoxAboutApplication.TabIndex = 0;
+            groupBoxAboutApplication.TabStop = false;
+            groupBoxAboutApplication.Text = "About Application";
+            // 
+            // label8
+            // 
+            label8.AutoSize = true;
+            label8.Location = new Point(155, 114);
+            label8.Name = "label8";
+            label8.Size = new Size(63, 32);
+            label8.TabIndex = 6;
+            label8.Text = "1.0.1";
+            // 
+            // label7
+            // 
+            label7.AutoSize = true;
+            label7.Location = new Point(113, 71);
+            label7.Name = "label7";
+            label7.Size = new Size(105, 32);
+            label7.TabIndex = 5;
+            label7.Text = "Expandit";
+            // 
+            // label6
+            // 
+            label6.AutoSize = true;
+            label6.Location = new Point(72, 208);
+            label6.Name = "label6";
+            label6.Size = new Size(215, 32);
+            label6.TabIndex = 4;
+            label6.Text = " .NET8 + Winforms";
+            // 
+            // linkLabelSourceCode
+            // 
+            linkLabelSourceCode.AutoSize = true;
+            linkLabelSourceCode.Location = new Point(293, 208);
+            linkLabelSourceCode.Name = "linkLabelSourceCode";
+            linkLabelSourceCode.Size = new Size(157, 32);
+            linkLabelSourceCode.TabIndex = 3;
+            linkLabelSourceCode.TabStop = true;
+            linkLabelSourceCode.Text = "(source code)";
+            linkLabelSourceCode.LinkClicked += linkLabelSourceCode_LinkClicked;
+            // 
+            // label3
+            // 
+            label3.AutoSize = true;
+            label3.Font = new Font("Segoe UI", 14F, FontStyle.Bold);
+            label3.Location = new Point(5, 160);
+            label3.Name = "label3";
+            label3.Size = new Size(238, 32);
+            label3.TabIndex = 2;
+            label3.Text = "Technologies used :";
+            // 
+            // label2
+            // 
+            label2.AutoSize = true;
+            label2.Font = new Font("Segoe UI", 14F, FontStyle.Bold);
+            label2.Location = new Point(6, 114);
+            label2.Name = "label2";
+            label2.Size = new Size(120, 32);
+            label2.TabIndex = 1;
+            label2.Text = "Version : ";
+            // 
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.Font = new Font("Segoe UI", 14F, FontStyle.Bold);
+            label1.Location = new Point(5, 71);
+            label1.Name = "label1";
+            label1.Size = new Size(102, 32);
+            label1.TabIndex = 0;
+            label1.Text = "Name : ";
+            label1.Click += label1_Click;
+            // 
+            // groupBoxAboutDeveloper
+            // 
+            groupBoxAboutDeveloper.Controls.Add(linkLabelEmail);
+            groupBoxAboutDeveloper.Controls.Add(label9);
+            groupBoxAboutDeveloper.Controls.Add(linkLabelLeetCode);
+            groupBoxAboutDeveloper.Controls.Add(linkLabelGithub);
+            groupBoxAboutDeveloper.Controls.Add(linkLabelLinkedIn);
+            groupBoxAboutDeveloper.Controls.Add(label5);
+            groupBoxAboutDeveloper.Controls.Add(label4);
+            groupBoxAboutDeveloper.Dock = DockStyle.Fill;
+            groupBoxAboutDeveloper.Location = new Point(490, 3);
+            groupBoxAboutDeveloper.Name = "groupBoxAboutDeveloper";
+            groupBoxAboutDeveloper.Size = new Size(481, 568);
+            groupBoxAboutDeveloper.TabIndex = 1;
+            groupBoxAboutDeveloper.TabStop = false;
+            groupBoxAboutDeveloper.Text = "About Developer";
+            // 
+            // linkLabelEmail
+            // 
+            linkLabelEmail.AutoSize = true;
+            linkLabelEmail.LinkColor = Color.Black;
+            linkLabelEmail.Location = new Point(143, 279);
+            linkLabelEmail.Name = "linkLabelEmail";
+            linkLabelEmail.Size = new Size(323, 32);
+            linkLabelEmail.TabIndex = 8;
+            linkLabelEmail.TabStop = true;
+            linkLabelEmail.Text = "ulmasaliyev2005@gmail.com";
+            linkLabelEmail.LinkClicked += linkLabelEmail_LinkClicked;
+            // 
+            // label9
+            // 
+            label9.AutoSize = true;
+            label9.Font = new Font("Segoe UI", 14F, FontStyle.Bold);
+            label9.Location = new Point(6, 279);
+            label9.Name = "label9";
+            label9.Size = new Size(123, 32);
+            label9.TabIndex = 7;
+            label9.Text = "Contact : ";
+            // 
+            // linkLabelLeetCode
+            // 
+            linkLabelLeetCode.AutoSize = true;
+            linkLabelLeetCode.Location = new Point(351, 208);
+            linkLabelLeetCode.Name = "linkLabelLeetCode";
+            linkLabelLeetCode.Size = new Size(115, 32);
+            linkLabelLeetCode.TabIndex = 3;
+            linkLabelLeetCode.TabStop = true;
+            linkLabelLeetCode.Text = "LeetCode";
+            linkLabelLeetCode.LinkClicked += linkLabelLeetCode_LinkClicked;
+            // 
+            // linkLabelGithub
+            // 
+            linkLabelGithub.AutoSize = true;
+            linkLabelGithub.Location = new Point(380, 160);
+            linkLabelGithub.Name = "linkLabelGithub";
+            linkLabelGithub.Size = new Size(86, 32);
+            linkLabelGithub.TabIndex = 3;
+            linkLabelGithub.TabStop = true;
+            linkLabelGithub.Text = "Github";
+            linkLabelGithub.LinkClicked += linkLabelGithub_LinkClicked;
+            // 
+            // linkLabelLinkedIn
+            // 
+            linkLabelLinkedIn.AutoSize = true;
+            linkLabelLinkedIn.Location = new Point(362, 114);
+            linkLabelLinkedIn.Name = "linkLabelLinkedIn";
+            linkLabelLinkedIn.Size = new Size(104, 32);
+            linkLabelLinkedIn.TabIndex = 2;
+            linkLabelLinkedIn.TabStop = true;
+            linkLabelLinkedIn.Text = "Linkedin";
+            linkLabelLinkedIn.LinkClicked += linkLabel1_LinkClicked;
+            // 
+            // label5
+            // 
+            label5.AutoSize = true;
+            label5.Location = new Point(6, 114);
+            label5.Name = "label5";
+            label5.Size = new Size(327, 32);
+            label5.TabIndex = 1;
+            label5.Text = "Muxammadamin Ulmasaliyev";
+            label5.Click += label5_Click;
+            // 
+            // label4
+            // 
+            label4.AutoSize = true;
+            label4.Font = new Font("Segoe UI", 14F, FontStyle.Bold);
+            label4.Location = new Point(6, 71);
+            label4.Name = "label4";
+            label4.Size = new Size(159, 32);
+            label4.TabIndex = 0;
+            label4.Text = "Developer :  ";
             // 
             // menuStrip1
             // 
@@ -463,6 +679,12 @@ namespace Expandit
             groupBox6.ResumeLayout(false);
             groupBox1.ResumeLayout(false);
             groupBox1.PerformLayout();
+            tabPageAbout.ResumeLayout(false);
+            tableLayoutPanel2.ResumeLayout(false);
+            groupBoxAboutApplication.ResumeLayout(false);
+            groupBoxAboutApplication.PerformLayout();
+            groupBoxAboutDeveloper.ResumeLayout(false);
+            groupBoxAboutDeveloper.PerformLayout();
             menuStrip1.ResumeLayout(false);
             menuStrip1.PerformLayout();
             ResumeLayout(false);
@@ -504,5 +726,22 @@ namespace Expandit
         private CheckBox checkBoxEnter;
         private CheckBox checkBoxSpace;
         private TabPage tabPageAbout;
+        private TableLayoutPanel tableLayoutPanel2;
+        private GroupBox groupBoxAboutApplication;
+        private Label label1;
+        private GroupBox groupBoxAboutDeveloper;
+        private Label label3;
+        private Label label2;
+        private Label label5;
+        private Label label4;
+        private LinkLabel linkLabelLinkedIn;
+        private LinkLabel linkLabelGithub;
+        private LinkLabel linkLabelLeetCode;
+        private Label label6;
+        private LinkLabel linkLabelSourceCode;
+        private Label label8;
+        private Label label7;
+        private Label label9;
+        private LinkLabel linkLabelEmail;
     }
 }

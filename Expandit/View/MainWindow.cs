@@ -12,6 +12,7 @@ using WindowsInput.Native;
 using WindowsInput;
 using Expandit.Data;
 using Expandit.Helpers;
+using System.Diagnostics;
 
 namespace Expandit;
 
@@ -421,7 +422,7 @@ public partial class MainWindow : Form
     {
         textShortcuts = GetAllTextShortcutsFromDb();
     }
-   
+
     private void PopulateDataGrid()
     {
         UpdateInMemoryTextShortcuts();
@@ -779,5 +780,40 @@ public partial class MainWindow : Form
                 MessageBox.Show("Shortcuts exported successfully!", "Export", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }
+    }
+
+    private void label1_Click(object sender, EventArgs e)
+    {
+
+    }
+
+    private void label5_Click(object sender, EventArgs e)
+    {
+
+    }
+
+    private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+    {
+        Process.Start(new ProcessStartInfo("cmd", $"/c start https://www.linkedin.com/in/muxammadamin-ulmasaliyev-419198251/") { CreateNoWindow = true });
+    }
+
+    private void linkLabelGithub_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+    {
+        Process.Start(new ProcessStartInfo("cmd", $"/c start https://github.com/Muxammadamin-Ulmasaliyev") { CreateNoWindow = true });
+    }
+
+    private void linkLabelLeetCode_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+    {
+        Process.Start(new ProcessStartInfo("cmd", $"/c start https://leetcode.com/u/MuxammadaminUlmasaliyev/") { CreateNoWindow = true });
+    }
+
+    private void linkLabelSourceCode_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+    {
+        Process.Start(new ProcessStartInfo("cmd", $"/c start https://github.com/Muxammadamin-Ulmasaliyev/Expandit") { CreateNoWindow = true });
+    }
+
+    private void linkLabelEmail_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+    {
+       
     }
 }
