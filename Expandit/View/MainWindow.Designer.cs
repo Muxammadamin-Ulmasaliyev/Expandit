@@ -53,6 +53,7 @@ namespace Expandit
             checkBoxStartup = new CheckBox();
             groupBox3 = new GroupBox();
             groupBox4 = new GroupBox();
+            checkBoxDota = new CheckBox();
             groupBox5 = new GroupBox();
             groupBox6 = new GroupBox();
             buttonSaveSettings = new Button();
@@ -73,6 +74,7 @@ namespace Expandit
             tabPagePreferences.SuspendLayout();
             tableLayoutPanel1.SuspendLayout();
             groupBox2.SuspendLayout();
+            groupBox4.SuspendLayout();
             groupBox6.SuspendLayout();
             groupBox1.SuspendLayout();
             menuStrip1.SuspendLayout();
@@ -305,12 +307,24 @@ namespace Expandit
             // 
             // groupBox4
             // 
+            groupBox4.Controls.Add(checkBoxDota);
             groupBox4.Dock = DockStyle.Fill;
             groupBox4.Location = new Point(487, 3);
             groupBox4.Name = "groupBox4";
             groupBox4.Size = new Size(478, 181);
             groupBox4.TabIndex = 4;
             groupBox4.TabStop = false;
+            // 
+            // checkBoxDota
+            // 
+            checkBoxDota.AutoSize = true;
+            checkBoxDota.Location = new Point(6, 38);
+            checkBoxDota.Name = "checkBoxDota";
+            checkBoxDota.Size = new Size(87, 36);
+            checkBoxDota.TabIndex = 2;
+            checkBoxDota.Text = "Dota";
+            checkBoxDota.UseVisualStyleBackColor = true;
+            checkBoxDota.CheckedChanged += checkBox_CheckedChanged;
             // 
             // groupBox5
             // 
@@ -390,9 +404,9 @@ namespace Expandit
             // 
             // tabPageAbout
             // 
-            tabPageAbout.Location = new Point(4, 40);
+            tabPageAbout.Location = new Point(4, 29);
             tabPageAbout.Name = "tabPageAbout";
-            tabPageAbout.Size = new Size(974, 574);
+            tabPageAbout.Size = new Size(974, 585);
             tabPageAbout.TabIndex = 2;
             tabPageAbout.Text = "About";
             tabPageAbout.UseVisualStyleBackColor = true;
@@ -460,6 +474,8 @@ namespace Expandit
             tableLayoutPanel1.ResumeLayout(false);
             groupBox2.ResumeLayout(false);
             groupBox2.PerformLayout();
+            groupBox4.ResumeLayout(false);
+            groupBox4.PerformLayout();
             groupBox6.ResumeLayout(false);
             groupBox1.ResumeLayout(false);
             groupBox1.PerformLayout();
@@ -504,5 +520,6 @@ namespace Expandit
         private CheckBox checkBoxEnter;
         private CheckBox checkBoxSpace;
         private TabPage tabPageAbout;
+        private CheckBox checkBoxDota;
     }
 }

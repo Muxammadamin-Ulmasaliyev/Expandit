@@ -60,5 +60,17 @@ namespace Expandit {
                 this["IsRunOnStartup"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool Dota {
+            get {
+                return ((bool)(this["Dota"]));
+            }
+            set {
+                this["Dota"] = value;
+            }
+        }
     }
 }

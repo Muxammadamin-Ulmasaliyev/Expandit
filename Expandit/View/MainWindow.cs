@@ -12,6 +12,7 @@ using WindowsInput.Native;
 using WindowsInput;
 using Expandit.Data;
 using Expandit.Helpers;
+using Expandit.Helpers.Dota;
 
 namespace Expandit;
 
@@ -40,16 +41,16 @@ public partial class MainWindow : Form
     private List<TextShortcut> textShortcuts;
     private TextShortcutsService _textShortcutService;
 
+    private DotaHelper _dotaHelper;
+
 #if DYNAMIC_PLACEHOLDERS
     private List<DynamicPlaceholder> placeholders;
     private DynamicPlaceholderService _placeholderService;
 #else
 #endif
 
-
     private NotifyIcon notifyIcon;
     private ContextMenuStrip contextMenuStrip;
-
 
     public MainWindow()
     {
@@ -63,17 +64,12 @@ public partial class MainWindow : Form
         UpdateInMemoryPlaceholders();
 #else
 #endif
-
-
+        _dotaHelper = new();
         _textShortcutService = new();
         UpdateInMemoryTextShortcuts();
-
-
         PopulateDataGrid();
-
         InitializeNotifyIcon();
         AddApplicationToStartup();
-
         InitializeForegroundWindowChecker();
     }
 
@@ -307,6 +303,13 @@ public partial class MainWindow : Form
         if (e.KeyCode == Keys.LShiftKey || e.KeyCode == Keys.RShiftKey) shift = true;
         if (e.KeyCode == Keys.Alt) alt = true;
 
+
+        if (Settings.Default.Dota)
+        {
+            _dotaHelper.DoSpell(sender, e);
+            return ;
+        }
+
         if (e.KeyCode == Keys.Back && currentText.Length > 0)
         {
             currentText = currentText.Substring(0, currentText.Length - 1);
@@ -421,7 +424,7 @@ public partial class MainWindow : Form
     {
         textShortcuts = GetAllTextShortcutsFromDb();
     }
-   
+
     private void PopulateDataGrid()
     {
         UpdateInMemoryTextShortcuts();
@@ -599,6 +602,7 @@ public partial class MainWindow : Form
         checkBoxTab.Checked = false;
         checkBoxStartup.Checked = false;
         checkBoxIsStrictMatching.Checked = false;
+        checkBoxDota.Checked = false;
     }
     private void PopulateTriggerKeysCheckBoxes()
     {
@@ -638,7 +642,6 @@ public partial class MainWindow : Form
 
                 AddToTriggerKeys("Enter");
             }
-
         }
         else
         {
@@ -677,12 +680,11 @@ public partial class MainWindow : Form
 
     }
 
-
-
     private void PopulateOtherSettingsCheckBoxes()
     {
         checkBoxStartup.Checked = Settings.Default.IsRunOnStartup;
         checkBoxIsStrictMatching.Checked = Settings.Default.IsMatchingCaseSensitive;
+        checkBoxDota.Checked = Settings.Default.Dota;
     }
 
     private void SaveOtherSettings()
@@ -691,7 +693,6 @@ public partial class MainWindow : Form
         Settings.Default.IsRunOnStartup = checkBoxStartup.Checked;
         if (checkBoxStartup.Checked)
         {
-
             AddApplicationToStartup();
         }
         else
@@ -700,12 +701,10 @@ public partial class MainWindow : Form
         }
 
         // Strict Matching
-
         Settings.Default.IsMatchingCaseSensitive = checkBoxIsStrictMatching.Checked;
+        Settings.Default.Dota = checkBoxDota.Checked;
 
     }
-
-
 
 
     private void tabControl_SelectedIndexChanged(object sender, EventArgs e)
@@ -722,7 +721,6 @@ public partial class MainWindow : Form
     {
         SaveOtherSettings();
         SaveTriggerKeysSettings();
-
         SaveSettingsToMemory();
 
         MessageBox.Show("Settings are saved successfully ! ", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1);
@@ -780,4 +778,6 @@ public partial class MainWindow : Form
             }
         }
     }
+
+
 }
