@@ -324,17 +324,19 @@ public partial class MainWindow : Form
             {
                 ReplaceKeyWithValue(textShortcutModel);
             }
-#if DYNAMIC_PLACEHOLDERS
-            else
-            {
-                var dynamicPlaceholderModel = GetPlaceholderModel(currentText);
-                if (dynamicPlaceholderModel != null)
-                {
-                    ReplaceKeyWithValue(dynamicPlaceholderModel);
-                }
-            }
-#else
-#endif
+
+            //#if DYNAMIC_PLACEHOLDERS
+            //            else
+            //            {
+            //                var dynamicPlaceholderModel = GetPlaceholderModel(currentText);
+            //                if (dynamicPlaceholderModel != null)
+            //                {
+            //                    ReplaceKeyWithValue(dynamicPlaceholderModel);
+            //                }
+            //            }
+            //#else
+            //#endif
+
             currentText = string.Empty;
             currentTextLabel.Text = string.Empty;
             return;
@@ -493,7 +495,7 @@ public partial class MainWindow : Form
     {
         var window = new AddTextShortcutWindow();
         window.Owner = this;
-        this.Opacity = 0.75;
+        this.Opacity = 0.9;
         window.ShowDialog();
         this.Opacity = 1.0;
         PopulateDataGrid();
@@ -502,7 +504,7 @@ public partial class MainWindow : Form
     {
         var window = new EditTextShortcutWindow(textShortcutToEdit);
         window.Owner = this;
-        this.Opacity = 0.75;
+        this.Opacity = 0.9;
         window.ShowDialog();
         this.Opacity = 1.0;
         PopulateDataGrid();
@@ -812,8 +814,5 @@ public partial class MainWindow : Form
         Process.Start(new ProcessStartInfo("cmd", $"/c start https://github.com/Muxammadamin-Ulmasaliyev/Expandit") { CreateNoWindow = true });
     }
 
-    private void linkLabelEmail_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-    {
-       
-    }
+   
 }
