@@ -11,10 +11,10 @@
 
 1. **Download the latest release:**
    - Go to the [Releases](https://github.com/Muxammadamin-Ulmasaliyev/Expandit/releases) page.
-   - Download the `Expandit v1.0.zip` file from the latest release.
+   - Download the `Expandit v_._._.zip` file from the latest release.
 
 2. **Extract the downloaded file:**
-   - Extract the contents of the `Expandit-v1.0.zip` file to a directory of your choice.
+   - Extract the contents of the `Expanditv v_._._.zip` file to a directory of your choice.
 
 3. **Run the application:**
    - Navigate to the extracted folder and double-click the `Expandit.exe` file to start the application.
