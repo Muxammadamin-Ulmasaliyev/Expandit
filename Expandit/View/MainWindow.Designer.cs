@@ -412,9 +412,9 @@ namespace Expandit
             // tabPageAbout
             // 
             tabPageAbout.Controls.Add(tableLayoutPanel2);
-            tabPageAbout.Location = new Point(4, 40);
+            tabPageAbout.Location = new Point(4, 29);
             tabPageAbout.Name = "tabPageAbout";
-            tabPageAbout.Size = new Size(974, 574);
+            tabPageAbout.Size = new Size(974, 585);
             tabPageAbout.TabIndex = 2;
             tabPageAbout.Text = "About";
             tabPageAbout.UseVisualStyleBackColor = true;
@@ -432,7 +432,7 @@ namespace Expandit
             tableLayoutPanel2.RowCount = 1;
             tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
             tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
-            tableLayoutPanel2.Size = new Size(974, 574);
+            tableLayoutPanel2.Size = new Size(974, 585);
             tableLayoutPanel2.TabIndex = 0;
             // 
             // groupBoxAboutApplication
@@ -447,7 +447,7 @@ namespace Expandit
             groupBoxAboutApplication.Dock = DockStyle.Fill;
             groupBoxAboutApplication.Location = new Point(3, 3);
             groupBoxAboutApplication.Name = "groupBoxAboutApplication";
-            groupBoxAboutApplication.Size = new Size(481, 568);
+            groupBoxAboutApplication.Size = new Size(481, 579);
             groupBoxAboutApplication.TabIndex = 0;
             groupBoxAboutApplication.TabStop = false;
             groupBoxAboutApplication.Text = "About Application";
@@ -533,7 +533,7 @@ namespace Expandit
             groupBoxAboutDeveloper.Dock = DockStyle.Fill;
             groupBoxAboutDeveloper.Location = new Point(490, 3);
             groupBoxAboutDeveloper.Name = "groupBoxAboutDeveloper";
-            groupBoxAboutDeveloper.Size = new Size(481, 568);
+            groupBoxAboutDeveloper.Size = new Size(481, 579);
             groupBoxAboutDeveloper.TabIndex = 1;
             groupBoxAboutDeveloper.TabStop = false;
             groupBoxAboutDeveloper.Text = "About Developer";
@@ -664,7 +664,7 @@ namespace Expandit
             MaximizeBox = false;
             Name = "MainWindow";
             StartPosition = FormStartPosition.CenterScreen;
-            Text = "Expandit";
+            Text = "Expandit v1.0.1";
             Load += MainWindow_Load;
             ((System.ComponentModel.ISupportInitialize)dataGridView).EndInit();
             ((System.ComponentModel.ISupportInitialize)textShortcutModelBindingSource1).EndInit();
