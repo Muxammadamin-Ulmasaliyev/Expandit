@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Runtime.InteropServices;
 
 namespace Expandit;
 
@@ -21,21 +16,30 @@ public static class ClipboardHelpers
 
     private const int VK_CONTROL = 0x11;
     private const uint KEYEVENTF_KEYUP = 0x0002;
-    const int WM_PASTE = 0x0302;
     private const int VK_V = 0x56;
+
+    private static IDataObject _lastClipboardData;
+
+    public static void BackupClipboard()
+    {
+        _lastClipboardData = Clipboard.GetDataObject();
+    }
+
+    public static async void RestoreClipboard()
+    {
+        if (_lastClipboardData != null)
+        {
+            // Small delay to ensure the paste operation has completed in the target app
+            await Task.Delay(100);
+            Clipboard.SetDataObject(_lastClipboardData);
+        }
+    }
 
     public static void PasteText()
     {
-        IntPtr hWnd = GetForegroundWindow();
-
-        // Set the foreground window to ensure pasting into the correct window
-        SetForegroundWindow(hWnd);
-
         keybd_event(VK_CONTROL, 0, 0, IntPtr.Zero); // Press Ctrl
         keybd_event(VK_V, 0, 0, IntPtr.Zero); // Press V
         keybd_event(VK_V, 0, KEYEVENTF_KEYUP, IntPtr.Zero); // Release V
         keybd_event(VK_CONTROL, 0, KEYEVENTF_KEYUP, IntPtr.Zero); // Release Ctrl
     }
-
-
 }

@@ -61,6 +61,18 @@ namespace Expandit
             checkBoxSpace = new CheckBox();
             groupBox6 = new GroupBox();
             buttonSaveSettings = new Button();
+            tabPageStatistics = new TabPage();
+            labelDailyKeypresses = new Label();
+            dataGridStatistics = new DataGridView();
+            colDate = new DataGridViewTextBoxColumn();
+            colAppName = new DataGridViewTextBoxColumn();
+            colKeyPresses = new DataGridViewTextBoxColumn();
+            labelStatsHeader = new Label();
+            labelTotalExpansions = new Label();
+            labelTotalCharsSaved = new Label();
+            labelTotalTimeSaved = new Label();
+            dateTimePickerFilter = new DateTimePicker();
+            btnRefreshStats = new Button();
             tabPageAbout = new TabPage();
             tableLayoutPanel2 = new TableLayoutPanel();
             groupBoxAboutApplication = new GroupBox();
@@ -94,6 +106,8 @@ namespace Expandit
             groupBox2.SuspendLayout();
             groupBox1.SuspendLayout();
             groupBox6.SuspendLayout();
+            tabPageStatistics.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)dataGridStatistics).BeginInit();
             tabPageAbout.SuspendLayout();
             tableLayoutPanel2.SuspendLayout();
             groupBoxAboutApplication.SuspendLayout();
@@ -139,6 +153,7 @@ namespace Expandit
             tabControl.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             tabControl.Controls.Add(tabPageShortcuts);
             tabControl.Controls.Add(tabPagePreferences);
+            tabControl.Controls.Add(tabPageStatistics);
             tabControl.Controls.Add(tabPageAbout);
             tabControl.Location = new Point(0, 33);
             tabControl.Margin = new Padding(5);
@@ -167,8 +182,8 @@ namespace Expandit
             tableLayoutPanelShortcuts.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
             tableLayoutPanelShortcuts.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
             tableLayoutPanelShortcuts.Controls.Add(dataGridView, 0, 1);
-            tableLayoutPanelShortcuts.Controls.Add(searchBox, 0, 0);
             tableLayoutPanelShortcuts.Controls.Add(buttonAdd, 1, 0);
+            tableLayoutPanelShortcuts.Controls.Add(searchBox, 0, 0);
             tableLayoutPanelShortcuts.Location = new Point(3, 3);
             tableLayoutPanelShortcuts.Name = "tableLayoutPanelShortcuts";
             tableLayoutPanelShortcuts.RowCount = 2;
@@ -184,6 +199,7 @@ namespace Expandit
             dataGridView.AllowUserToOrderColumns = true;
             dataGridView.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             dataGridView.AutoGenerateColumns = false;
+            dataGridView.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
             dataGridView.BackgroundColor = SystemColors.Control;
             dataGridView.BorderStyle = BorderStyle.None;
             dataGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
@@ -214,6 +230,7 @@ namespace Expandit
             // 
             nameDataGridViewTextBoxColumn.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
             nameDataGridViewTextBoxColumn.DataPropertyName = "Name";
+            nameDataGridViewTextBoxColumn.FillWeight = 85.07134F;
             nameDataGridViewTextBoxColumn.HeaderText = "Name";
             nameDataGridViewTextBoxColumn.MinimumWidth = 140;
             nameDataGridViewTextBoxColumn.Name = "nameDataGridViewTextBoxColumn";
@@ -223,6 +240,7 @@ namespace Expandit
             // 
             keyDataGridViewTextBoxColumn.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
             keyDataGridViewTextBoxColumn.DataPropertyName = "Key";
+            keyDataGridViewTextBoxColumn.FillWeight = 88.4174652F;
             keyDataGridViewTextBoxColumn.HeaderText = "Key";
             keyDataGridViewTextBoxColumn.MinimumWidth = 140;
             keyDataGridViewTextBoxColumn.Name = "keyDataGridViewTextBoxColumn";
@@ -232,6 +250,7 @@ namespace Expandit
             // 
             valueDataGridViewTextBoxColumn.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
             valueDataGridViewTextBoxColumn.DataPropertyName = "Value";
+            valueDataGridViewTextBoxColumn.FillWeight = 203.36293F;
             valueDataGridViewTextBoxColumn.HeaderText = "Value";
             valueDataGridViewTextBoxColumn.MinimumWidth = 350;
             valueDataGridViewTextBoxColumn.Name = "valueDataGridViewTextBoxColumn";
@@ -239,6 +258,7 @@ namespace Expandit
             // 
             // buttonEditInCell
             // 
+            buttonEditInCell.FillWeight = 58.6400261F;
             buttonEditInCell.HeaderText = "";
             buttonEditInCell.MinimumWidth = 6;
             buttonEditInCell.Name = "buttonEditInCell";
@@ -247,17 +267,18 @@ namespace Expandit
             buttonEditInCell.SortMode = DataGridViewColumnSortMode.Automatic;
             buttonEditInCell.Text = "Edit";
             buttonEditInCell.UseColumnTextForButtonValue = true;
-            buttonEditInCell.Width = 125;
+            buttonEditInCell.Width = 106;
             // 
             // buttonDeleteInCell
             // 
+            buttonDeleteInCell.FillWeight = 64.50813F;
             buttonDeleteInCell.HeaderText = "";
             buttonDeleteInCell.MinimumWidth = 6;
             buttonDeleteInCell.Name = "buttonDeleteInCell";
             buttonDeleteInCell.ReadOnly = true;
             buttonDeleteInCell.Text = "Delete";
             buttonDeleteInCell.UseColumnTextForButtonValue = true;
-            buttonDeleteInCell.Width = 125;
+            buttonDeleteInCell.Width = 118;
             // 
             // currentTextLabel
             // 
@@ -428,6 +449,135 @@ namespace Expandit
             buttonSaveSettings.Text = "Save";
             buttonSaveSettings.UseVisualStyleBackColor = true;
             buttonSaveSettings.Click += buttonSaveSettings_Click;
+            // 
+            // tabPageStatistics
+            // 
+            tabPageStatistics.Controls.Add(labelDailyKeypresses);
+            tabPageStatistics.Controls.Add(dataGridStatistics);
+            tabPageStatistics.Controls.Add(labelStatsHeader);
+            tabPageStatistics.Controls.Add(labelTotalExpansions);
+            tabPageStatistics.Controls.Add(labelTotalCharsSaved);
+            tabPageStatistics.Controls.Add(labelTotalTimeSaved);
+            tabPageStatistics.Controls.Add(dateTimePickerFilter);
+            tabPageStatistics.Controls.Add(btnRefreshStats);
+            tabPageStatistics.Location = new Point(4, 29);
+            tabPageStatistics.Name = "tabPageStatistics";
+            tabPageStatistics.Padding = new Padding(3);
+            tabPageStatistics.Size = new Size(974, 585);
+            tabPageStatistics.TabIndex = 3;
+            tabPageStatistics.Text = "Statistics";
+            tabPageStatistics.UseVisualStyleBackColor = true;
+            // 
+            // labelDailyKeypresses
+            // 
+            labelDailyKeypresses.AutoSize = true;
+            labelDailyKeypresses.Font = new Font("Segoe UI", 16F, FontStyle.Bold);
+            labelDailyKeypresses.Location = new Point(33, 243);
+            labelDailyKeypresses.Name = "labelDailyKeypresses";
+            labelDailyKeypresses.Size = new Size(349, 37);
+            labelDailyKeypresses.TabIndex = 9;
+            labelDailyKeypresses.Text = "Daily keypresses per app :";
+            // 
+            // dataGridStatistics
+            // 
+            dataGridStatistics.AllowUserToAddRows = false;
+            dataGridStatistics.AllowUserToDeleteRows = false;
+            dataGridStatistics.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            dataGridStatistics.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dataGridStatistics.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
+            dataGridStatistics.BackgroundColor = SystemColors.Control;
+            dataGridStatistics.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridStatistics.Columns.AddRange(new DataGridViewColumn[] { colDate, colAppName, colKeyPresses });
+            dataGridStatistics.Location = new Point(33, 305);
+            dataGridStatistics.Name = "dataGridStatistics";
+            dataGridStatistics.ReadOnly = true;
+            dataGridStatistics.RowHeadersWidth = 51;
+            dataGridStatistics.Size = new Size(933, 241);
+            dataGridStatistics.TabIndex = 5;
+            // 
+            // colDate
+            // 
+            colDate.HeaderText = "Date";
+            colDate.MinimumWidth = 6;
+            colDate.Name = "colDate";
+            colDate.ReadOnly = true;
+            // 
+            // colAppName
+            // 
+            colAppName.HeaderText = "Application";
+            colAppName.MinimumWidth = 6;
+            colAppName.Name = "colAppName";
+            colAppName.ReadOnly = true;
+            // 
+            // colKeyPresses
+            // 
+            colKeyPresses.HeaderText = "Keypresses";
+            colKeyPresses.MinimumWidth = 6;
+            colKeyPresses.Name = "colKeyPresses";
+            colKeyPresses.ReadOnly = true;
+            // 
+            // labelStatsHeader
+            // 
+            labelStatsHeader.AutoSize = true;
+            labelStatsHeader.Font = new Font("Segoe UI", 24F, FontStyle.Bold);
+            labelStatsHeader.Location = new Point(23, 23);
+            labelStatsHeader.Name = "labelStatsHeader";
+            labelStatsHeader.Size = new Size(394, 54);
+            labelStatsHeader.TabIndex = 0;
+            labelStatsHeader.Text = "Productivity Report";
+            // 
+            // labelTotalExpansions
+            // 
+            labelTotalExpansions.AutoSize = true;
+            labelTotalExpansions.Font = new Font("Segoe UI", 16F);
+            labelTotalExpansions.Location = new Point(33, 96);
+            labelTotalExpansions.Name = "labelTotalExpansions";
+            labelTotalExpansions.Size = new Size(240, 37);
+            labelTotalExpansions.TabIndex = 1;
+            labelTotalExpansions.Text = "Total Expansions: 0";
+            // 
+            // labelTotalCharsSaved
+            // 
+            labelTotalCharsSaved.AutoSize = true;
+            labelTotalCharsSaved.Font = new Font("Segoe UI", 16F);
+            labelTotalCharsSaved.Location = new Point(33, 145);
+            labelTotalCharsSaved.Name = "labelTotalCharsSaved";
+            labelTotalCharsSaved.Size = new Size(247, 37);
+            labelTotalCharsSaved.TabIndex = 2;
+            labelTotalCharsSaved.Text = "Characters Saved: 0";
+            // 
+            // labelTotalTimeSaved
+            // 
+            labelTotalTimeSaved.AutoSize = true;
+            labelTotalTimeSaved.Font = new Font("Segoe UI", 16F);
+            labelTotalTimeSaved.Location = new Point(33, 194);
+            labelTotalTimeSaved.Name = "labelTotalTimeSaved";
+            labelTotalTimeSaved.Size = new Size(204, 37);
+            labelTotalTimeSaved.TabIndex = 3;
+            labelTotalTimeSaved.Text = "Time Saved: 0m";
+            // 
+            // dateTimePickerFilter
+            // 
+            dateTimePickerFilter.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            dateTimePickerFilter.Font = new Font("Segoe UI", 12F);
+            dateTimePickerFilter.Format = DateTimePickerFormat.Short;
+            dateTimePickerFilter.Location = new Point(683, 245);
+            dateTimePickerFilter.Name = "dateTimePickerFilter";
+            dateTimePickerFilter.Size = new Size(150, 34);
+            dateTimePickerFilter.TabIndex = 5;
+            dateTimePickerFilter.ValueChanged += dateTimePickerFilter_ValueChanged;
+            // 
+            // btnRefreshStats
+            // 
+            btnRefreshStats.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            btnRefreshStats.Font = new Font("Segoe UI", 10F);
+            btnRefreshStats.Location = new Point(857, 243);
+            btnRefreshStats.Name = "btnRefreshStats";
+            btnRefreshStats.Size = new Size(100, 40);
+            btnRefreshStats.TabIndex = 8;
+            btnRefreshStats.Text = "Refresh";
+            btnRefreshStats.UseVisualStyleBackColor = true;
+            btnRefreshStats.Click += btnRefreshStats_Click;
             // 
             // tabPageAbout
             // 
@@ -700,6 +850,9 @@ namespace Expandit
             groupBox1.ResumeLayout(false);
             groupBox1.PerformLayout();
             groupBox6.ResumeLayout(false);
+            tabPageStatistics.ResumeLayout(false);
+            tabPageStatistics.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)dataGridStatistics).EndInit();
             tabPageAbout.ResumeLayout(false);
             tableLayoutPanel2.ResumeLayout(false);
             groupBoxAboutApplication.ResumeLayout(false);
@@ -765,5 +918,17 @@ namespace Expandit
         private DataGridViewTextBoxColumn valueDataGridViewTextBoxColumn;
         private DataGridViewButtonColumn buttonEditInCell;
         private DataGridViewButtonColumn buttonDeleteInCell;
+        private TabPage tabPageStatistics;
+        private Label labelTotalExpansions;
+        private Label labelTotalCharsSaved;
+        private Label labelTotalTimeSaved;
+        private Label labelStatsHeader;
+        private DateTimePicker dateTimePickerFilter;
+        private Button btnRefreshStats;
+        private DataGridView dataGridStatistics;
+        private DataGridViewTextBoxColumn colDate;
+        private DataGridViewTextBoxColumn colAppName;
+        private DataGridViewTextBoxColumn colKeyPresses;
+        private Label labelDailyKeypresses;
     }
 }
