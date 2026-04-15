@@ -46,10 +46,8 @@ public partial class MainWindow : Form
     private StatisticsService _statsService;
     private Trie<TextShortcut> _shortcutTrie = new Trie<TextShortcut>();
 
-
     private NotifyIcon notifyIcon;
     private ContextMenuStrip contextMenuStrip;
-
 
     public MainWindow()
     {
@@ -70,8 +68,6 @@ public partial class MainWindow : Form
         kh.KeyUp += Kh_KeyUp;
 
         LoadAppLogo();
-
-        ShowMainWindow();
     }
 
     private void LoadAppLogo()
@@ -289,6 +285,7 @@ public partial class MainWindow : Form
     private void ExitApplication()
     {
         notifyIcon.Visible = false;
+        _statsService?.Dispose();
         Application.Exit();
     }
 
