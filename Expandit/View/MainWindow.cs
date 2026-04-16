@@ -383,6 +383,8 @@ public partial class MainWindow : Form
             if (textShortcutModel != null)
             {
                 ReplaceKeyWithValue(textShortcutModel);
+                e.Handled = true;
+                e.SuppressKeyPress = true;
             }
 
             currentText = string.Empty;
