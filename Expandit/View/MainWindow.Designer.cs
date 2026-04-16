@@ -61,6 +61,18 @@ namespace Expandit
             checkBoxSpace = new CheckBox();
             groupBox6 = new GroupBox();
             buttonSaveSettings = new Button();
+            tabPageStatistics = new TabPage();
+            labelDailyKeypresses = new Label();
+            dataGridStatistics = new DataGridView();
+            colDate = new DataGridViewTextBoxColumn();
+            colAppName = new DataGridViewTextBoxColumn();
+            colKeyPresses = new DataGridViewTextBoxColumn();
+            labelStatsHeader = new Label();
+            labelTotalExpansions = new Label();
+            labelTotalCharsSaved = new Label();
+            labelTotalTimeSaved = new Label();
+            dateTimePickerFilter = new DateTimePicker();
+            btnRefreshStats = new Button();
             tabPageAbout = new TabPage();
             tableLayoutPanel2 = new TableLayoutPanel();
             groupBoxAboutApplication = new GroupBox();
@@ -94,6 +106,8 @@ namespace Expandit
             groupBox2.SuspendLayout();
             groupBox1.SuspendLayout();
             groupBox6.SuspendLayout();
+            tabPageStatistics.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)dataGridStatistics).BeginInit();
             tabPageAbout.SuspendLayout();
             tableLayoutPanel2.SuspendLayout();
             groupBoxAboutApplication.SuspendLayout();
@@ -126,7 +140,7 @@ namespace Expandit
             searchBox.Margin = new Padding(5);
             searchBox.Name = "searchBox";
             searchBox.PlaceholderText = "Search... ";
-            searchBox.Size = new Size(386, 43);
+            searchBox.Size = new Size(386, 36);
             searchBox.TabIndex = 1;
             searchBox.TextChanged += searchBox_TextChanged;
             // 
@@ -139,6 +153,7 @@ namespace Expandit
             tabControl.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             tabControl.Controls.Add(tabPageShortcuts);
             tabControl.Controls.Add(tabPagePreferences);
+            tabControl.Controls.Add(tabPageStatistics);
             tabControl.Controls.Add(tabPageAbout);
             tabControl.Location = new Point(0, 33);
             tabControl.Margin = new Padding(5);
@@ -152,10 +167,10 @@ namespace Expandit
             // 
             tabPageShortcuts.Controls.Add(tableLayoutPanelShortcuts);
             tabPageShortcuts.Controls.Add(currentTextLabel);
-            tabPageShortcuts.Location = new Point(4, 40);
+            tabPageShortcuts.Location = new Point(4, 34);
             tabPageShortcuts.Name = "tabPageShortcuts";
             tabPageShortcuts.Padding = new Padding(3);
-            tabPageShortcuts.Size = new Size(974, 574);
+            tabPageShortcuts.Size = new Size(974, 580);
             tabPageShortcuts.TabIndex = 0;
             tabPageShortcuts.Text = "Shortcuts";
             tabPageShortcuts.UseVisualStyleBackColor = true;
@@ -167,8 +182,8 @@ namespace Expandit
             tableLayoutPanelShortcuts.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
             tableLayoutPanelShortcuts.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
             tableLayoutPanelShortcuts.Controls.Add(dataGridView, 0, 1);
-            tableLayoutPanelShortcuts.Controls.Add(searchBox, 0, 0);
             tableLayoutPanelShortcuts.Controls.Add(buttonAdd, 1, 0);
+            tableLayoutPanelShortcuts.Controls.Add(searchBox, 0, 0);
             tableLayoutPanelShortcuts.Location = new Point(3, 3);
             tableLayoutPanelShortcuts.Name = "tableLayoutPanelShortcuts";
             tableLayoutPanelShortcuts.RowCount = 2;
@@ -184,6 +199,7 @@ namespace Expandit
             dataGridView.AllowUserToOrderColumns = true;
             dataGridView.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             dataGridView.AutoGenerateColumns = false;
+            dataGridView.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
             dataGridView.BackgroundColor = SystemColors.Control;
             dataGridView.BorderStyle = BorderStyle.None;
             dataGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
@@ -214,6 +230,7 @@ namespace Expandit
             // 
             nameDataGridViewTextBoxColumn.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
             nameDataGridViewTextBoxColumn.DataPropertyName = "Name";
+            nameDataGridViewTextBoxColumn.FillWeight = 85.07134F;
             nameDataGridViewTextBoxColumn.HeaderText = "Name";
             nameDataGridViewTextBoxColumn.MinimumWidth = 140;
             nameDataGridViewTextBoxColumn.Name = "nameDataGridViewTextBoxColumn";
@@ -223,6 +240,7 @@ namespace Expandit
             // 
             keyDataGridViewTextBoxColumn.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
             keyDataGridViewTextBoxColumn.DataPropertyName = "Key";
+            keyDataGridViewTextBoxColumn.FillWeight = 88.4174652F;
             keyDataGridViewTextBoxColumn.HeaderText = "Key";
             keyDataGridViewTextBoxColumn.MinimumWidth = 140;
             keyDataGridViewTextBoxColumn.Name = "keyDataGridViewTextBoxColumn";
@@ -232,6 +250,7 @@ namespace Expandit
             // 
             valueDataGridViewTextBoxColumn.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
             valueDataGridViewTextBoxColumn.DataPropertyName = "Value";
+            valueDataGridViewTextBoxColumn.FillWeight = 203.36293F;
             valueDataGridViewTextBoxColumn.HeaderText = "Value";
             valueDataGridViewTextBoxColumn.MinimumWidth = 350;
             valueDataGridViewTextBoxColumn.Name = "valueDataGridViewTextBoxColumn";
@@ -239,6 +258,7 @@ namespace Expandit
             // 
             // buttonEditInCell
             // 
+            buttonEditInCell.FillWeight = 58.6400261F;
             buttonEditInCell.HeaderText = "";
             buttonEditInCell.MinimumWidth = 6;
             buttonEditInCell.Name = "buttonEditInCell";
@@ -247,34 +267,35 @@ namespace Expandit
             buttonEditInCell.SortMode = DataGridViewColumnSortMode.Automatic;
             buttonEditInCell.Text = "Edit";
             buttonEditInCell.UseColumnTextForButtonValue = true;
-            buttonEditInCell.Width = 125;
+            buttonEditInCell.Width = 106;
             // 
             // buttonDeleteInCell
             // 
+            buttonDeleteInCell.FillWeight = 64.50813F;
             buttonDeleteInCell.HeaderText = "";
             buttonDeleteInCell.MinimumWidth = 6;
             buttonDeleteInCell.Name = "buttonDeleteInCell";
             buttonDeleteInCell.ReadOnly = true;
             buttonDeleteInCell.Text = "Delete";
             buttonDeleteInCell.UseColumnTextForButtonValue = true;
-            buttonDeleteInCell.Width = 125;
+            buttonDeleteInCell.Width = 118;
             // 
             // currentTextLabel
             // 
             currentTextLabel.AutoSize = true;
             currentTextLabel.Location = new Point(10, 3);
             currentTextLabel.Name = "currentTextLabel";
-            currentTextLabel.Size = new Size(0, 32);
+            currentTextLabel.Size = new Size(0, 25);
             currentTextLabel.TabIndex = 3;
             currentTextLabel.Visible = false;
             // 
             // tabPagePreferences
             // 
             tabPagePreferences.Controls.Add(tableLayoutPanel1);
-            tabPagePreferences.Location = new Point(4, 29);
+            tabPagePreferences.Location = new Point(4, 24);
             tabPagePreferences.Name = "tabPagePreferences";
             tabPagePreferences.Padding = new Padding(3);
-            tabPagePreferences.Size = new Size(974, 585);
+            tabPagePreferences.Size = new Size(974, 590);
             tabPagePreferences.TabIndex = 1;
             tabPagePreferences.Text = "Preferences";
             tabPagePreferences.UseVisualStyleBackColor = true;
@@ -298,7 +319,7 @@ namespace Expandit
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 34F));
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 33F));
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
-            tableLayoutPanel1.Size = new Size(968, 579);
+            tableLayoutPanel1.Size = new Size(968, 584);
             tableLayoutPanel1.TabIndex = 0;
             // 
             // groupBox2
@@ -306,9 +327,9 @@ namespace Expandit
             groupBox2.Controls.Add(checkBoxIsStrictMatching);
             groupBox2.Controls.Add(checkBoxStartup);
             groupBox2.Dock = DockStyle.Fill;
-            groupBox2.Location = new Point(3, 194);
+            groupBox2.Location = new Point(3, 195);
             groupBox2.Name = "groupBox2";
-            groupBox2.Size = new Size(478, 190);
+            groupBox2.Size = new Size(478, 192);
             groupBox2.TabIndex = 1;
             groupBox2.TabStop = false;
             // 
@@ -317,7 +338,7 @@ namespace Expandit
             checkBoxIsStrictMatching.AutoSize = true;
             checkBoxIsStrictMatching.Location = new Point(15, 80);
             checkBoxIsStrictMatching.Name = "checkBoxIsStrictMatching";
-            checkBoxIsStrictMatching.Size = new Size(197, 36);
+            checkBoxIsStrictMatching.Size = new Size(158, 29);
             checkBoxIsStrictMatching.TabIndex = 1;
             checkBoxIsStrictMatching.Text = "Strict Matching";
             checkBoxIsStrictMatching.UseVisualStyleBackColor = true;
@@ -328,7 +349,7 @@ namespace Expandit
             checkBoxStartup.AutoSize = true;
             checkBoxStartup.Location = new Point(15, 38);
             checkBoxStartup.Name = "checkBoxStartup";
-            checkBoxStartup.Size = new Size(194, 36);
+            checkBoxStartup.Size = new Size(155, 29);
             checkBoxStartup.TabIndex = 0;
             checkBoxStartup.Text = "Run on startup";
             checkBoxStartup.UseVisualStyleBackColor = true;
@@ -337,9 +358,9 @@ namespace Expandit
             // groupBox3
             // 
             groupBox3.Dock = DockStyle.Fill;
-            groupBox3.Location = new Point(3, 390);
+            groupBox3.Location = new Point(3, 393);
             groupBox3.Name = "groupBox3";
-            groupBox3.Size = new Size(478, 186);
+            groupBox3.Size = new Size(478, 188);
             groupBox3.TabIndex = 2;
             groupBox3.TabStop = false;
             // 
@@ -348,16 +369,16 @@ namespace Expandit
             groupBox4.Dock = DockStyle.Fill;
             groupBox4.Location = new Point(487, 3);
             groupBox4.Name = "groupBox4";
-            groupBox4.Size = new Size(478, 185);
+            groupBox4.Size = new Size(478, 186);
             groupBox4.TabIndex = 4;
             groupBox4.TabStop = false;
             // 
             // groupBox5
             // 
             groupBox5.Dock = DockStyle.Fill;
-            groupBox5.Location = new Point(487, 194);
+            groupBox5.Location = new Point(487, 195);
             groupBox5.Name = "groupBox5";
-            groupBox5.Size = new Size(478, 190);
+            groupBox5.Size = new Size(478, 192);
             groupBox5.TabIndex = 5;
             groupBox5.TabStop = false;
             // 
@@ -369,7 +390,7 @@ namespace Expandit
             groupBox1.Dock = DockStyle.Fill;
             groupBox1.Location = new Point(3, 3);
             groupBox1.Name = "groupBox1";
-            groupBox1.Size = new Size(478, 185);
+            groupBox1.Size = new Size(478, 186);
             groupBox1.TabIndex = 1;
             groupBox1.TabStop = false;
             groupBox1.Text = "Trigger Key";
@@ -379,7 +400,7 @@ namespace Expandit
             checkBoxTab.AutoSize = true;
             checkBoxTab.Location = new Point(271, 43);
             checkBoxTab.Name = "checkBoxTab";
-            checkBoxTab.Size = new Size(72, 36);
+            checkBoxTab.Size = new Size(60, 29);
             checkBoxTab.TabIndex = 2;
             checkBoxTab.Text = "Tab";
             checkBoxTab.UseVisualStyleBackColor = true;
@@ -390,7 +411,7 @@ namespace Expandit
             checkBoxEnter.AutoSize = true;
             checkBoxEnter.Location = new Point(147, 43);
             checkBoxEnter.Name = "checkBoxEnter";
-            checkBoxEnter.Size = new Size(91, 36);
+            checkBoxEnter.Size = new Size(75, 29);
             checkBoxEnter.TabIndex = 1;
             checkBoxEnter.Text = "Enter";
             checkBoxEnter.UseVisualStyleBackColor = true;
@@ -401,7 +422,7 @@ namespace Expandit
             checkBoxSpace.AutoSize = true;
             checkBoxSpace.Location = new Point(15, 43);
             checkBoxSpace.Name = "checkBoxSpace";
-            checkBoxSpace.Size = new Size(99, 36);
+            checkBoxSpace.Size = new Size(81, 29);
             checkBoxSpace.TabIndex = 0;
             checkBoxSpace.Text = "Space";
             checkBoxSpace.UseVisualStyleBackColor = true;
@@ -411,9 +432,9 @@ namespace Expandit
             // 
             groupBox6.Controls.Add(buttonSaveSettings);
             groupBox6.Dock = DockStyle.Fill;
-            groupBox6.Location = new Point(487, 390);
+            groupBox6.Location = new Point(487, 393);
             groupBox6.Name = "groupBox6";
-            groupBox6.Size = new Size(478, 186);
+            groupBox6.Size = new Size(478, 188);
             groupBox6.TabIndex = 6;
             groupBox6.TabStop = false;
             // 
@@ -421,7 +442,7 @@ namespace Expandit
             // 
             buttonSaveSettings.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             buttonSaveSettings.Enabled = false;
-            buttonSaveSettings.Location = new Point(334, 132);
+            buttonSaveSettings.Location = new Point(334, 134);
             buttonSaveSettings.Name = "buttonSaveSettings";
             buttonSaveSettings.Size = new Size(138, 48);
             buttonSaveSettings.TabIndex = 0;
@@ -429,12 +450,141 @@ namespace Expandit
             buttonSaveSettings.UseVisualStyleBackColor = true;
             buttonSaveSettings.Click += buttonSaveSettings_Click;
             // 
+            // tabPageStatistics
+            // 
+            tabPageStatistics.Controls.Add(labelDailyKeypresses);
+            tabPageStatistics.Controls.Add(dataGridStatistics);
+            tabPageStatistics.Controls.Add(labelStatsHeader);
+            tabPageStatistics.Controls.Add(labelTotalExpansions);
+            tabPageStatistics.Controls.Add(labelTotalCharsSaved);
+            tabPageStatistics.Controls.Add(labelTotalTimeSaved);
+            tabPageStatistics.Controls.Add(dateTimePickerFilter);
+            tabPageStatistics.Controls.Add(btnRefreshStats);
+            tabPageStatistics.Location = new Point(4, 24);
+            tabPageStatistics.Name = "tabPageStatistics";
+            tabPageStatistics.Padding = new Padding(3);
+            tabPageStatistics.Size = new Size(974, 590);
+            tabPageStatistics.TabIndex = 3;
+            tabPageStatistics.Text = "Statistics";
+            tabPageStatistics.UseVisualStyleBackColor = true;
+            // 
+            // labelDailyKeypresses
+            // 
+            labelDailyKeypresses.AutoSize = true;
+            labelDailyKeypresses.Font = new Font("Segoe UI", 16F, FontStyle.Bold);
+            labelDailyKeypresses.Location = new Point(33, 243);
+            labelDailyKeypresses.Name = "labelDailyKeypresses";
+            labelDailyKeypresses.Size = new Size(283, 30);
+            labelDailyKeypresses.TabIndex = 9;
+            labelDailyKeypresses.Text = "Daily keypresses per app :";
+            // 
+            // dataGridStatistics
+            // 
+            dataGridStatistics.AllowUserToAddRows = false;
+            dataGridStatistics.AllowUserToDeleteRows = false;
+            dataGridStatistics.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            dataGridStatistics.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dataGridStatistics.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
+            dataGridStatistics.BackgroundColor = SystemColors.Control;
+            dataGridStatistics.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridStatistics.Columns.AddRange(new DataGridViewColumn[] { colDate, colAppName, colKeyPresses });
+            dataGridStatistics.Location = new Point(33, 305);
+            dataGridStatistics.Name = "dataGridStatistics";
+            dataGridStatistics.ReadOnly = true;
+            dataGridStatistics.RowHeadersWidth = 51;
+            dataGridStatistics.Size = new Size(933, 241);
+            dataGridStatistics.TabIndex = 5;
+            // 
+            // colDate
+            // 
+            colDate.HeaderText = "Date";
+            colDate.MinimumWidth = 6;
+            colDate.Name = "colDate";
+            colDate.ReadOnly = true;
+            // 
+            // colAppName
+            // 
+            colAppName.HeaderText = "Application";
+            colAppName.MinimumWidth = 6;
+            colAppName.Name = "colAppName";
+            colAppName.ReadOnly = true;
+            // 
+            // colKeyPresses
+            // 
+            colKeyPresses.HeaderText = "Keypresses";
+            colKeyPresses.MinimumWidth = 6;
+            colKeyPresses.Name = "colKeyPresses";
+            colKeyPresses.ReadOnly = true;
+            // 
+            // labelStatsHeader
+            // 
+            labelStatsHeader.AutoSize = true;
+            labelStatsHeader.Font = new Font("Segoe UI", 24F, FontStyle.Bold);
+            labelStatsHeader.Location = new Point(23, 23);
+            labelStatsHeader.Name = "labelStatsHeader";
+            labelStatsHeader.Size = new Size(315, 45);
+            labelStatsHeader.TabIndex = 0;
+            labelStatsHeader.Text = "Productivity Report";
+            // 
+            // labelTotalExpansions
+            // 
+            labelTotalExpansions.AutoSize = true;
+            labelTotalExpansions.Font = new Font("Segoe UI", 16F);
+            labelTotalExpansions.Location = new Point(33, 96);
+            labelTotalExpansions.Name = "labelTotalExpansions";
+            labelTotalExpansions.Size = new Size(193, 30);
+            labelTotalExpansions.TabIndex = 1;
+            labelTotalExpansions.Text = "Total Expansions: 0";
+            // 
+            // labelTotalCharsSaved
+            // 
+            labelTotalCharsSaved.AutoSize = true;
+            labelTotalCharsSaved.Font = new Font("Segoe UI", 16F);
+            labelTotalCharsSaved.Location = new Point(33, 145);
+            labelTotalCharsSaved.Name = "labelTotalCharsSaved";
+            labelTotalCharsSaved.Size = new Size(203, 30);
+            labelTotalCharsSaved.TabIndex = 2;
+            labelTotalCharsSaved.Text = "Characters Saved: 0";
+            // 
+            // labelTotalTimeSaved
+            // 
+            labelTotalTimeSaved.AutoSize = true;
+            labelTotalTimeSaved.Font = new Font("Segoe UI", 16F);
+            labelTotalTimeSaved.Location = new Point(33, 194);
+            labelTotalTimeSaved.Name = "labelTotalTimeSaved";
+            labelTotalTimeSaved.Size = new Size(168, 30);
+            labelTotalTimeSaved.TabIndex = 3;
+            labelTotalTimeSaved.Text = "Time Saved: 0m";
+            // 
+            // dateTimePickerFilter
+            // 
+            dateTimePickerFilter.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            dateTimePickerFilter.Font = new Font("Segoe UI", 12F);
+            dateTimePickerFilter.Format = DateTimePickerFormat.Short;
+            dateTimePickerFilter.Location = new Point(683, 245);
+            dateTimePickerFilter.Name = "dateTimePickerFilter";
+            dateTimePickerFilter.Size = new Size(150, 29);
+            dateTimePickerFilter.TabIndex = 5;
+            dateTimePickerFilter.ValueChanged += dateTimePickerFilter_ValueChanged;
+            // 
+            // btnRefreshStats
+            // 
+            btnRefreshStats.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            btnRefreshStats.Font = new Font("Segoe UI", 10F);
+            btnRefreshStats.Location = new Point(857, 243);
+            btnRefreshStats.Name = "btnRefreshStats";
+            btnRefreshStats.Size = new Size(100, 40);
+            btnRefreshStats.TabIndex = 8;
+            btnRefreshStats.Text = "Refresh";
+            btnRefreshStats.UseVisualStyleBackColor = true;
+            btnRefreshStats.Click += btnRefreshStats_Click;
+            // 
             // tabPageAbout
             // 
             tabPageAbout.Controls.Add(tableLayoutPanel2);
-            tabPageAbout.Location = new Point(4, 29);
+            tabPageAbout.Location = new Point(4, 24);
             tabPageAbout.Name = "tabPageAbout";
-            tabPageAbout.Size = new Size(974, 585);
+            tabPageAbout.Size = new Size(974, 590);
             tabPageAbout.TabIndex = 2;
             tabPageAbout.Text = "About";
             tabPageAbout.UseVisualStyleBackColor = true;
@@ -452,7 +602,7 @@ namespace Expandit
             tableLayoutPanel2.RowCount = 1;
             tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
             tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
-            tableLayoutPanel2.Size = new Size(974, 585);
+            tableLayoutPanel2.Size = new Size(974, 590);
             tableLayoutPanel2.TabIndex = 0;
             // 
             // groupBoxAboutApplication
@@ -467,7 +617,7 @@ namespace Expandit
             groupBoxAboutApplication.Dock = DockStyle.Fill;
             groupBoxAboutApplication.Location = new Point(3, 3);
             groupBoxAboutApplication.Name = "groupBoxAboutApplication";
-            groupBoxAboutApplication.Size = new Size(481, 579);
+            groupBoxAboutApplication.Size = new Size(481, 584);
             groupBoxAboutApplication.TabIndex = 0;
             groupBoxAboutApplication.TabStop = false;
             groupBoxAboutApplication.Text = "About Application";
@@ -477,7 +627,7 @@ namespace Expandit
             label8.AutoSize = true;
             label8.Location = new Point(155, 114);
             label8.Name = "label8";
-            label8.Size = new Size(63, 32);
+            label8.Size = new Size(50, 25);
             label8.TabIndex = 6;
             label8.Text = "1.0.1";
             // 
@@ -486,7 +636,7 @@ namespace Expandit
             label7.AutoSize = true;
             label7.Location = new Point(113, 71);
             label7.Name = "label7";
-            label7.Size = new Size(105, 32);
+            label7.Size = new Size(85, 25);
             label7.TabIndex = 5;
             label7.Text = "Expandit";
             // 
@@ -495,7 +645,7 @@ namespace Expandit
             label6.AutoSize = true;
             label6.Location = new Point(72, 208);
             label6.Name = "label6";
-            label6.Size = new Size(215, 32);
+            label6.Size = new Size(170, 25);
             label6.TabIndex = 4;
             label6.Text = " .NET8 + Winforms";
             // 
@@ -504,7 +654,7 @@ namespace Expandit
             linkLabelSourceCode.AutoSize = true;
             linkLabelSourceCode.Location = new Point(293, 208);
             linkLabelSourceCode.Name = "linkLabelSourceCode";
-            linkLabelSourceCode.Size = new Size(157, 32);
+            linkLabelSourceCode.Size = new Size(126, 25);
             linkLabelSourceCode.TabIndex = 3;
             linkLabelSourceCode.TabStop = true;
             linkLabelSourceCode.Text = "(source code)";
@@ -516,7 +666,7 @@ namespace Expandit
             label3.Font = new Font("Segoe UI", 14F, FontStyle.Bold);
             label3.Location = new Point(0, 160);
             label3.Name = "label3";
-            label3.Size = new Size(238, 32);
+            label3.Size = new Size(184, 25);
             label3.TabIndex = 2;
             label3.Text = "Technologies used :";
             // 
@@ -526,7 +676,7 @@ namespace Expandit
             label2.Font = new Font("Segoe UI", 14F, FontStyle.Bold);
             label2.Location = new Point(0, 114);
             label2.Name = "label2";
-            label2.Size = new Size(120, 32);
+            label2.Size = new Size(94, 25);
             label2.TabIndex = 1;
             label2.Text = "Version : ";
             // 
@@ -536,7 +686,7 @@ namespace Expandit
             label1.Font = new Font("Segoe UI", 14F, FontStyle.Bold);
             label1.Location = new Point(0, 71);
             label1.Name = "label1";
-            label1.Size = new Size(102, 32);
+            label1.Size = new Size(79, 25);
             label1.TabIndex = 0;
             label1.Text = "Name : ";
             label1.Click += label1_Click;
@@ -553,7 +703,7 @@ namespace Expandit
             groupBoxAboutDeveloper.Dock = DockStyle.Fill;
             groupBoxAboutDeveloper.Location = new Point(490, 3);
             groupBoxAboutDeveloper.Name = "groupBoxAboutDeveloper";
-            groupBoxAboutDeveloper.Size = new Size(481, 579);
+            groupBoxAboutDeveloper.Size = new Size(481, 584);
             groupBoxAboutDeveloper.TabIndex = 1;
             groupBoxAboutDeveloper.TabStop = false;
             groupBoxAboutDeveloper.Text = "About Developer";
@@ -564,7 +714,7 @@ namespace Expandit
             linkLabelEmail.LinkColor = Color.Black;
             linkLabelEmail.Location = new Point(143, 279);
             linkLabelEmail.Name = "linkLabelEmail";
-            linkLabelEmail.Size = new Size(323, 32);
+            linkLabelEmail.Size = new Size(255, 25);
             linkLabelEmail.TabIndex = 8;
             linkLabelEmail.TabStop = true;
             linkLabelEmail.Text = "ulmasaliyev2005@gmail.com";
@@ -575,7 +725,7 @@ namespace Expandit
             label9.Font = new Font("Segoe UI", 14F, FontStyle.Bold);
             label9.Location = new Point(6, 279);
             label9.Name = "label9";
-            label9.Size = new Size(123, 32);
+            label9.Size = new Size(96, 25);
             label9.TabIndex = 7;
             label9.Text = "Contact : ";
             // 
@@ -584,7 +734,7 @@ namespace Expandit
             linkLabelLeetCode.AutoSize = true;
             linkLabelLeetCode.Location = new Point(351, 208);
             linkLabelLeetCode.Name = "linkLabelLeetCode";
-            linkLabelLeetCode.Size = new Size(115, 32);
+            linkLabelLeetCode.Size = new Size(91, 25);
             linkLabelLeetCode.TabIndex = 3;
             linkLabelLeetCode.TabStop = true;
             linkLabelLeetCode.Text = "LeetCode";
@@ -595,7 +745,7 @@ namespace Expandit
             linkLabelGithub.AutoSize = true;
             linkLabelGithub.Location = new Point(380, 160);
             linkLabelGithub.Name = "linkLabelGithub";
-            linkLabelGithub.Size = new Size(86, 32);
+            linkLabelGithub.Size = new Size(69, 25);
             linkLabelGithub.TabIndex = 3;
             linkLabelGithub.TabStop = true;
             linkLabelGithub.Text = "Github";
@@ -606,7 +756,7 @@ namespace Expandit
             linkLabelLinkedIn.AutoSize = true;
             linkLabelLinkedIn.Location = new Point(362, 114);
             linkLabelLinkedIn.Name = "linkLabelLinkedIn";
-            linkLabelLinkedIn.Size = new Size(104, 32);
+            linkLabelLinkedIn.Size = new Size(83, 25);
             linkLabelLinkedIn.TabIndex = 2;
             linkLabelLinkedIn.TabStop = true;
             linkLabelLinkedIn.Text = "Linkedin";
@@ -617,7 +767,7 @@ namespace Expandit
             label5.AutoSize = true;
             label5.Location = new Point(6, 114);
             label5.Name = "label5";
-            label5.Size = new Size(327, 32);
+            label5.Size = new Size(259, 25);
             label5.TabIndex = 1;
             label5.Text = "Muxammadamin Ulmasaliyev";
             label5.Click += label5_Click;
@@ -628,7 +778,7 @@ namespace Expandit
             label4.Font = new Font("Segoe UI", 14F, FontStyle.Bold);
             label4.Location = new Point(6, 71);
             label4.Name = "label4";
-            label4.Size = new Size(159, 32);
+            label4.Size = new Size(123, 25);
             label4.TabIndex = 0;
             label4.Text = "Developer :  ";
             // 
@@ -640,7 +790,7 @@ namespace Expandit
             menuStrip1.Items.AddRange(new ToolStripItem[] { fileToolStripMenuItem });
             menuStrip1.Location = new Point(0, 0);
             menuStrip1.Name = "menuStrip1";
-            menuStrip1.Size = new Size(57, 31);
+            menuStrip1.Size = new Size(49, 27);
             menuStrip1.TabIndex = 4;
             menuStrip1.Text = "menuStrip1";
             // 
@@ -649,14 +799,14 @@ namespace Expandit
             fileToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { importShortcutsToolStripMenuItem, exportShortcutsToolStripMenuItem });
             fileToolStripMenuItem.Font = new Font("Segoe UI", 10F);
             fileToolStripMenuItem.Name = "fileToolStripMenuItem";
-            fileToolStripMenuItem.Size = new Size(49, 27);
+            fileToolStripMenuItem.Size = new Size(41, 23);
             fileToolStripMenuItem.Text = "File";
             // 
             // importShortcutsToolStripMenuItem
             // 
             importShortcutsToolStripMenuItem.Font = new Font("Segoe UI", 10F);
             importShortcutsToolStripMenuItem.Name = "importShortcutsToolStripMenuItem";
-            importShortcutsToolStripMenuItem.Size = new Size(221, 28);
+            importShortcutsToolStripMenuItem.Size = new Size(181, 24);
             importShortcutsToolStripMenuItem.Text = "Import shortcuts";
             importShortcutsToolStripMenuItem.Click += importShortcutsToolStripMenuItem_Click;
             // 
@@ -664,15 +814,15 @@ namespace Expandit
             // 
             exportShortcutsToolStripMenuItem.Font = new Font("Segoe UI", 10F);
             exportShortcutsToolStripMenuItem.Name = "exportShortcutsToolStripMenuItem";
-            exportShortcutsToolStripMenuItem.Size = new Size(221, 28);
+            exportShortcutsToolStripMenuItem.Size = new Size(181, 24);
             exportShortcutsToolStripMenuItem.Text = "Export shortcuts";
             exportShortcutsToolStripMenuItem.Click += exportShortcutsToolStripMenuItem_Click;
             // 
             // MainWindow
             // 
-            AutoScaleDimensions = new SizeF(13F, 31F);
+            AutoScaleDimensions = new SizeF(11F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(982, 653);
+            ClientSize = new Size(984, 661);
             Controls.Add(tabControl);
             Controls.Add(menuStrip1);
             Font = new Font("Segoe UI", 14F);
@@ -682,8 +832,9 @@ namespace Expandit
             Margin = new Padding(5);
             MinimumSize = new Size(1000, 700);
             Name = "MainWindow";
+            RightToLeftLayout = true;
             StartPosition = FormStartPosition.CenterScreen;
-            Text = "Expandit v1.0.1";
+            Text = "Expandit v1.1";
             Load += MainWindow_Load;
             ((System.ComponentModel.ISupportInitialize)textShortcutModelBindingSource1).EndInit();
             ((System.ComponentModel.ISupportInitialize)textShortcutModelBindingSource).EndInit();
@@ -700,6 +851,9 @@ namespace Expandit
             groupBox1.ResumeLayout(false);
             groupBox1.PerformLayout();
             groupBox6.ResumeLayout(false);
+            tabPageStatistics.ResumeLayout(false);
+            tabPageStatistics.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)dataGridStatistics).EndInit();
             tabPageAbout.ResumeLayout(false);
             tableLayoutPanel2.ResumeLayout(false);
             groupBoxAboutApplication.ResumeLayout(false);
@@ -765,5 +919,17 @@ namespace Expandit
         private DataGridViewTextBoxColumn valueDataGridViewTextBoxColumn;
         private DataGridViewButtonColumn buttonEditInCell;
         private DataGridViewButtonColumn buttonDeleteInCell;
+        private TabPage tabPageStatistics;
+        private Label labelTotalExpansions;
+        private Label labelTotalCharsSaved;
+        private Label labelTotalTimeSaved;
+        private Label labelStatsHeader;
+        private DateTimePicker dateTimePickerFilter;
+        private Button btnRefreshStats;
+        private DataGridView dataGridStatistics;
+        private DataGridViewTextBoxColumn colDate;
+        private DataGridViewTextBoxColumn colAppName;
+        private DataGridViewTextBoxColumn colKeyPresses;
+        private Label labelDailyKeypresses;
     }
 }

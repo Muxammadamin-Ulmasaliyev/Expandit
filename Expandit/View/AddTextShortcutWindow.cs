@@ -14,8 +14,6 @@ public partial class AddTextShortcutWindow : Form
 		CheckButtonState();
 	}
 
-
-
 	private void CheckButtonState()
 	{
 		if (IsModelStateValid())
@@ -91,8 +89,6 @@ public partial class AddTextShortcutWindow : Form
 
 	}
 
-
-
 	private void ClearAllTextBoxes()
 	{
 		textBoxKey.Text = string.Empty;
@@ -100,7 +96,6 @@ public partial class AddTextShortcutWindow : Form
 		textBoxValue.Text = string.Empty;
 
 	}
-
 
 	private void buttonCancel_Click(object sender, EventArgs e)
 	{

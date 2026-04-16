@@ -48,7 +48,7 @@
             textBoxName.Location = new Point(138, 44);
             textBoxName.Margin = new Padding(5);
             textBoxName.Name = "textBoxName";
-            textBoxName.Size = new Size(759, 39);
+            textBoxName.Size = new Size(759, 32);
             textBoxName.TabIndex = 0;
             textBoxName.TextChanged += textBox_TextChanged;
             // 
@@ -57,7 +57,7 @@
             textBoxKey.Location = new Point(138, 120);
             textBoxKey.Margin = new Padding(5);
             textBoxKey.Name = "textBoxKey";
-            textBoxKey.Size = new Size(329, 39);
+            textBoxKey.Size = new Size(329, 32);
             textBoxKey.TabIndex = 1;
             textBoxKey.TextChanged += textBox_TextChanged;
             // 
@@ -86,7 +86,7 @@
             label1.AutoSize = true;
             label1.Location = new Point(42, 47);
             label1.Name = "label1";
-            label1.Size = new Size(88, 32);
+            label1.Size = new Size(70, 25);
             label1.TabIndex = 5;
             label1.Text = "*Name";
             // 
@@ -95,7 +95,7 @@
             label2.AutoSize = true;
             label2.Location = new Point(14, 126);
             label2.Name = "label2";
-            label2.Size = new Size(116, 32);
+            label2.Size = new Size(93, 25);
             label2.TabIndex = 6;
             label2.Text = "*Keyword";
             // 
@@ -104,7 +104,7 @@
             label3.AutoSize = true;
             label3.Location = new Point(48, 205);
             label3.Name = "label3";
-            label3.Size = new Size(82, 32);
+            label3.Size = new Size(67, 25);
             label3.TabIndex = 7;
             label3.Text = "*Value";
             // 
@@ -115,7 +115,7 @@
             label4.ForeColor = Color.DarkRed;
             label4.Location = new Point(14, 459);
             label4.Name = "label4";
-            label4.Size = new Size(159, 23);
+            label4.Size = new Size(128, 19);
             label4.TabIndex = 8;
             label4.Text = "* are required fields";
             // 
@@ -131,7 +131,7 @@
             // 
             // AddTextShortcutWindow
             // 
-            AutoScaleDimensions = new SizeF(13F, 31F);
+            AutoScaleDimensions = new SizeF(11F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(918, 497);
             Controls.Add(buttonCancel);

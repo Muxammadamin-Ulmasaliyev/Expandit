@@ -1,5 +1,3 @@
-//#define DYNAMIC_PLACEHOLDERS
-
 using Helper;
 using Microsoft.Win32;
 using Expandit.Models;
@@ -13,6 +11,7 @@ using WindowsInput;
 using Expandit.Data;
 using Expandit.Helpers;
 using System.Diagnostics;
+using static Expandit.Data.GlobalVariables;
 
 namespace Expandit;
 
@@ -26,6 +25,9 @@ public partial class MainWindow : Form
     [DllImport("user32.dll")]
     static extern IntPtr SendMessage(IntPtr hWnd, int Msg, IntPtr wParam, IntPtr lParam);
 
+    [DllImport("user32.dll")]
+    static extern uint GetWindowThreadProcessId(IntPtr hWnd, out uint processId);
+
     const int VK_BACKSPACE = 0x08;
     const int WM_KEYDOWN = 0x0100;
     const int WM_KEYUP = 0x0101;
@@ -37,38 +39,23 @@ public partial class MainWindow : Form
     private bool ctrl, shift, alt;
     private bool isApplicationDisabled = false;
     private string currentText = string.Empty;
+    private volatile bool _isExpanding = false;
 
     private List<TextShortcut> textShortcuts;
     private TextShortcutsService _textShortcutService;
-
-#if DYNAMIC_PLACEHOLDERS
-    private List<DynamicPlaceholder> placeholders;
-    private DynamicPlaceholderService _placeholderService;
-#else
-#endif
-
+    private StatisticsService _statsService;
+    private Trie<TextShortcut> _shortcutTrie = new Trie<TextShortcut>();
 
     private NotifyIcon notifyIcon;
     private ContextMenuStrip contextMenuStrip;
-
 
     public MainWindow()
     {
         InitializeComponent();
 
-        kh.KeyDown += Kh_KeyDown;
-        kh.KeyUp += Kh_KeyUp;
-
-#if DYNAMIC_PLACEHOLDERS
-        _placeholderService = new();
-        UpdateInMemoryPlaceholders();
-#else
-#endif
-
-
         _textShortcutService = new();
+        _statsService = new();
         UpdateInMemoryTextShortcuts();
-
 
         PopulateDataGrid();
 
@@ -76,7 +63,50 @@ public partial class MainWindow : Form
         AddApplicationToStartup();
 
         InitializeForegroundWindowChecker();
+
+        kh.KeyDown += Kh_KeyDown;
+        kh.KeyUp += Kh_KeyUp;
+
+        LoadAppLogo();
     }
+
+    private void LoadAppLogo()
+    {
+        try
+        {
+            string fullPath = System.IO.Path.Combine(Application.StartupPath, LOGO_NAME);
+            if (System.IO.File.Exists(fullPath))
+            {
+                // Set form icon from png
+                using (Bitmap bmp = new Bitmap(fullPath))
+                {
+                    IntPtr hIcon = bmp.GetHicon();
+                    try
+                    {
+                        using (Icon icon = Icon.FromHandle(hIcon))
+                        {
+                            this.Icon = (Icon)icon.Clone();
+                            if (notifyIcon != null)
+                            {
+                                notifyIcon.Icon = (Icon)icon.Clone();
+                            }
+                        }
+                    }
+                    finally
+                    {
+                        DestroyIcon(hIcon);
+                    }
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine($"Failed to load logo: {ex.Message}");
+        }
+    }
+
+    [DllImport("user32.dll", CharSet = CharSet.Auto)]
+    extern static bool DestroyIcon(IntPtr handle);
 
     private void MainWindow_Load(object sender, EventArgs e)
     {
@@ -132,6 +162,22 @@ public partial class MainWindow : Form
         currentTextLabel.Text = string.Empty;
         //MessageBox.Show($"Foreground window changed to: {windowTitle}", "Foreground Window Changed");
     }
+
+    private string GetActiveProcessName()
+    {
+        IntPtr hwnd = GetForegroundWindow();
+        if (hwnd == IntPtr.Zero) return "Unknown";
+        uint pid;
+        GetWindowThreadProcessId(hwnd, out pid);
+        try
+        {
+            using (var proc = Process.GetProcessById((int)pid))
+            {
+                return proc.ProcessName;
+            }
+        }
+        catch { return "Unknown"; }
+    }
     #endregion
     // *****************************************************************************************************//
 
@@ -143,19 +189,29 @@ public partial class MainWindow : Form
     {
         notifyIcon = new NotifyIcon();
 
-        string iconPath = System.IO.Path.Combine(Application.StartupPath, "icon.ico");
+        string brandIconPath = Path.Combine(Application.StartupPath, LOGO_NAME);
 
-        notifyIcon.Icon = new Icon(iconPath);
+        if (File.Exists(brandIconPath))
+        {
+            using (Bitmap bmp = new Bitmap(brandIconPath))
+            {
+                notifyIcon.Icon = Icon.FromHandle(bmp.GetHicon());
+            }
+        }
+        else
+        {
+            string iconPath = Path.Combine(Application.StartupPath, "icon.ico");
+            if (File.Exists(iconPath))
+            {
+                notifyIcon.Icon = new Icon(iconPath);
+            }
+        }
 
 
         notifyIcon.Visible = true;
 
         notifyIcon.Text = GlobalVariables.APP_NAME;
 
-        //Image openImage = ByteArrayToImage(Properties.Resources.btnOpen);
-        //Image openImage = Properties.Resources.btnOpen;
-        //Image exitImage = ByteArrayToImage(Properties.Resources.btnExit);
-        //Image exitImage = Properties.Resources.btnExit;
 
         ToolStripMenuItem menuItemOpen = new ToolStripMenuItem("Open", null, onClick: (s, e) => ShowMainWindow());
         ToolStripMenuItem menuItemExit = new ToolStripMenuItem("Exit", null, onClick: (s, e) => ExitApplication());
@@ -179,9 +235,6 @@ public partial class MainWindow : Form
         // Handle events
         this.FormClosing += MainForm_FormClosing;
         notifyIcon.DoubleClick += (s, e) => ShowMainWindow();
-
-
-
     }
     private void CheckStateOfContextMenuStripButtons()
     {
@@ -232,6 +285,7 @@ public partial class MainWindow : Form
     private void ExitApplication()
     {
         notifyIcon.Visible = false;
+        _statsService?.Dispose();
         Application.Exit();
     }
 
@@ -299,6 +353,12 @@ public partial class MainWindow : Form
 
     private void Kh_KeyDown(object sender, System.Windows.Forms.KeyEventArgs e)
     {
+        if (_isExpanding) return;
+
+        // Record keypress for statistics
+        string activeApp = GetActiveProcessName();
+        _statsService?.RecordKeypress(activeApp);
+
         if (isApplicationDisabled)
         {
             return;
@@ -325,18 +385,6 @@ public partial class MainWindow : Form
                 ReplaceKeyWithValue(textShortcutModel);
             }
 
-            //#if DYNAMIC_PLACEHOLDERS
-            //            else
-            //            {
-            //                var dynamicPlaceholderModel = GetPlaceholderModel(currentText);
-            //                if (dynamicPlaceholderModel != null)
-            //                {
-            //                    ReplaceKeyWithValue(dynamicPlaceholderModel);
-            //                }
-            //            }
-            //#else
-            //#endif
-
             currentText = string.Empty;
             currentTextLabel.Text = string.Empty;
             return;
@@ -352,7 +400,6 @@ public partial class MainWindow : Form
         {
             currentText += e.KeyCode.ToString();
             currentTextLabel.Text += e.KeyCode.ToString();
-
         }
         else
         {
@@ -362,42 +409,39 @@ public partial class MainWindow : Form
 
     }
 
-
     private void ReplaceKeyWithValue(TextShortcut shortcutModel)
     {
-        var sim = new InputSimulator();
-        for (int i = 0; i < shortcutModel.Key.Length; i++)
+        _isExpanding = true;
+        try
         {
-            sim.Keyboard.KeyPress(VirtualKeyCode.BACK);   // not works vs code & notepad , fast
+            // 1. Record stats
+            int charsSaved = shortcutModel.Value.Length - shortcutModel.Key.Length;
+            _statsService.RecordExpansion(charsSaved > 0 ? charsSaved : 0);
 
+            // 2. Backup clipboard
+            ClipboardHelpers.BackupClipboard();
+
+            var sim = new InputSimulator();
+
+            // 3. Deletion - Use atomic input if possible
+            for (int i = 0; i < shortcutModel.Key.Length; i++)
+            {
+                sim.Keyboard.KeyPress(VirtualKeyCode.BACK);
+            }
+
+            // 4. Substitution
+            Clipboard.SetText(shortcutModel.Value);
+            ClipboardHelpers.PasteText();
+
+            // 5. Restore clipboard
+            ClipboardHelpers.RestoreClipboard();
         }
-        Clipboard.SetText(shortcutModel.Value);
-
-        SendKeys.Send("^(v)");
+        finally
+        {
+            _isExpanding = false;
+        }
     }
 
-#if DYNAMIC_PLACEHOLDERS
-
-
-    private void ReplaceKeyWithValue(DynamicPlaceholder placeholder)
-    {
-        var userInput = currentText;
-        var sim = new InputSimulator();
-        for (int i = 0; i < userInput.Length; i++)
-        {
-            sim.Keyboard.KeyPress(VirtualKeyCode.BACK);   // not works vs code & notepad , fast
-        }
-
-        var textToPaste = _placeholderService.GetValueAccordingToCommand(placeholder, userInput);
-        if (string.IsNullOrEmpty(textToPaste))
-        {
-            return;
-        }
-        Clipboard.SetText(textToPaste);
-        SendKeys.Send("^(v)");
-    }
-#else
-#endif
     #endregion
 
 
@@ -408,21 +452,17 @@ public partial class MainWindow : Form
         return _textShortcutService.GetAll();
 
     }
-#if DYNAMIC_PLACEHOLDERS
-    private List<DynamicPlaceholder> GetAllPlaceholdersFromDb()
-    {
-        return _placeholderService.GetAll();
-    }
-     private void UpdateInMemoryPlaceholders()
-    {
-        placeholders = GetAllPlaceholdersFromDb();
-    }
 
-#else
-#endif
     private void UpdateInMemoryTextShortcuts()
     {
         textShortcuts = GetAllTextShortcutsFromDb();
+        _shortcutTrie.Clear();
+        foreach (var s in textShortcuts)
+        {
+            // We use the key as the trie key. 
+            // Note: Case sensitivity is handled at lookup or by double-inserting if needed.
+            _shortcutTrie.Insert(s.Key.ToLower(), s);
+        }
     }
 
     private void PopulateDataGrid()
@@ -430,48 +470,27 @@ public partial class MainWindow : Form
         UpdateInMemoryTextShortcuts();
 
         dataGridView.DataSource = new BindingList<TextShortcut>(textShortcuts);
-
-        MakeDataGridWrappable();
-
-    }
-
-    private void MakeDataGridWrappable()
-    {
-
-        dataGridView.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
-
-        dataGridView.AllowUserToAddRows = false;
-        dataGridView.AllowUserToDeleteRows = false;
-        dataGridView.ReadOnly = true;
     }
 
 
     private TextShortcut GetTextShortcutModel(string? key)
     {
+        if (string.IsNullOrEmpty(key)) return null;
 
-        return Settings.Default.IsMatchingCaseSensitive ?
-            textShortcuts.FirstOrDefault(t => string.Equals(t.Key, key)) :
-            textShortcuts.FirstOrDefault(t => string.Equals(t.Key, key, StringComparison.OrdinalIgnoreCase));
-    }
+        // Trie-based lookup for O(Length of Key) performance
+        var match = _shortcutTrie.Search(key.ToLower());
 
-#if DYNAMIC_PLACEHOLDERS
-    private DynamicPlaceholder GetPlaceholderModel(string? key)
-    {
-        if (key.Contains('?'))
+        if (match != null)
         {
-
-            return Settings.Default.IsMatchingCaseSensitive ?
-                placeholders.FirstOrDefault(t => string.Equals(t.Key, key.Split('?')[0])) :
-                placeholders.FirstOrDefault(t => string.Equals(t.Key, key.Split('?')[0], StringComparison.OrdinalIgnoreCase));
+            if (Settings.Default.IsMatchingCaseSensitive)
+            {
+                return string.Equals(match.Key, key) ? match : null;
+            }
+            return match;
         }
-
-        return Settings.Default.IsMatchingCaseSensitive ?
-            placeholders.FirstOrDefault(t => string.Equals(t.Key, key)) :
-            placeholders.FirstOrDefault(t => string.Equals(t.Key, key, StringComparison.OrdinalIgnoreCase));
+        return null;
     }
 
-#else
-#endif
     #endregion
 
     #region Handle Button Clicks
@@ -713,13 +732,63 @@ public partial class MainWindow : Form
 
     private void tabControl_SelectedIndexChanged(object sender, EventArgs e)
     {
-        if (tabControl.SelectedIndex == 1)
+        if (tabControl.SelectedIndex == 1) // Preferences
         {
             ClearAllCheckBoxes();
             PopulateOtherSettingsCheckBoxes();
             PopulateTriggerKeysCheckBoxes();
             buttonSaveSettings.Enabled = false;
         }
+        else if (tabControl.SelectedIndex == 2) // Statistics
+        {
+            UpdateStatisticsUI(dateTimePickerFilter.Value.ToString("yyyy-MM-dd"));
+        }
+    }
+
+    private void UpdateStatisticsUI(string? filterDate = null)
+    {
+        var stats = _statsService.Stats;
+        labelTotalExpansions.Text = $"Total Expansions: {stats.TotalExpansions:N0}";
+        labelTotalCharsSaved.Text = $"Characters Saved: {stats.TotalCharactersSaved:N0}";
+
+        // Format time saved
+        double totalSeconds = stats.TotalTimeSavedSeconds;
+        if (totalSeconds < 60)
+            labelTotalTimeSaved.Text = $"Time Saved: {totalSeconds:F1}s";
+        else if (totalSeconds < 3600)
+            labelTotalTimeSaved.Text = $"Time Saved: {totalSeconds / 60:F1}m";
+        else
+            labelTotalTimeSaved.Text = $"Time Saved: {totalSeconds / 3600:F1}h";
+
+        // Update Daily Grid
+        dataGridStatistics.Rows.Clear();
+        if (stats.DailyKeypresses != null)
+        {
+            var query = stats.DailyKeypresses.AsEnumerable();
+
+            if (!string.IsNullOrEmpty(filterDate))
+            {
+                query = query.Where(d => d.Key == filterDate);
+            }
+
+            foreach (var dateEntry in query.OrderByDescending(d => d.Key))
+            {
+                foreach (var appEntry in dateEntry.Value.OrderByDescending(a => a.Value))
+                {
+                    dataGridStatistics.Rows.Add(dateEntry.Key, appEntry.Key, appEntry.Value.ToString("N0"));
+                }
+            }
+        }
+    }
+
+    private void dateTimePickerFilter_ValueChanged(object sender, EventArgs e)
+    {
+        UpdateStatisticsUI(dateTimePickerFilter.Value.ToString("yyyy-MM-dd"));
+    }
+
+    private void btnRefreshStats_Click(object sender, EventArgs e)
+    {
+        UpdateStatisticsUI(dateTimePickerFilter.Value.ToString("yyyy-MM-dd"));
     }
     private void buttonSaveSettings_Click(object sender, EventArgs e)
     {
@@ -736,10 +805,7 @@ public partial class MainWindow : Form
         buttonSaveSettings.Enabled = true;
     }
 
-
     #endregion
-
-
     private void importShortcutsToolStripMenuItem_Click(object sender, EventArgs e)
     {
         using (OpenFileDialog openFileDialog = new OpenFileDialog())
@@ -762,8 +828,6 @@ public partial class MainWindow : Form
                 }
             }
         }
-
-
     }
 
     private void exportShortcutsToolStripMenuItem_Click(object sender, EventArgs e)
@@ -813,6 +877,4 @@ public partial class MainWindow : Form
     {
         Process.Start(new ProcessStartInfo("cmd", $"/c start https://github.com/Muxammadamin-Ulmasaliyev/Expandit") { CreateNoWindow = true });
     }
-
-   
 }
