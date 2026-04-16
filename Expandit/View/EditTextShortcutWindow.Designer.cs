@@ -57,7 +57,7 @@
             label4.ForeColor = Color.DarkRed;
             label4.Location = new Point(14, 457);
             label4.Name = "label4";
-            label4.Size = new Size(159, 23);
+            label4.Size = new Size(128, 19);
             label4.TabIndex = 23;
             label4.Text = "* are required fields";
             // 
@@ -66,7 +66,7 @@
             label3.AutoSize = true;
             label3.Location = new Point(48, 203);
             label3.Name = "label3";
-            label3.Size = new Size(82, 32);
+            label3.Size = new Size(67, 25);
             label3.TabIndex = 22;
             label3.Text = "*Value";
             // 
@@ -75,7 +75,7 @@
             label2.AutoSize = true;
             label2.Location = new Point(14, 124);
             label2.Name = "label2";
-            label2.Size = new Size(116, 32);
+            label2.Size = new Size(93, 25);
             label2.TabIndex = 21;
             label2.Text = "*Keyword";
             // 
@@ -84,7 +84,7 @@
             label1.AutoSize = true;
             label1.Location = new Point(42, 45);
             label1.Name = "label1";
-            label1.Size = new Size(88, 32);
+            label1.Size = new Size(70, 25);
             label1.TabIndex = 20;
             label1.Text = "*Name";
             // 
@@ -112,7 +112,7 @@
             textBoxKey.Location = new Point(138, 118);
             textBoxKey.Margin = new Padding(5);
             textBoxKey.Name = "textBoxKey";
-            textBoxKey.Size = new Size(329, 39);
+            textBoxKey.Size = new Size(329, 32);
             textBoxKey.TabIndex = 17;
             // 
             // textBoxName
@@ -120,12 +120,12 @@
             textBoxName.Location = new Point(138, 42);
             textBoxName.Margin = new Padding(5);
             textBoxName.Name = "textBoxName";
-            textBoxName.Size = new Size(759, 39);
+            textBoxName.Size = new Size(759, 32);
             textBoxName.TabIndex = 16;
             // 
             // EditTextShortcutWindow
             // 
-            AutoScaleDimensions = new SizeF(13F, 31F);
+            AutoScaleDimensions = new SizeF(11F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(918, 497);
             Controls.Add(buttonCancel);
