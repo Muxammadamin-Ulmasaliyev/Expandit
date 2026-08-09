@@ -102,6 +102,13 @@ public class TextShortcutsService
         {
             var json = File.ReadAllText(filePathToImport);
             var importedShortcuts = JsonConvert.DeserializeObject<List<TextShortcut>>(json);
+
+            if (importedShortcuts == null)
+            {
+                MessageBox.Show($"Failed to import shortcuts, {filePathToImport} does not contain a valid shortcut list", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
             foreach (var importedShortcut in importedShortcuts)
             {
                 // Check if a shortcut with the same key exists

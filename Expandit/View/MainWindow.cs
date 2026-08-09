@@ -55,6 +55,7 @@ public partial class MainWindow : Form
 
         _textShortcutService = new();
         _statsService = new();
+        Microsoft.Win32.SystemEvents.SessionEnding += (s, e) => _statsService?.Flush();
         UpdateInMemoryTextShortcuts();
 
         PopulateDataGrid();
@@ -127,9 +128,12 @@ public partial class MainWindow : Form
 
     private System.Windows.Forms.Timer _timer;
     private IntPtr _lastForegroundWindow = IntPtr.Zero;
+    private string _cachedActiveProcessName = "Unknown";
 
     private void InitializeForegroundWindowChecker()
     {
+        _cachedActiveProcessName = GetActiveProcessName();
+
         _timer = new System.Windows.Forms.Timer();
         _timer.Interval = 1000; // Check every second
         _timer.Tick += Timer_Tick;
@@ -160,6 +164,7 @@ public partial class MainWindow : Form
         // Handle the foreground window change event
         currentText = string.Empty;
         currentTextLabel.Text = string.Empty;
+        _cachedActiveProcessName = GetActiveProcessName();
         //MessageBox.Show($"Foreground window changed to: {windowTitle}", "Foreground Window Changed");
     }
 
@@ -353,10 +358,19 @@ public partial class MainWindow : Form
 
     private void Kh_KeyDown(object sender, System.Windows.Forms.KeyEventArgs e)
     {
+        // Helper.dll may invoke this callback off the UI thread; marshal onto it before touching
+        // any controls below. `e` is a reference type so mutations made after re-entry still reach
+        // the original caller.
+        if (currentTextLabel.InvokeRequired)
+        {
+            currentTextLabel.Invoke(new Action(() => Kh_KeyDown(sender, e)));
+            return;
+        }
+
         if (_isExpanding) return;
 
         // Record keypress for statistics
-        string activeApp = GetActiveProcessName();
+        string activeApp = _cachedActiveProcessName;
         _statsService?.RecordKeypress(activeApp);
 
         if (isApplicationDisabled)
@@ -514,7 +528,7 @@ public partial class MainWindow : Form
     }
     private void buttonAdd_Click(object sender, EventArgs e)
     {
-        var window = new AddTextShortcutWindow();
+        var window = new AddTextShortcutWindow(_textShortcutService);
         window.Owner = this;
         this.Opacity = 0.9;
         window.ShowDialog();
@@ -523,7 +537,7 @@ public partial class MainWindow : Form
     }
     private void buttonEditTextShortcut_Click(TextShortcut textShortcutToEdit)
     {
-        var window = new EditTextShortcutWindow(textShortcutToEdit);
+        var window = new EditTextShortcutWindow(_textShortcutService, textShortcutToEdit);
         window.Owner = this;
         this.Opacity = 0.9;
         window.ShowDialog();
@@ -578,6 +592,11 @@ public partial class MainWindow : Form
         try
         {
             RegistryKey registryKey = Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
+            if (registryKey == null)
+            {
+                MessageBox.Show("An error occurred while adding the application to startup: could not open the startup registry key.");
+                return;
+            }
             registryKey.SetValue(GlobalVariables.APP_NAME, Application.ExecutablePath.ToString());
 
         }
@@ -595,6 +614,11 @@ public partial class MainWindow : Form
         {
             // Registry key where the application is added
             RegistryKey registryKey = Registry.CurrentUser.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Run", true);
+            if (registryKey == null)
+            {
+                MessageBox.Show("An error occurred while removing the application from startup: could not open the startup registry key.");
+                return;
+            }
 
             // Remove the application from the startup list
             if (registryKey.GetValue(GlobalVariables.APP_NAME) != null)
@@ -848,16 +872,6 @@ public partial class MainWindow : Form
                 MessageBox.Show("Shortcuts exported successfully!", "Export", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }
-    }
-
-    private void label1_Click(object sender, EventArgs e)
-    {
-
-    }
-
-    private void label5_Click(object sender, EventArgs e)
-    {
-
     }
 
     private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)

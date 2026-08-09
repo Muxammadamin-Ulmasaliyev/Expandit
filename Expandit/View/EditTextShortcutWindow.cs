@@ -1,4 +1,5 @@
-﻿using Expandit.Models;
+﻿using Expandit.Helpers;
+using Expandit.Models;
 using Expandit.Services;
 
 namespace Expandit.View;
@@ -9,9 +10,9 @@ public partial class EditTextShortcutWindow : Form
 
     private TextShortcut _textShortcutModel;
 
-    public EditTextShortcutWindow(TextShortcut textShortcutModel)
+    public EditTextShortcutWindow(TextShortcutsService textShortcutsService, TextShortcut textShortcutModel)
     {
-        _textshortcutsService = new TextShortcutsService();
+        _textshortcutsService = textShortcutsService;
 
         InitializeComponent();
 
@@ -68,37 +69,7 @@ public partial class EditTextShortcutWindow : Form
 
     private bool IsModelStateValid()
     {
-        bool result = true;
-        if (textBoxName.Text == string.Empty || string.IsNullOrWhiteSpace(textBoxName.Text))
-        {
-            //ShowErrorForTextBox(tbName);
-            result = result && false;
-        }
-        else
-        {
-            //ShowSuccessForTextBox(tbName);
-        }
-        if (textBoxKey.Text == string.Empty || string.IsNullOrWhiteSpace(textBoxKey.Text))
-        {
-            //ShowErrorForTextBox(tbKey);
-            result = result && false;
-
-        }
-        else
-        {
-            //ShowSuccessForTextBox(tbKey);
-        }
-        if (textBoxValue.Text == string.Empty || string.IsNullOrWhiteSpace(textBoxValue.Text))
-        {
-            //ShowErrorForTextBox(tbValue);
-            result = result && false;
-        }
-        else
-        {
-            //ShowSuccessForTextBox(tbValue);
-        }
-        return result;
-
+        return TextShortcutValidator.IsValid(textBoxName.Text, textBoxKey.Text, textBoxValue.Text);
     }
 
     private void textBox_TextChanged(object sender, EventArgs e)

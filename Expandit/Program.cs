@@ -54,30 +54,40 @@ internal static class Program
 
     static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
     {
+        // This handler can fire off the UI thread (e.g. from the keyboard hook callback), so we only
+        // log here rather than showing a MessageBox that could pop up while the user is typing elsewhere.
         Exception ex = e.ExceptionObject as Exception;
         if (ex != null)
         {
-            // Handle the unhandled exception
-            MessageBox.Show($"An unexpected error occurred: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-
-            // Optionally, log the exception
             LogException(ex);
         }
     }
 
     static void LogException(Exception ex)
     {
-        string logFilePath = "error_log.txt"; // Specify the log file path
-        using (StreamWriter writer = new StreamWriter(logFilePath, true))
+        try
         {
-            writer.WriteLine($"[{DateTime.Now}] Exception: {ex.Message}");
-            writer.WriteLine(ex.StackTrace);
-            if (ex.InnerException != null)
+            if (!Directory.Exists(GlobalVariables.APP_FOLDER_PATH))
             {
-                writer.WriteLine($"Inner Exception: {ex.InnerException.Message}");
-                writer.WriteLine(ex.InnerException.StackTrace);
+                Directory.CreateDirectory(GlobalVariables.APP_FOLDER_PATH);
             }
-            writer.WriteLine();
+
+            string logFilePath = Path.Combine(GlobalVariables.APP_FOLDER_PATH, GlobalVariables.ERROR_LOG_FILENAME);
+            using (StreamWriter writer = new StreamWriter(logFilePath, true))
+            {
+                writer.WriteLine($"[{DateTime.Now}] Exception: {ex.Message}");
+                writer.WriteLine(ex.StackTrace);
+                if (ex.InnerException != null)
+                {
+                    writer.WriteLine($"Inner Exception: {ex.InnerException.Message}");
+                    writer.WriteLine(ex.InnerException.StackTrace);
+                }
+                writer.WriteLine();
+            }
+        }
+        catch
+        {
+            // Logging failed; nothing more we can safely do from inside an exception handler.
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using Expandit.Models;
+﻿using Expandit.Helpers;
+using Expandit.Models;
 using Expandit.Services;
 
 namespace Expandit.View;
@@ -6,9 +7,9 @@ namespace Expandit.View;
 public partial class AddTextShortcutWindow : Form
 {
 	private TextShortcutsService _textshortcutsService;
-	public AddTextShortcutWindow()
+	public AddTextShortcutWindow(TextShortcutsService textShortcutsService)
 	{
-		_textshortcutsService = new TextShortcutsService();
+		_textshortcutsService = textShortcutsService;
 		InitializeComponent();
 
 		CheckButtonState();
@@ -56,37 +57,7 @@ public partial class AddTextShortcutWindow : Form
 
 	private bool IsModelStateValid()
 	{
-		bool result = true;
-		if (textBoxName.Text == string.Empty || string.IsNullOrWhiteSpace(textBoxName.Text))
-		{
-			//ShowErrorForTextBox(textBoxName);
-			result = result && false;
-		}
-		else
-		{
-			//ShowSuccessForTextBox(textBoxName);
-		}
-		if (textBoxKey.Text == string.Empty || string.IsNullOrWhiteSpace(textBoxKey.Text))
-		{
-			//ShowErrorForTextBox(textBoxKey);
-			result = result && false;
-
-		}
-		else
-		{
-			//ShowSuccessForTextBox(textBoxKey);
-		}
-		if (textBoxValue.Text == string.Empty || string.IsNullOrWhiteSpace(textBoxValue.Text))
-		{
-			//ShowErrorForTextBox(textBoxValue);
-			result = result && false;
-		}
-		else
-		{
-			//ShowSuccessForTextBox(textBoxValue);
-		}
-		return result;
-
+		return TextShortcutValidator.IsValid(textBoxName.Text, textBoxKey.Text, textBoxValue.Text);
 	}
 
 	private void ClearAllTextBoxes()

@@ -689,7 +689,6 @@ namespace Expandit
             label1.Size = new Size(79, 25);
             label1.TabIndex = 0;
             label1.Text = "Name : ";
-            label1.Click += label1_Click;
             // 
             // groupBoxAboutDeveloper
             // 
@@ -770,7 +769,6 @@ namespace Expandit
             label5.Size = new Size(259, 25);
             label5.TabIndex = 1;
             label5.Text = "Muxammadamin Ulmasaliyev";
-            label5.Click += label5_Click;
             // 
             // label4
             // 
